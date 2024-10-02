@@ -1,22 +1,24 @@
+import os
 from flask import Flask
 from flask_pymongo import PyMongo
-from pymongo import MongoClient
-import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
 
-# MongoDB connection string
-# Use environment variables to store sensitive information like the database URI
-app.config["MONGO_URI"] = os.getenv("MONGO_URI", "your_mongodb_connection_string")
+# Load MongoDB URI from environment variables
+app.config["MONGO_URI"] = os.getenv("MONGO_URI")
 
-# Initialize PyMongo client
+# Initialize the PyMongo client
 mongo = PyMongo(app)
 
-# You can also use the native MongoClient if you need additional control
-client = MongoClient(app.config["MONGO_URI"])
-db = client['garden_construction']  # Connect to the specific database
+# Test the connection by getting a reference to the database
+db = mongo.db
 
-# Function to get the database instance
 def get_db():
+    if db is None:
+        raise Exception(f"database connection failed")
     return db

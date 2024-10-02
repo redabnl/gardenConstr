@@ -1,0 +1,23 @@
+# Ignore .env file (environment variables)
+.env
+
+# Python virtual environment
+backend/venv/
+
+#folder for documentation and screenshots
+documentation/
+
+# Node.js dependencies
+# frontend/node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore IDE/editor config files (optional)
+.vscode/
+.idea/
+.DS_Store
