@@ -1,6 +1,22 @@
 # from datetime import datetime 
 # from bson.objectid import ObjectId
-# # from ..db import get_db
+from .db import get_db
+
+def get_all_services():
+    db = get_db()
+    services = db.services.find()  # Fetch all documents from 'services' collection
+    services_list = []
+    for service in services:
+        services_list.append({
+            "title": service.get("title"),
+            "description": service.get("description"),
+            "price_range": service.get("price_range", "N/A"),
+            "tags": service.get("tags", []),
+            "image_url": service.get("image_url", "")  # Optional image URL field
+        })
+    return services_list
+
+
 # from .db import get_db
 # db = get_db()  # Get database instance
 
