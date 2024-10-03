@@ -16,6 +16,10 @@ def get_all_services():
         })
     return services_list
 
+def get_service_by_name(service_name):
+    db = get_db()
+    return db.services.find_one({"title": service_name})
+
 
 # from .db import get_db
 # db = get_db()  # Get database instance
