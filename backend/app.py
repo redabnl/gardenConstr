@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
-from .routes.db_tests import db_tests
+from .models.db_tests import db_tests
 
 
 app = Flask(__name__)
@@ -11,6 +11,6 @@ app.register_blueprint(db_tests)
 
 @app.route('/')
 def home():
-    return "goof to go"
+    return "good to go"
 if __name__ == '__main__':
     app.run(debug=True)

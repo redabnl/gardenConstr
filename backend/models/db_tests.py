@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from backend import app
-from ..models.db import get_db
+from .db import get_db
 from flask import Blueprint, jsonify
 
 
@@ -25,13 +25,9 @@ def test_db_connection():
             "success": True,
             "collections": collections
         }), 200
+
     except Exception as e:
-        # Return the error message for debugging
         return jsonify({
             "success": False,
             "error": f"Database connection failed: {str(e)}"
         }), 500
-
-
-if __name__ == "__main__":
-    app.run(debug=True)
