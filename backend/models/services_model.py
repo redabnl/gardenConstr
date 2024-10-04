@@ -1,6 +1,18 @@
-# from datetime import datetime 
-# from bson.objectid import ObjectId
+from datetime import datetime 
+from bson.objectid import ObjectId
 from .db import get_db
+
+def create_new_service(title, description, tags, price_range="to discuss..."):
+    db = get_db()
+    new_service = {
+        "_id" : ObjectId(),
+        "title": title,
+        "description": description,  
+        "tags" : tags, 
+        "price_range" : price_range
+    }
+    db.services.insert_one(new_service)
+    return new_service.get(title)
 
 def get_all_services():
     db = get_db()
@@ -20,6 +32,37 @@ def get_service_by_name(service_name):
     db = get_db()
     return db.services.find_one({"title": service_name})
 
+
+def get_service_by_id(service_name):
+    db = get_db()
+    return db.services.find_one({"title": service_name})
+
+def update_service_by_id(service_id, title, description, price_range, tags):
+    db = get_db()
+
+    # Create an update dictionary with the provided data
+    update_data = {}
+
+    if title:
+        update_data['title'] = title
+    if description:
+        update_data['description'] = description
+    if price_range:
+        update_data['price_range'] = price_range
+    if tags:
+        update_data['tags'] = tags
+
+    # Use MongoDB's update_one function to update the service
+    result = db.services.update_one(
+        {"_id": ObjectId(service_id)},  # Find the service by its ObjectId
+        {"$set": update_data}  # Update the fields provided in the update_data dictionary
+    )
+
+    # Check if the service was successfully updated
+    if result.matched_count == 0:
+        return False  # No service found with the provided service_id
+
+    return True
 
 # from .db import get_db
 # db = get_db()  # Get database instance

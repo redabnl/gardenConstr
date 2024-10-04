@@ -15,3 +15,8 @@ def save_inquiries(inquiry_data):
         "created_at": inquiry_data.get("created_at", None)
     }
     db.client_inquiries.insert_one(inquiry)
+    
+def get_all_inquiries():
+    db = get_db()
+    inquiries = db.client_inquiries.find()
+    return list(inquiries)

@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
-from ..models.inquiries_model import save_inquiries
+from .auth_helpers import token_required
+from ..models.inquiries_model import save_inquiries, get_all_inquiries
 from ..models.services_model import get_service_by_name
 
 inquiries_routes = Blueprint('inquiries_routes', __name__)
@@ -21,3 +22,10 @@ def submit_inquiry():
         return jsonify({"message": "Inquiry submitted successfully!"}), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+
+@inquiries_routes.route('/api/admin/inquiries', methods=['GET'])
+@token_required
+def get_inquiries(admin_id):
+    inquiries = get_all_inquiries()
+    return jsonify(inquiries), 200
