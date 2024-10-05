@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash
 # from models.admin_users_model import create_admin_user, get_admin_by_username
-from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id
+from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
 from ..models.services_model import update_service_by_id, get_service_by_id, create_new_service
 import jwt
 from werkzeug.security import check_password_hash
@@ -15,24 +15,41 @@ load_dotenv()
 admin_routes = Blueprint('admin_routes', __name__)
 
 
-# # Generate a hashed password
-# password_hash = generate_password_hash('reda')
 
-# # Create an admin user with username 'admin' and hashed password
-# admin_user = create_admin_user('reda', password_hash)
-# print(f"Admin user created: {admin_user}")
-# Route to create new admin users, only accessible by superAdmins
+@admin_routes.route('/api/admin/users', methods=['GET'])
+# @token_required  # Protect this route with token authentication
+def get_all_admin_users(): ## admin_id
+    
+    ## SUPERADMIN only to config for later
+    # # First, check if the logged-in admin is a superAdmin
+    # admin = get_admin_by_id(admin_id)  # Fetch the admin by ID (from token)
+    
+    # if admin['role'] != 'superAdmin':
+    #     return jsonify({"error": "Permission denied. Only superAdmins can view this list."}), 403
+
+    try:
+        # Fetch all admins from the database
+        admins = get_all_admins()
+        
+        # Filter out sensitive information like passwords
+        admin_list = []
+        for admin in admins:
+            admin_list.append({
+                "username": admin['username'],
+                "role": admin['role'],
+                "created_at": admin.get('created_at', None)
+            })
+        
+        return jsonify(admin_list), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @admin_routes.route('/api/admin/create', methods=['POST'])
 def create_admin(): # admin_id as imput here
     try:
-        # Fetch the admin's details from the database using the admin_id from the token
-        # admin = get_admin_by_id(admin_id)
         
-        # Check if the admin has the role of "superAdmin"
-        # if admin.get('role') != 'superAdmin':
-        #     return jsonify({"error": "Permission denied. Only superAdmins can create new admins."}), 403
 
         # Parse the new admin data from the request
         data = request.json
@@ -91,6 +108,17 @@ def create_service(): ## title, description, tags, price_range
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@admin_routes.route('/api/admin/me', methods=['GET'])
+# @token_required
+def get_admin_profile(admin_id):
+    admin = get_admin_by_id(admin_id)  # Fetch admin details using the admin_id from the token
+    if admin:
+        return jsonify({
+            "username": admin['username'],
+            "role": admin['role']
+        }), 200
+    return jsonify({"error": "Admin not found"}), 404
+
 @admin_routes.route('/api/admin/services/<service_id>', methods=['PUT'])
 def update_service(service_id):
     # service_id = get_service_by_id(data.get('title'))
@@ -109,6 +137,16 @@ def update_service(service_id):
         return jsonify({"error": str(e)}), 500
 
 
+# # Generate a hashed password
+# password_hash = generate_password_hash('reda')
+
+# # Create an admin user with username 'admin' and hashed password
+# admin_user = create_admin_user('reda', password_hash)
+# print(f"Admin user created: {admin_user}")
+# Route to create new admin users, only accessible by superAdmins
+
+
+###################################################################
 # class Filter(admin.SimpleListFilter):
 #     title = _("")
 #     parameter_name = ""
@@ -118,3 +156,12 @@ def update_service(service_id):
 
 #     def queryset(self, request, queryset):
 #         return queryset.filter(=self.value())
+####################################################################
+
+
+# Fetch the admin's details from the database using the admin_id from the token
+        # admin = get_admin_by_id(admin_id)
+        
+        # Check if the admin has the role of "superAdmin"
+        # if admin.get('role') != 'superAdmin':
+        #     return jsonify({"error": "Permission denied. Only superAdmins can create new admins."}), 403

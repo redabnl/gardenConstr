@@ -12,6 +12,7 @@ function NavigationBar() {
             <Nav.Link href="#home">Home</Nav.Link>
             <Nav.Link href="#services">Services</Nav.Link>
             <Nav.Link href="#contact">Contact</Nav.Link>
+            <Nav.Link as={Link} to="/admin/login">Admin</Nav.Link>
           </Nav>
           <Button variant="success" className="ml-2">Free Estimate</Button>
         </Navbar.Collapse>

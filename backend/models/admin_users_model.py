@@ -2,6 +2,15 @@ from .db import get_db
 from bson.objectid import ObjectId
 import datetime
 
+
+## Function to return a list of all admins registred 
+def get_all_admins():
+    db = get_db()
+    
+    # Fetch all admins from the 'admin_users' collection
+    admins = db.admin_users.find({})
+    return list(admins)
+
 # Function to get admin by username
 def get_admin_by_username(username):
     db = get_db()
