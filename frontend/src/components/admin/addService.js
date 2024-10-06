@@ -5,10 +5,12 @@ function AddService() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    price_range: ''
+    price_range: '', 
+    tags : ''
   });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const tagsArray = formData.tags.split(',').map(tag => tag.trim());
 
   const handleChange = (e) => {
     setFormData({
@@ -21,7 +23,11 @@ function AddService() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/services', formData, {
+      const response = await axios.post('http://localhost:5000/api/admin/services',{
+      ...formData,
+      tags: tagsArray    
+    }, 
+         {
         headers: {
           'Content-Type': 'application/json',
           'x-access-token': localStorage.getItem('admin_token')
@@ -29,7 +35,7 @@ function AddService() {
       });
 
       setSuccess('Service added successfully!');
-      setFormData({ title: '', description: '', price_range: '' });  // Clear form
+      setFormData({ title: '', description: '', price_range: '', tags: ''});  // Clear form
     } catch (error) {
       setError('Error adding service');
     }
@@ -65,7 +71,7 @@ function AddService() {
           <input
             type="text"
             name="tags"
-            value={formData.tags}
+            value={formData.tagsArray}
             onChange={handleChange}
             required
           />
