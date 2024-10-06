@@ -21,7 +21,7 @@ function AdminLogin() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('localhost:5000/api/admin/login', formData, {
+      const response = await axios.post('http://localhost:5000/api/admin/login', formData, {
         headers: {
           'Content-Type': 'application/json'  // Ensure content type is set
         }

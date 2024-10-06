@@ -7,6 +7,9 @@ import NavigationBar from './components/navbar';
 import AdminLogin from './components/admin/adminLogin';
 import AdminDashboard from './components/admin/adminDashboard';
 import Home from './components/home';  // Import Home Component
+import ManageServices from './components/admin/manageServices';
+import AddService from './components/admin/addService';
+
 
 function App() {
   return (
@@ -20,6 +23,8 @@ function App() {
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/manage-services" element={<ManageServices />} />
+        <Route path="/admin/add-service" element={<AddService />} />
       </Routes>
     </Router>
   );
