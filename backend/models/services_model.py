@@ -10,6 +10,7 @@ def create_new_service(title, description, tags, price_range="to discuss..."):
         "description": description,  
         "tags" : tags, 
         "price_range" : price_range
+        # "image_path" : file_path
     }
     db.services.insert_one(new_service)
     return new_service.get(title)

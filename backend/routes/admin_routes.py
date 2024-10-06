@@ -7,16 +7,27 @@ from ..models.admin_users_model import create_admin_user, get_admin_by_username,
 from ..models.services_model import update_service_by_id, get_service_by_id, create_new_service
 import jwt
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 import datetime
 from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from .auth_helpers import token_required
 from dotenv import load_dotenv
+from ..models.db import get_db
+
 import os
 load_dotenv()
 
+db = get_db()
 admin_routes = Blueprint('admin_routes', __name__)
 
+
+# Allowed extensions for image uploads
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+# Function to check allowed file extensions
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 ###########################################################
@@ -111,21 +122,83 @@ def get_admin_profile(admin_id):
         }), 200
     return jsonify({"error": "Admin not found"}), 404
 
+
+###########################################################
 ###########################################################
 ## ADMIN USERS MANAGEMENT
+
+## CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
 def create_service(): ## title, description, tags, price_range
-    data = request.json
-    title = data.get('title')
-    description = data.get('description')
-    tags = data.get('tags')
-    price_range = data.get('price_range')
+    title = request.form.get('title')
+    description = request.form.get('description')
+    location = request.form.get('location')
 
-    try:
-        new_service = create_new_service( title, description, tags, price_range)  # Create service
-        return jsonify(new_service), 201
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # Handle multiple file uploads
+    uploaded_files = request.files.getlist('images')  # Multiple images
+    image_paths = []
+
+    for file in uploaded_files:
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            project_folder = os.path.join(app.config['UPLOAD_FOLDER_PROJECTS'], title.replace(" ", "_"))
+            os.makedirs(project_folder, exist_ok=True)
+            file_path = os.path.join(project_folder, filename)
+            file.save(file_path)
+            image_paths.append(file_path.replace("./static/", ""))  # Store relative path
+
+    new_project = {
+        "title": title,
+        "description": description,
+        "location": location,
+        "gallery_images": image_paths  # Store image paths as an array
+    }
+    db.projects.insert_one(new_project)
+    return jsonify({"message": "Project added successfully!"}), 201
+    # title = request.form.get('title')
+    # description = request.form.get('description')
+    # price_range = request.form.get('price_range')
+    # tags = request.form.getlist('tags')  # Tags from form
+    
+    # # Handle file upload
+    # if 'image' not in request.files:
+    #     return jsonify({"error": "No file part"}), 400
+    
+    # file = request.files['image']
+    
+    # if file.filename == '':
+    #     return jsonify({"error": "No selected file"}), 400
+    
+    # if file and allowed_file(file.filename):
+    #     filename = secure_filename(file.filename)
+    #     service_folder = os.path.join(app.config['UPLOAD_FOLDER_SERVICES'], title.replace(" ", "_"))
+    #     os.makedirs(service_folder, exist_ok=True)
+    #     file_path = os.path.join(service_folder, filename)
+    #     file.save(file_path)  # Save the file
+        
+    #     # Insert service into MongoDB with the image path
+    #     new_service = {
+    #         "title": title,
+    #         "description": description,
+    #         "price_range": price_range,
+    #         "tags": tags,
+    #         "image_path": file_path.replace("./static/", "")  # Store relative path
+    #     }
+    #     db.services.insert_one(new_service)
+    #     return jsonify({"message": "Service added successfully!"}), 201
+    
+    # return jsonify({"error": "Invalid file type"}), 400
+    # data = request.json
+    # title = data.get('title')
+    # description = data.get('description')
+    # tags = data.get('tags')
+    # price_range = data.get('price_range')
+
+    # try:
+    #     new_service = create_new_service( title, description, tags, price_range)  # Create service
+    #     return jsonify(new_service), 201
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 500
 
 
 
