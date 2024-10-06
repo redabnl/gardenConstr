@@ -1,4 +1,7 @@
+from bson import ObjectId
 from werkzeug.security import generate_password_hash
+from ..models.db import get_db
+from ..models.projects_model import get_all_projects, add_project, update_project, delete_project
 # from models.admin_users_model import create_admin_user, get_admin_by_username
 from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
 from ..models.services_model import update_service_by_id, get_service_by_id, create_new_service
@@ -15,6 +18,9 @@ load_dotenv()
 admin_routes = Blueprint('admin_routes', __name__)
 
 
+
+###########################################################
+## ADMIN USERS MANAGEMENT
 
 @admin_routes.route('/api/admin/users', methods=['GET'])
 # @token_required  # Protect this route with token authentication
@@ -93,7 +99,20 @@ def admin_login():
         return jsonify({"token": token_str}), 200
     else:
         return jsonify({"error": "Invalid username or password"}), 401
+    
+@admin_routes.route('/api/admin/me', methods=['GET'])
+# @token_required
+def get_admin_profile(admin_id):
+    admin = get_admin_by_id(admin_id)  # Fetch admin details using the admin_id from the token
+    if admin:
+        return jsonify({
+            "username": admin['username'],
+            "role": admin['role']
+        }), 200
+    return jsonify({"error": "Admin not found"}), 404
 
+###########################################################
+## ADMIN USERS MANAGEMENT
 @admin_routes.route('/api/admin/services', methods=['POST'])
 def create_service(): ## title, description, tags, price_range
     data = request.json
@@ -108,16 +127,7 @@ def create_service(): ## title, description, tags, price_range
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@admin_routes.route('/api/admin/me', methods=['GET'])
-# @token_required
-def get_admin_profile(admin_id):
-    admin = get_admin_by_id(admin_id)  # Fetch admin details using the admin_id from the token
-    if admin:
-        return jsonify({
-            "username": admin['username'],
-            "role": admin['role']
-        }), 200
-    return jsonify({"error": "Admin not found"}), 404
+
 
 @admin_routes.route('/api/admin/services/<service_id>', methods=['PUT'])
 def update_service(service_id):
@@ -135,6 +145,87 @@ def update_service(service_id):
         return jsonify({"error": "Service not found"}), 404
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+    
+##############################################
+## PORTFOLIO MANAGEMENT
+@admin_routes.route('/api/admin/projects', methods=['GET'])
+# @token_required
+def fetch_all_projects(): ## admin_id
+    projects = get_all_projects()
+    return jsonify(projects), 200
+
+
+# Route to add a new project
+@admin_routes.route('/api/admin/projects', methods=['POST'])
+# @token_required
+def create_project(): ## admin_id
+    data = request.json
+    title = data.get('title')
+    description = data.get('description')
+    location = data.get('location')
+    gallery_images = data.get('gallery_images', [])
+    completed_at = data.get('completed_at')  # String format
+
+    new_project = add_project(title, description, location, gallery_images, completed_at)
+    print(f"project added : {new_project}")
+    return jsonify({"message": "Project added successfully!"}), 201
+
+# Route to update a project
+@admin_routes.route('/api/admin/projects/<project_id>', methods=['PUT'])
+# @token_required
+def modify_project( project_id): ## admin_id, ...
+    data = request.json
+    title = data.get('title')
+    description = data.get('description')
+    location = data.get('location')
+    gallery_images = data.get('gallery_images', [])
+    completed_at = data.get('completed_at')  # String format
+
+    success = update_project(project_id, title, description, location, gallery_images, completed_at)
+    
+    if success:
+        return jsonify({"message": "Project updated successfully!"}), 200
+    else:
+        return jsonify({"error": "Project not found!"}), 404
+
+# Route to delete a project
+@admin_routes.route('/api/admin/projects/<project_id>', methods=['DELETE'])
+# @token_required
+def remove_project( project_id): ## admin_id, ...
+    success = delete_project(project_id)
+    
+    if success:
+        return jsonify({"message": "Project deleted successfully!"}), 200
+    else:
+        return jsonify({"error": "Project not found!"}), 404
+
+# @admin_routes.route('/api/admin/projects/<project_id>', methods=['PUT'])
+# @token_required
+# def update_project(admin_id, project_id):
+#     db = get_db()
+#     data = request.json
+#     title = data.get('title')
+#     description = data.get('description')
+#     images = data.get('images', [])
+#     date_completed = data.get('date_completed')
+
+#     result = db.projects.update_one(
+#         {"_id": ObjectId(project_id)},
+#         {"$set": {
+#             "title": title,
+#             "description": description,
+#             "images": images,
+#             "date_completed": date_completed
+#         }}
+#     )
+
+#     if result.modified_count > 0:
+#         return jsonify({"message": "Project updated successfully!"}), 200
+#     else:
+#         return jsonify({"error": "Project not found!"}), 404
+
+
 
 
 # # Generate a hashed password
