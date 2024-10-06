@@ -1,29 +1,33 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';  // Use 'Routes' instead of 'Switch'
 import Services from './components/services';
-import ContactForm  from './components/contact_form';
+import ContactForm from './components/contact_form';
 import Hero from './components/hero';
-import NavigationBar from './components/admin/navbar';
+import NavigationBar from './components/navbar';
 import AdminLogin from './components/admin/adminLogin';
-// import AdminDashboard from './components/AdminDashboard';  // We will create this next
+import AdminDashboard from './components/admin/adminDashboard';
+import Home from './components/home';  // Import Home Component
 
 function App() {
   return (
     <Router>
       <NavigationBar />
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/services" component={Services} />
-        <Route path="/contact" component={ContactForm} />
+      <Routes>  {/* Use Routes instead of Switch */}
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
+        <Route path="/hero" element={<Hero />} />
+        <Route path="/contact" element={<ContactForm />} />
         {/* Admin Routes */}
-        <Route path="/admin/login" component={AdminLogin} />
-        {/* <Route path="/admin/dashboard" component={AdminDashboard} /> */}
-      </Switch>
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+      </Routes>
     </Router>
   );
 }
 
 export default App;
+
+
 
 
 

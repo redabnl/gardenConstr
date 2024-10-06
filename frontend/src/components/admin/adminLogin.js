@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function AdminLogin() {
@@ -8,7 +8,7 @@ function AdminLogin() {
     password: ''
   });
   const [error, setError] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -17,19 +17,22 @@ function AdminLogin() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Send login request to the backend
-    axios.post('/api/admin/login', formData)
-      .then(response => {
-        const token = response.data.token;
-        localStorage.setItem('admin_token', token);  // Save token in localStorage
-        history.push('/admin/dashboard');  // Redirect to admin dashboard
-      })
-      .catch(error => {
-        setError('Invalid username or password');
+    try {
+      const response = await axios.post('localhost:5000/api/admin/login', formData, {
+        headers: {
+          'Content-Type': 'application/json'  // Ensure content type is set
+        }
       });
+
+      const token = response.data.token;
+      localStorage.setItem('admin_token', token);  // Store the JWT token
+      navigate('/admin/dashboard');  // Redirect to admin dashboard
+    } catch (error) {
+      setError('Invalid username or password');  // Handle login error
+    }
   };
 
   return (

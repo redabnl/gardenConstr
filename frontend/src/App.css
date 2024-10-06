@@ -1,4 +1,38 @@
-.App {
+.home {
+  text-align: center;
+}
+
+.welcome-section, .featured-services, .cta-section {
+  padding: 50px 20px;
+}
+
+.featured-services .services-grid {
+  display: flex;
+  justify-content: space-around;
+}
+
+.service-item {
+  width: 30%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +69,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
