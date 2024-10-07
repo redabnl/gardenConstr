@@ -4,6 +4,7 @@ from flask_cors import CORS
 from .routes.services_routes import services_routes
 from .routes.inquiries_routes import inquiries_routes
 from .routes.admin_routes import admin_routes
+from .routes.media_routes import media_routes
 
 app = Flask(__name__)
 CORS(app)
@@ -12,6 +13,7 @@ CORS(app)
 app.register_blueprint(services_routes)
 app.register_blueprint(inquiries_routes)
 app.register_blueprint(admin_routes)
+app.register_blueprint(media_routes)
 
 
 @app.route('/')

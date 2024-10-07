@@ -5,6 +5,7 @@ from ..models.projects_model import get_all_projects, add_project, update_projec
 # from models.admin_users_model import create_admin_user, get_admin_by_username
 from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
 from ..models.services_model import update_service_by_id, get_service_by_id, create_new_service
+from ..models.media_model import save_media_metadata
 import jwt
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -299,7 +300,7 @@ def remove_project( project_id): ## admin_id, ...
 #         return jsonify({"error": "Project not found!"}), 404
 
 
-
+###########################################################################
 
 # # Generate a hashed password
 # password_hash = generate_password_hash('reda')
