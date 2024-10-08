@@ -19,4 +19,13 @@ def save_inquiries(inquiry_data):
 def get_all_inquiries():
     db = get_db()
     inquiries = db.client_inquiries.find()
-    return list(inquiries)
+    inquiries_list = []
+    for inquiry in inquiries:
+        inquiries_list.append({
+            "client_name": inquiry.get("client_name"),
+            "email": inquiry.get("email"),
+            "phone_number": inquiry.get("ohone_number"),
+            "service_id": str(inquiry.get("service_id")),
+            "status": inquiry.get("status", "pending") 
+        })
+    return inquiries_list

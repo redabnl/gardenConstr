@@ -24,8 +24,15 @@ def submit_inquiry():
         return jsonify({"error": str(e)}), 500
     
 
-@inquiries_routes.route('/api/admin/inquiries', methods=['GET'])
-@token_required
-def get_inquiries(admin_id):
-    inquiries = get_all_inquiries()
-    return jsonify(inquiries), 200
+@inquiries_routes.route('/api/inquiries', methods=['GET'])
+def get_inquiries():
+    try : 
+        inquiries = get_all_inquiries()
+        return jsonify({
+            "success" : True,
+            "message" : inquiries
+                        }), 200
+    except Exception as e:
+        return jsonify({
+            "error" : str(e)
+        })

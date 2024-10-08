@@ -15,7 +15,6 @@ app.register_blueprint(inquiries_routes)
 app.register_blueprint(admin_routes)
 app.register_blueprint(media_routes)
 
-
 @app.route('/')
 def home():
     return "good to go"

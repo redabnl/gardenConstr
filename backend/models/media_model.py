@@ -6,41 +6,49 @@ from bson import ObjectId
 import datetime
 
 
-UPLOAD_FOLDER_SERVICES = '/img/services/'
-UPLOAD_FOLDER_PROJECTS = '/img/doneProjects/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-UPLOAD_FOLDER = '/img/'
+UPLOAD_FOLDER = '/backend/img/'
 def save_media_metadata(media_metadata):
     db = get_db()
     db.media.insert_one(media_metadata)
     
 
-
-# Helper function for handling media upload for both services and projects
 def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploaded_by):
     # Ensure the folder exists
-    if not os.path.exists(folder_path):
-        os.makedirs(folder_path)
+    # if not os.path.exists(folder_path):
+    #     os.makedirs(folder_path)
 
+    # Check if file is allowed and exists
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        # Sanitize the original filename
+        original_filename = secure_filename(file.filename)
+
+        # Optionally customize the filename by adding a timestamp or other identifiers
+        timestamp = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')  # Adds current timestamp
+        filename = f"{entity_type}_{entity_id}_{timestamp}_{original_filename}"
+
+        # Construct the full path where the file will be saved
         file_path = os.path.join(folder_path, filename)
+
+        # Save the file to the specified folder
         file.save(file_path)
 
-        # Prepare metadata
+        # Prepare metadata (adjust fields to your use case)
         media_metadata = {
-            "file_path": file_path,
-            "associated_id": ObjectId(entity_id),  # Can be service_id or project_id
-            "media_type": "image",
+            "file": file_path,
+            "entity_id": ObjectId(entity_id),
+            "entity_type": entity_type,  # Can be "service" or "project"
+            "folder_path": folder_path,
             "tags": tags,
-            "created_at": datetime.datetime.utcnow(),
             "uploaded_by": ObjectId(uploaded_by)
         }
+            # "created_at": datetime.datetime.utcnow(),
 
         # Save the metadata in the database
         db = get_db()
@@ -48,7 +56,58 @@ def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploade
 
         return {"message": "File uploaded successfully", "file_path": file_path}, 200
     else:
-        return {"error": "File type not allowed or no file provided"}, 400
+        return {"error": "File type not allowed or no file provided"}, 400    
+
+
+# Helper function for handling media upload for both services and projects
+# def handle_media_upload(file, entity_id, entity_type, folder_path, tags=["NONE"], uploaded_by="admin"):
+#     print("File present in request.files: ", 'file' in request.files)
+#     # Ensure the folder exists
+#     if not os.path.exists(folder_path):
+#         os.makedirs(folder_path)
+
+#     if file and allowed_file(file.filename):
+#         print("File received: ", file)
+#         print("Tags: ", tags)
+#         print("Folder Path: ", folder_path)
+#         print("Entity ID: ", entity_id)
+#         filename = secure_filename(file.filename)
+#         file_path = os.path.join(folder_path, filename)
+#         file.save(file_path)
+        
+
+
+#         # Prepare metadata
+#         media_metadata = {
+#             "file_path": file_path,
+#             "associated_id": ObjectId(entity_id),  # Can be service_id or project_id
+#             "entity_type": entity_type,
+#             "folder_path" : folder_path,
+#             "tags": tags,
+#             "uploaded_by": ObjectId(uploaded_by)
+#             # "created_at": datetime.datetime.utcnow(),
+#         }
+
+# #         {
+#     #     "file_path":"C:/Users/surface/Desktop/PORTEFOLIO/Reda/gardenCONSTRUCTION/backend/img/services/serviceIMG.jpg",
+#     #     "associated_id": "66ff47008ff9712295198aaa",  
+#     #     "media_type": "service",
+#     #     "folder_path" : "C:/Users/surface/Desktop/PORTEFOLIO/Reda/gardenCONSTRUCTION/backend/img/services/",
+#     #     "tags": "tags",
+#     #     "created_at": "now",
+#     #     "uploaded_by":"66ff3fb1041e67f42c7c4569"
+#     #       }
+    
+    
+#         # Save the metadata in the database
+#         db = get_db()
+#         db.media.insert_one(media_metadata)
+
+#         return {"message": "File uploaded successfully", "file_path": file_path}, 200
+#     elif file is None :
+#         return {"message": "No file received"}, 400
+#     else:
+#         return {"error": "File type not allowed or no file provided"}, 400
 
 def get_media_by_associated_id(associated_id):
     db = get_db()

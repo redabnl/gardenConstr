@@ -130,10 +130,11 @@ def get_admin_profile(admin_id):
 
 ## CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
-def create_service(): ## title, description, tags, price_range
+def create_service(title, description, tags, price_range): ## 
     title = request.form.get('title')
     description = request.form.get('description')
-    location = request.form.get('location')
+    tags = request.form.get('tags'),
+    price_range = request.form.get('price_range')
 
     # Handle multiple file uploads
     uploaded_files = request.files.getlist('images')  # Multiple images
@@ -151,8 +152,9 @@ def create_service(): ## title, description, tags, price_range
     new_project = {
         "title": title,
         "description": description,
-        "location": location,
-        "gallery_images": image_paths  # Store image paths as an array
+        "tags": tags,
+        "price_range": price_range
+        # "gallery_images": image_paths  # Store image paths as an array
     }
     db.projects.insert_one(new_project)
     return jsonify({"message": "Project added successfully!"}), 201
@@ -221,6 +223,9 @@ def update_service(service_id):
         return jsonify({"error": str(e)}), 500
     
     
+    
+    
+##############################################    
 ##############################################
 ## PORTFOLIO MANAGEMENT
 @admin_routes.route('/api/admin/projects', methods=['GET'])
