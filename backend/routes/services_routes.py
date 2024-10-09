@@ -1,12 +1,12 @@
 from flask import Blueprint, jsonify
-from ..models.services_model import get_all_services
+from ..models.services_model import get_all_services, get_services_titles
 
 services_routes = Blueprint('services_routes', __name__)
 
 @services_routes.route('/api/services', methods=['GET'])
 def fetch_services():
     try:
-        services = get_all_services()  # Get services from MongoDB
+        services = get_services_titles()  # Get services from MongoDB
         return jsonify(services), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

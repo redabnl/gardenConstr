@@ -31,7 +31,8 @@ def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploade
 
         # Optionally customize the filename by adding a timestamp or other identifiers
         timestamp = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')  # Adds current timestamp
-        filename = f"{entity_type}_{entity_id}_{timestamp}_{original_filename}"
+        # filename = f"{entity_type}_{entity_id}_{timestamp}_{original_filename}"
+        filename = original_filename
 
         # Construct the full path where the file will be saved
         file_path = os.path.join(folder_path, filename)

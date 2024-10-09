@@ -15,6 +15,13 @@ UPLOAD_FOLDER_SERVICES = '/img/services/'
 UPLOAD_FOLDER_PROJECTS = '/img/doneProjects/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
+def allowed_file(filename):
+    print(f"Filename received: {filename}")
+    allowed = '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    print(f"Allowed file: {allowed}")
+    return allowed
+
+
 #######################################################################
 ## MEDIA MANAGEMENT
 
@@ -23,11 +30,15 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 def upload_service_media(service_id):
     app.config['UPLOAD_FOLDER_SERVICES'] = UPLOAD_FOLDER_SERVICES
     file = request.files.get('file')
+    print(f"File received: {file}")
+
     tags = request.form.getlist('tags')  # Get tags from the form
     uploaded_by = request.form.get('admin_id')  # Assuming admin_id is passed in the form data
 
     # folder for storing the service media 
-    folder_path = os.path.join(app.root_path, UPLOAD_FOLDER_SERVICES, F'service_{service_id}')
+    folder_path = os.path.join(app.root_path, UPLOAD_FOLDER_SERVICES)
+    print(f"Folder path: {folder_path}")
+
     # file.save(os.path.join(folder_path, filename))
     result, status_code = handle_media_upload(file, service_id, "service", folder_path, tags, uploaded_by)
 
@@ -36,13 +47,18 @@ def upload_service_media(service_id):
 # Route for uploading media related to a project
 @media_routes.route('/api/projects/<project_id>/media', methods=['POST'])
 def upload_project_media(project_id):
+    app.config['UPLOAD_FOLDER_PROJECTS'] = UPLOAD_FOLDER_PROJECTS
     file = request.files.get('file')
+    print(f'file received : {file}')
     tags = request.form.getlist('tags')  # Get tags from the form
-    # uploaded_by = request.form.get('admin_id')  # Assuming admin_id is passed in the form data
+    print(f'tags received : {tags}')
+    uploaded_by = request.form.get('admin_id')
+    print(f"uploaded by : {uploaded_by}")
 
-    # folder path for storing the project media
-    folder_path = os.path.join(UPLOAD_FOLDER, 'doneProjects', f'prj{project_id}')
-    result, status_code = handle_media_upload(file, project_id, "project", folder_path, tags, uploaded_by="admin")
+    folder_path = os.path.join(app.root_path, UPLOAD_FOLDER_PROJECTS)
+    print(f"folder path : {folder_path}")
+
+    result, status_code = handle_media_upload(file, project_id, "project", folder_path, tags, uploaded_by)
 
     return jsonify(result), status_code
 # Route for retrieving media related to a specific service

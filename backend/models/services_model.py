@@ -1,5 +1,6 @@
 from datetime import datetime 
 from bson.objectid import ObjectId
+from flask import jsonify
 from .db import get_db
 
 def create_new_service(title, description, tags, price_range="to discuss..."):
@@ -28,6 +29,11 @@ def get_all_services():
             "image_url": service.get("image_url", "")  # Optional image URL field
         })
     return services_list
+
+def get_services_titles():
+    db = get_db()
+    services_titles = list(db.services.find({}, {'title':1, '_id':0}))
+    return services_titles
 
 def get_service_by_name(service_name):
     db = get_db()

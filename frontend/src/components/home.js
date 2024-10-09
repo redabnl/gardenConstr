@@ -6,7 +6,7 @@ function Home() {
   return (
     <div className="home">
       {/* Hero Section */}
-      <Hero />
+      {/* <Hero /> */}
       
       {/* Welcome Message */}
       <section className="welcome-section">

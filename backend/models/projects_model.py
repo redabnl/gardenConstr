@@ -17,10 +17,10 @@ def get_all_projects():
             project['service_id'] = str(project['service_id'])  # Convert ObjectId to string
         if 'testimonial_id' in project and project['testimonial_id'] is not None:
             project['testimonial_id'] = str(project['testimonial_id'])  # Convert ObjectId to string if it exists
-        if 'created_at' in project:
-            project['created_at'] = project['created_at'].isoformat()  # Convert datetime to ISO format
-        if 'completed_at' in project:
-            project['completed_at'] = project['completed_at'].isoformat()
+        # if 'created_at' in project:
+        #     project['created_at'] = project['created_at'].isoformat()  # Convert datetime to ISO format
+        # if 'completed_at' in project:
+        #     project['completed_at'] = project['completed_at'].isoformat()
 
     return projects
 

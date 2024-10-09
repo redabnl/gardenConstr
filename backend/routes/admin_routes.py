@@ -228,11 +228,6 @@ def update_service(service_id):
 ##############################################    
 ##############################################
 ## PORTFOLIO MANAGEMENT
-@admin_routes.route('/api/admin/projects', methods=['GET'])
-# @token_required
-def fetch_all_projects(): ## admin_id
-    projects = get_all_projects()
-    return jsonify(projects), 200
 
 
 # Route to add a new project
@@ -249,6 +244,8 @@ def create_project(): ## admin_id
     new_project = add_project(title, description, location, gallery_images, completed_at)
     print(f"project added : {new_project}")
     return jsonify({"message": "Project added successfully!"}), 201
+
+
 
 # Route to update a project
 @admin_routes.route('/api/admin/projects/<project_id>', methods=['PUT'])

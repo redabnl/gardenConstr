@@ -16,7 +16,7 @@ function App() {
     <Router>
       <NavigationBar />
       <Routes>  {/* Use Routes instead of Switch */}
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/services" element={<Services />} />
         <Route path="/hero" element={<Hero />} />
         <Route path="/contact" element={<ContactForm />} />
