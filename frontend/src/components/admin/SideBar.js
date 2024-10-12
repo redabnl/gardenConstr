@@ -1,41 +1,49 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome, FaCogs, FaEnvelope, FaProjectDiagram, FaUsers } from 'react-icons/fa'; // For icons
+// import React from 'react';
+// import styled from 'styled-components';
+// import { Link } from 'react-router-dom';
 
-const Sidebar = () => {
-  return (
-    <div className="d-flex flex-column vh-100 sidebar bg-dark text-white p-3">
-      <h2 className="text-center mb-4">Admin Dashboard</h2>
-      
-      <ul className="nav flex-column">
-        <li className="nav-item mb-2">
-          <Link to="/admin/adminDaashboard" className="nav-link text-white">
-            <FaHome className="me-2" /> Dashboard
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/admin/manage-services" className="nav-link text-white">
-            <FaCogs className="me-2" /> Manage Services
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/admin/manageProjects" className="nav-link text-white">
-            <FaProjectDiagram className="me-2" /> Manage Projects
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/admin/inquiries" className="nav-link text-white">
-            <FaEnvelope className="me-2" /> View Inquiries
-          </Link>
-        </li>
-        <li className="nav-item mb-2">
-          <Link to="/admin/manage-admins" className="nav-link text-white">
-            <FaUsers className="me-2" /> Manage Admin Users
-          </Link>
-        </li>
-      </ul>
-    </div>
-  );
-};
+// const Sidebar = styled.div`
+//   width: 250px;
+//   height: 100vh;
+//   background-color: #f8f9fa;
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   padding: 20px;
+// `;
 
-export default Sidebar;
+// const SidebarItem = styled(Link)`
+//   display: block;
+//   color: #000;
+//   padding: 15px 10px;
+//   text-decoration: none;
+//   &:hover {
+//     background-color: #007bff;
+//     color: #fff;
+//   }
+// `;
+
+// const DashboardContent = styled.div`
+//   margin-left: 250px;
+//   padding: 20px;
+// `;
+
+// function AdminDashboard() {
+//   return (
+//     <div>
+//       <Sidebar>
+//         <h2>Admin Panel</h2>
+//         <SidebarItem to="/admin/manage-services">Manage Services</SidebarItem>
+//         <SidebarItem to="/admin/manage-projects">Manage Projects</SidebarItem>
+//         <SidebarItem to="/admin/manage-inquiries">Manage Inquiries</SidebarItem>
+//         <SidebarItem to="/admin/manage-users">Manage Users</SidebarItem>
+//       </Sidebar>
+//       <DashboardContent>
+//         <h1>Welcome to the Admin Dashboard</h1>
+//         <p>Here you can manage all aspects of the website.</p>
+//       </DashboardContent>
+//     </div>
+//   );
+// }
+
+// export default AdminDashboard;

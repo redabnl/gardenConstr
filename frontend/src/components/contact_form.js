@@ -7,11 +7,13 @@ function ContactForm() {
     client_name: '',
     email: '',
     phone_number: '',
-    service_id: '',
+    service_id: '',  // Now we store the service ID
     message: ''
   });
 
   const [services, setServices] = useState([]);
+  const [successMessage, setSuccessMessage] = useState('');  // For success messages
+  const [errorMessage, setErrorMessage] = useState('');      // For error messages
 
   // Fetch services when component mounts
   useEffect(() => {
@@ -19,8 +21,10 @@ function ContactForm() {
       try {
         const response = await axios.get('http://localhost:5000/api/services');
         setServices(response.data);  // Assuming the backend returns an array of services
+        
       } catch (error) {
         console.error('Error fetching services:', error);
+        setErrorMessage('');
       }
     };
 
@@ -34,8 +38,22 @@ function ContactForm() {
     });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/inquiries', formData);
+      console.log('Inquiry sent:', response.data);
+      setSuccessMessage('your inquiry was sent succesfully, we will get back to you later');
+      setErrorMessage('');
+    } catch (error) {
+      console.error('Error sending inquiry:', error);
+      setErrorMessage('');
+    }
+  };
+
   return (
-    <Form>
+    <Form onSubmit={handleSubmit}>
       <Form.Group>
         <Form.Label>Name</Form.Label>
         <Form.Control
@@ -73,14 +91,14 @@ function ContactForm() {
         <Form.Label>Select a Service</Form.Label>
         <Form.Control
           as="select"
-          name="service"
-          value={formData.service}
+          name="service_id"  // We now store the service ID
+          value={formData.service_id}
           onChange={handleChange}
           required
         >
           <option value="">Select a service</option>
           {services.map(service => (
-            <option key={service.title} value={service.title}>{service.title}</option>
+            <option key={service._id} value={service._id}>{service.title}</option>  // Store service_id as value
           ))}
         </Form.Control>
       </Form.Group>

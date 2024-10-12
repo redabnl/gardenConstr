@@ -4,7 +4,7 @@ from .db import get_db
 
 
 ## function to fetch all done projects (PORTFOLIO)
-def get_all_projects():
+def get_all_projects_admin():
     db = get_db()
     
     # Fetch all admins from gthe 'admin_users' collection

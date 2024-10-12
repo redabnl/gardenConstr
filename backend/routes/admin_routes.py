@@ -1,11 +1,11 @@
 from bson import ObjectId
 from werkzeug.security import generate_password_hash
 from ..models.db import get_db
-from ..models.projects_model import get_all_projects, add_project, update_project, delete_project
+from ..models.projects_model import get_all_projects_admin, add_project, update_project, delete_project
 # from models.admin_users_model import create_admin_user, get_admin_by_username
 from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
-from ..models.services_model import update_service_by_id, get_service_by_id, create_new_service
-from ..models.media_model import save_media_metadata
+from ..models.services_model import update_service_by_id, get_service_by_id, create_service
+from ..models.media_model import UPLOAD_FOLDER, save_media_metadata
 import jwt
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -126,38 +126,59 @@ def get_admin_profile(admin_id):
 
 ###########################################################
 ###########################################################
-## ADMIN USERS MANAGEMENT
+## ADMIN services MANAGEMENT
 
 ## CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
-def create_service(title, description, tags, price_range): ## 
-    title = request.form.get('title')
-    description = request.form.get('description')
-    tags = request.form.get('tags'),
-    price_range = request.form.get('price_range')
+def add_service():
+    data = request.json
+    title = data.get('title')
+    description = data.get('description')
+    tags = data.get('tags')
+    price_range = data.get('price_range')
 
-    # Handle multiple file uploads
-    uploaded_files = request.files.getlist('images')  # Multiple images
-    image_paths = []
+    # Validate inputs
+    if not title or not description or not tags or not price_range:
+        return jsonify({"error": "All fields are required"}), 400
 
-    for file in uploaded_files:
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            project_folder = os.path.join(app.config['UPLOAD_FOLDER_PROJECTS'], title.replace(" ", "_"))
-            os.makedirs(project_folder, exist_ok=True)
-            file_path = os.path.join(project_folder, filename)
-            file.save(file_path)
-            image_paths.append(file_path.replace("./static/", ""))  # Store relative path
+    try:
+        # Call the create_service function
+        service = create_service(title, description, tags, price_range)
+        return jsonify({
+            "message": "Service created successfully!",
+            "service": service
+        }), 201
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
-    new_project = {
-        "title": title,
-        "description": description,
-        "tags": tags,
-        "price_range": price_range
-        # "gallery_images": image_paths  # Store image paths as an array
-    }
-    db.projects.insert_one(new_project)
-    return jsonify({"message": "Project added successfully!"}), 201
+# def create_service(title, description, tags, price_range): ## 
+#     title = request.form.get('title')
+#     description = request.form.get('description')
+#     tags = request.form.get('tags'),
+#     price_range = request.form.get('price_range')
+
+#     # Handle multiple file uploads
+#     # uploaded_files = request.files.getlist('images')  # Multiple images
+#     image_paths = []
+
+#     # for file in uploaded_files:
+#     #     if file and allowed_file(file.filename):
+#     #         filename = secure_filename(file.filename)
+#     #         project_folder = os.path.join(app.config['UPLOAD_FOLDER_SERVICES'], title.replace(" ", "_"))
+#     #         os.makedirs(project_folder, exist_ok=True)
+#     #         file_path = os.path.join(project_folder, filename)
+#     #         file.save(file_path)
+#     #         image_paths.append(file_path.replace("./static/", ""))  # Store relative path
+
+#     new_service = {
+#         "title": title,
+#         "description": description,
+#         "tags": tags,
+#         "price_range": price_range
+#          #"gallery_images": image_paths  # Store image paths as an array
+#     }
+#     db.services.insert_one(new_service)
+#     return jsonify({"message": "Project added successfully!"}), 201
     # title = request.form.get('title')
     # description = request.form.get('description')
     # price_range = request.form.get('price_range')
@@ -229,25 +250,48 @@ def update_service(service_id):
 ##############################################
 ## PORTFOLIO MANAGEMENT
 
-
 # Route to add a new project
-@admin_routes.route('/api/admin/projects', methods=['POST'])
 # @token_required
-def create_project(): ## admin_id
-    data = request.json
-    title = data.get('title')
-    description = data.get('description')
-    location = data.get('location')
-    gallery_images = data.get('gallery_images', [])
-    completed_at = data.get('completed_at')  # String format
-
-    new_project = add_project(title, description, location, gallery_images, completed_at)
-    print(f"project added : {new_project}")
-    return jsonify({"message": "Project added successfully!"}), 201
+@admin_routes.route('/api/admin/projects', methods=['GET'])
+# @token_required  # You can comment this out for now during testing
+def get_all_projects():
+    try:
+        projects = get_all_projects_admin()  # Assuming you have a get_projects function
+        return jsonify({"projects": projects}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 
-# Route to update a project
+
+## ROUTE TO ADD A NEW PROJECT 
+@admin_routes.route('/api/admin/projects', methods=['POST'])
+def create_project():
+    # admin_id = "66ff3fb1041e67f42c7c4569"
+    title = request.form.get('title')  # Use form data for text fields
+    description = request.form.get('description')
+    location = request.form.get('location')
+    completed_at = request.form.get('completed_at')
+    
+    gallery_images = request.files.getlist('gallery_images')  # Handle file input properly
+    
+    # Process the uploaded files (e.g., saving to server)
+    uploaded_file_paths = []
+    for file in gallery_images:
+        if file:
+            filename = secure_filename(file.filename)
+            file_path = os.path.join(UPLOAD_FOLDER, filename)  # Define your UPLOAD_FOLDER
+            file.save(file_path)
+            uploaded_file_paths.append(file_path)
+
+    # Save the project and the file paths to the database
+    new_project = add_project(title, description, location, uploaded_file_paths, completed_at)
+    return jsonify({"message": "Project added successfully"}), 201
+
+
+
+
+# UPDATE A SELECTED PROJECT
 @admin_routes.route('/api/admin/projects/<project_id>', methods=['PUT'])
 # @token_required
 def modify_project( project_id): ## admin_id, ...
@@ -265,7 +309,8 @@ def modify_project( project_id): ## admin_id, ...
     else:
         return jsonify({"error": "Project not found!"}), 404
 
-# Route to delete a project
+
+# ROUTE TO DELETE A PROJECT
 @admin_routes.route('/api/admin/projects/<project_id>', methods=['DELETE'])
 # @token_required
 def remove_project( project_id): ## admin_id, ...

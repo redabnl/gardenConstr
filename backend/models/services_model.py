@@ -1,20 +1,34 @@
-from datetime import datetime 
+import datetime 
 from bson.objectid import ObjectId
 from flask import jsonify
 from .db import get_db
 
-def create_new_service(title, description, tags, price_range="to discuss..."):
-    db = get_db()
-    new_service = {
-        "_id" : ObjectId(),
+# def create_new_service(title, description, tags, price_range="to discuss..."):
+#     db = get_db()
+#     new_service = {
+#         "_id" : ObjectId(),
+#         "title": title,
+#         "description": description,  
+#         "tags" : tags, 
+#         "price_range" : price_range
+#         # "image_path" : file_path
+#     }
+#     db.services.insert_one(new_service)
+#     return new_service.get(title)
+
+def create_service(title, description, tags, price_range):
+    db = get_db()  # Get the database connection
+    service = {
         "title": title,
-        "description": description,  
-        "tags" : tags, 
-        "price_range" : price_range
-        # "image_path" : file_path
+        "description": description,
+        "tags": tags,
+        "price_range": price_range,
+        "is_active": True,  # Default to active
+        "created_at": datetime.datetime.utcnow()
     }
-    db.services.insert_one(new_service)
-    return new_service.get(title)
+    result = db.services.insert_one(service)  # Insert the service into MongoDB
+    service['_id'] = str(result.inserted_id)  # Convert ObjectId to string
+    return service
 
 def get_all_services():
     db = get_db()
@@ -35,9 +49,12 @@ def get_services_titles():
     services_titles = list(db.services.find({}, {'title':1, '_id':0}))
     return services_titles
 
-def get_service_by_name(service_name):
-    db = get_db()
-    return db.services.find_one({"title": service_name})
+def get_service_by_name(service_title):
+    db = get_db()  # Get the database reference
+    service = db.services.find_one({"title": service_title})
+    if service:
+        return service["_id"]  # Return the ObjectId
+    return None
 
 
 def get_service_by_id(service_name):

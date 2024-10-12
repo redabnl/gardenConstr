@@ -24,7 +24,8 @@ def get_all_inquiries():
         inquiries_list.append({
             "client_name": inquiry.get("client_name"),
             "email": inquiry.get("email"),
-            "phone_number": inquiry.get("ohone_number"),
+            "phone_number": inquiry.get("phone_number"),
+            "message": inquiry.get("message"),
             "service_id": str(inquiry.get("service_id")),
             "status": inquiry.get("status", "pending") 
         })

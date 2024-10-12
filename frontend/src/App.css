@@ -32,6 +32,103 @@
 }
 
 
+
+/*
+###########################################################
+ADMIN SIDEBAR
+*/
+.sidebar {
+  width: 200px;
+  height: 100%;
+  background-color: #f8f9fa;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  padding: 10px;
+  text-align: center;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #333;
+  display: block;
+}
+
+.sidebar ul li a:hover {
+  background-color: #ddd;
+}
+
+
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .dashboard-content {
+    margin-left: 0;
+  }
+}
+
+
+/*
+################################################
+ADMIN DASHBOAARD
+*/
+.admin-dashboard {
+  display: flex;
+}
+
+.content {
+  margin-left: 220px; /* Leave space for the sidebar */
+  padding: 20px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 20px;
+}
+
+.card {
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  text-align: center;
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card p {
+  font-size: 14px;
+}
+
+.card a {
+  text-decoration: none;
+  color: #007bff;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+
 /* .App {
   text-align: center;
 }

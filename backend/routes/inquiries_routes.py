@@ -1,7 +1,7 @@
 from bson import ObjectId, errors
 from flask import Blueprint, request, jsonify
 import datetime
-from ..models.db import get_db
+from ..models.db import get_db, db
 from .auth_helpers import token_required
 from ..models.inquiries_model import save_inquiries, get_all_inquiries
 from ..models.services_model import get_service_by_name
@@ -9,35 +9,31 @@ from ..models.services_model import get_service_by_name
 inquiries_routes = Blueprint('inquiries_routes', __name__)
 
 
+from bson import ObjectId, errors
+
 @inquiries_routes.route('/api/inquiries', methods=['POST'])
 def post_inquiry():
     try:
         data = request.json
         print(f"Received data: {data}")
-        
-        db = get_db()
 
-        service_id = data.get('service_id')
-        print(f"Service ID: {service_id}")
+        service_title = data.get('service_id')  # This is actually the service title
+        print(f"Service Title: {service_title}")
 
-        # Validate the ObjectId format
-        try:
-            service_id = ObjectId(service_id)
-        except errors.InvalidId:
-            return jsonify({"error": "Invalid service ID format"}), 400
-
-        # Check if the service exists in the database using the service_id
-        service = db['services'].find_one({"_id": ObjectId(service_id)})
-        if not service:
+        # Use the function to get the service's ObjectId from its title
+        service_id = get_service_by_name(service_title)
+        if not service_id:
             print("Service not found")
             return jsonify({"error": "Invalid service selected"}), 400
 
-        # Process the inquiry
+        print(f"Service ID (ObjectId): {service_id}")
+
+        # Insert the inquiry into client_inquiries collection
         inquiry = {
             "client_name": data.get('client_name'),
             "email": data.get('email'),
             "phone_number": data.get('phone_number'),
-            "service_id": str(service_id),
+            "service_id": str(service_id),  # Store the ObjectId as a string
             "status": "pending",
             "message": data.get('message'),
             "created_at": datetime.datetime.utcnow()
