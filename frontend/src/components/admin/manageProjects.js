@@ -1,95 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
-function ManageProjects() {
+// Styled components
+const Table = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+`;
+
+const TableHeader = styled.th`
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #f2f2f2;
+  text-align: left;
+`;
+
+const TableData = styled.td`
+  padding: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+  padding: 8px 16px;
+  margin: 0 4px;
+  font-size: 14px;
+  background-color: ${(props) => (props.delete ? '#dc3545' : '#007bff')};
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const ManageProjects = () => {
   const [projects, setProjects] = useState([]);
   const [error, setError] = useState('');
-  const [editMode, setEditMode] = useState(false);
-  const [editData, setEditData] = useState({
-    title: '',
-    description: '',
-    location: '',
-    completed_at: '',
-    gallery_images: [],
-  });
-  const [editProjectId, setEditProjectId] = useState(null);
+  const navigate = useNavigate(); // For navigation
 
-  // Fetch all projects when component loads
   useEffect(() => {
+    // Fetch projects when component loads
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/admin/projects', {
+        const response = await axios.get('http://localhost:5000/api/projects', {
           headers: {
-            'x-access-token': localStorage.getItem('admin_token')
-          }
+            'x-access-token': localStorage.getItem('admin_token'),
+          },
         });
-        setProjects(response.data.projects);
+        setProjects(response.data);
       } catch (error) {
-        setError('Error fetching projects: ', error);
+        setError('Error fetching projects');
       }
     };
+
     fetchProjects();
   }, []);
 
-  // Handle input change for the edit form
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setEditData({ ...editData, [name]: value });
+  // Function to handle edit
+  const handleEdit = (projectId) => {
+    navigate(`/admin/edit-project/${projectId}`);
   };
 
-  // Trigger edit mode and pre-fill the form with the project's data
-  const handleEdit = (project) => {
-    setEditMode(true);
-    setEditProjectId(project._id);
-    setEditData({
-      title: project.title,
-      description: project.description,
-      location: project.location,
-      completed_at: project.completed_at.split('T')[0], // For date input formatting
-      gallery_images: project.gallery_images || [],
-    });
-  };
-
-  // Handle project update submission
-  const handleUpdateProject = async (e) => {
-    e.preventDefault();
+  // Function to handle delete
+  const handleDelete = async (projectId) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/admin/projects/${editProjectId}`, editData, {
+      await axios.delete(`http://localhost:5000/api/projects/${projectId}`, {
         headers: {
           'x-access-token': localStorage.getItem('admin_token'),
         },
       });
-      if (response.status === 200) {
-        alert('Project updated successfully');
-        setEditMode(false);
-        // Re-fetch projects to update the list after editing
-        const updatedProjects = await axios.get('http://localhost:5000/api/admin/projects', {
-          headers: {
-            'x-access-token': localStorage.getItem('admin_token')
-          }
-        });
-        setProjects(updatedProjects.data.projects);
-      }
+      alert('Project deleted successfully!');
+      setProjects(projects.filter((project) => project._id !== projectId));
     } catch (error) {
-      alert('Error updating project');
-    }
-  };
-
-  // Handle project deletion
-  const handleDelete = async (projectId) => {
-    try {
-      const response = await axios.delete(`http://localhost:5000/api/admin/projects/${projectId}`, {
-        headers: {
-          'x-access-token': localStorage.getItem('admin_token')
-        }
-      });
-      if (response.status === 200) {
-        alert('Project deleted successfully!');
-        // Re-fetch the projects to update the list
-        setProjects(projects.filter(project => project._id !== projectId));
-      }
-    } catch (error) {
-      alert('Error deleting project');
+      console.error('Error deleting project:', error);
+      alert('Failed to delete project');
     }
   };
 
@@ -97,93 +86,33 @@ function ManageProjects() {
     <div className="manage-projects">
       <h2>Manage Projects</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {editMode ? (
-        <div>
-          <h3>Edit Project</h3>
-          <form onSubmit={handleUpdateProject}>
-            <div>
-              <label>Title:</label>
-              <input
-                type="text"
-                name="title"
-                value={editData.title}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Description:</label>
-              <input
-                type="text"
-                name="description"
-                value={editData.description}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Location:</label>
-              <input
-                type="text"
-                name="location"
-                value={editData.location}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Completed At:</label>
-              <input
-                type="date"
-                name="completed_at"
-                value={editData.completed_at}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            <div>
-              <label>Gallery Images:</label>
-              <input
-                type="text"
-                name="gallery_images"
-                value={editData.gallery_images}
-                onChange={handleInputChange}
-                placeholder="Comma-separated image paths"
-              />
-            </div>
-            <button type="submit">Update Project</button>
-          </form>
-        </div>
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Location</th>
-              <th>Completed At</th>
-              <th>Actions</th>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>Title</TableHeader>
+            <TableHeader>Description</TableHeader>
+            <TableHeader>Location</TableHeader>
+            <TableHeader>Completed At</TableHeader>
+            <TableHeader>Actions</TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {projects.map((project) => (
+            <tr key={project._id}>
+              <TableData>{project.title}</TableData>
+              <TableData>{project.description}</TableData>
+              <TableData>{project.location}</TableData>
+              <TableData>{new Date(project.completed_at).toLocaleDateString()}</TableData>
+              <TableData>
+                <Button onClick={() => handleEdit(project._id)}>Edit</Button>
+                <Button delete onClick={() => handleDelete(project._id)}>Delete</Button>
+              </TableData>
             </tr>
-          </thead>
-          <tbody>
-            {projects.map((project) => (
-              <tr key={project._id}>
-                <td>{project.title}</td>
-                <td>{project.description}</td>
-                <td>{project.location}</td>
-                <td>{new Date(project.completed_at).toLocaleDateString()}</td>
-                <td>
-                  <button onClick={() => handleEdit(project)}>Edit</button>
-                  <button onClick={() => handleDelete(project._id)}>Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+          ))}
+        </tbody>
+      </Table>
     </div>
   );
-}
+};
 
 export default ManageProjects;

@@ -5,6 +5,47 @@ import styled from 'styled-components';
 
 
 
+const DashboardWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #f7f7f7;
+`;
+
+const Header = styled.h1`
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+`;
+
+const IntroText = styled.p`
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 30px;
+`;
+
+const NavigationLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
+  background-color: #4caf50;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 1.1rem;
+
+  &:hover {
+    background-color: #45a049;
+  }
+`;
+
 const AdminDashboard = () => {
   return (
     <DashboardWrapper>
@@ -15,6 +56,8 @@ const AdminDashboard = () => {
         <StyledLink to="/admin/add-service">Add New Service</StyledLink>
         <StyledLink to="/admin/add-project">Add New Projects</StyledLink>
         <StyledLink to="/admin/manage-projects">Project Management</StyledLink>
+        <StyledLink to="/admin/manage-inquiries">Manage Inquiries</StyledLink>
+
 
 
         {/* Add more navigation links as needed */}
@@ -57,43 +100,3 @@ export default AdminDashboard;
 
 
 
-const DashboardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f7f7f7;
-`;
-
-const Header = styled.h1`
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const IntroText = styled.p`
-  font-size: 1.2rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 30px;
-`;
-
-const NavigationLinks = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: white;
-  background-color: #4caf50;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 1.1rem;
-
-  &:hover {
-    background-color: #45a049;
-  }
-`;

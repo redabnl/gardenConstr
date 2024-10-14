@@ -11,6 +11,7 @@ import ManageServices from './components/admin/manageServices';
 import AddService from './components/admin/addService';
 import AddProject from './components/admin/addProject';
 import ManageProjects from './components/admin/manageProjects';
+import ManageInquiries from './components/admin/manageInquiries';
 
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         <Route path="/admin/add-project" element={<AddProject />} />
         <Route path="/admin/manage-projects" element={<ManageProjects />} />
+        <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
+
         {/* 
         <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
         <Route path="/admin/manage-users" element={<ManageUsers />} /> */}

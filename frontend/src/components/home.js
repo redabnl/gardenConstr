@@ -1,5 +1,53 @@
-import React from 'react';
 import styled from 'styled-components';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+
+// Styled Components
+const HomeWrapper = styled.div`
+  font-family: 'Arial', sans-serif;
+`;
+
+const Section = styled.section`
+  padding: 3rem 0;
+  text-align: center;
+`;
+
+const Container = styled.div`
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const ServiceGrid = styled.div`
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+`;
+
+const ServiceItem = styled.div`
+  flex: 1;
+  margin: 1rem;
+  min-width: 250px;
+  background-color: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
+
+const StyledLink = styled.a`
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.8rem 2rem;
+  color: white;
+  background-color: #007bff;
+  border-radius: 4px;
+  text-decoration: none;
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 
 const Home = () => {
   return (
@@ -54,50 +102,7 @@ const Home = () => {
 
 export default Home;
 
-// Styled Components
-const HomeWrapper = styled.div`
-  font-family: 'Arial', sans-serif;
-`;
 
-const Section = styled.section`
-  padding: 3rem 0;
-  text-align: center;
-`;
-
-const Container = styled.div`
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
-
-const ServiceGrid = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-`;
-
-const ServiceItem = styled.div`
-  flex: 1;
-  margin: 1rem;
-  min-width: 250px;
-  background-color: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
-
-const StyledLink = styled.a`
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.8rem 2rem;
-  color: white;
-  background-color: #007bff;
-  border-radius: 4px;
-  text-decoration: none;
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
 
 
 

@@ -47,6 +47,52 @@ def post_inquiry():
         return jsonify({"error": str(e)}), 500
 
 
+
+    
+
+@inquiries_routes.route('/api/inquiries', methods=['GET'])
+def get_inquiries():
+    try : 
+        inquiries = get_all_inquiries()
+        return jsonify({
+            "success" : True,
+            "message" : inquiries
+                        }), 200
+    except Exception as e:
+        return jsonify({
+            "error" : str(e)
+        })
+        
+        
+# Route for admin to respond to an inquiry
+# @token_required
+@inquiries_routes.route('/api/inquiries/<inquiry_id>/respond', methods=['PUT'])
+def respond_to_inquiry(inquiry_id):
+    try:
+        data = request.json
+        db = get_db()
+
+        # Find the inquiry by id
+        inquiry = db.client_inquiries.find_one({"_id": ObjectId(inquiry_id)})
+
+        if not inquiry:
+            return jsonify({"error": "Inquiry not found"}), 404
+
+        # Update inquiry with the response message and status
+        db.client_inquiries.update_one(
+            {"_id": ObjectId(inquiry_id)},
+            {"$set": {
+                "response_message": data.get('response_message'),
+                "status": f"resolved for response with _id: {inquiry_id}", 
+            }}
+        )
+
+        return jsonify({"message": "Inquiry responded successfully"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+        
 # @inquiries_routes.route('/api/inquiries', methods=['POST'])
 # def submit_inquiry():
 #     try:
@@ -71,17 +117,3 @@ def post_inquiry():
 #             return jsonify({"error": "Failed to submit inquiry"}), 500
 #     except Exception as e:
 #         return jsonify({"error": str(e)}), 500
-    
-
-@inquiries_routes.route('/api/inquiries', methods=['GET'])
-def get_inquiries():
-    try : 
-        inquiries = get_all_inquiries()
-        return jsonify({
-            "success" : True,
-            "message" : inquiries
-                        }), 200
-    except Exception as e:
-        return jsonify({
-            "error" : str(e)
-        })
