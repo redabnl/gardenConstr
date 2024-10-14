@@ -22,6 +22,7 @@ def get_all_inquiries():
     inquiries_list = []
     for inquiry in inquiries:
         inquiries_list.append({
+            "_id" : str(inquiry['_id']),
             "client_name": inquiry.get("client_name"),
             "email": inquiry.get("email"),
             "phone_number": inquiry.get("phone_number"),

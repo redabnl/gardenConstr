@@ -3,70 +3,107 @@ import AdminSidebar from './SideBar';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-
-
-const DashboardWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f7f7f7;
-`;
-
-const Header = styled.h1`
-  font-size: 2.5rem;
-  color: #333;
-  margin-bottom: 20px;
-`;
-
-const IntroText = styled.p`
-  font-size: 1.2rem;
-  color: #666;
-  text-align: center;
-  margin-bottom: 30px;
-`;
-
-const NavigationLinks = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: white;
-  background-color: #4caf50;
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-align: center;
-  font-size: 1.1rem;
-
-  &:hover {
-    background-color: #45a049;
-  }
-`;
-
 const AdminDashboard = () => {
   return (
     <DashboardWrapper>
       <Header>Admin Dashboard</Header>
-      <IntroText>Welcome to the admin panel. Here you can manage services, projects, inquiries, and users.</IntroText>
+      <IntroText>
+        Welcome to the admin panel. Here you can manage services, projects, inquiries, and users.
+      </IntroText>
+
+      {/* Services Section */}
+      <SectionHeading>Services Management</SectionHeading>
       <NavigationLinks>
         <StyledLink to="/admin/manage-services">Manage Services</StyledLink>
         <StyledLink to="/admin/add-service">Add New Service</StyledLink>
+      </NavigationLinks>
+
+      {/* Projects Section */}
+      <SectionHeading>Project Management</SectionHeading>
+      <NavigationLinks>
         <StyledLink to="/admin/add-project">Add New Projects</StyledLink>
         <StyledLink to="/admin/manage-projects">Project Management</StyledLink>
+      </NavigationLinks>
+
+      {/* Inquiries Section */}
+      <SectionHeading>Inquiries Management</SectionHeading>
+      <NavigationLinks>
         <StyledLink to="/admin/manage-inquiries">Manage Inquiries</StyledLink>
-
-
-
-        {/* Add more navigation links as needed */}
       </NavigationLinks>
     </DashboardWrapper>
   );
 };
 
 export default AdminDashboard;
+
+const DashboardWrapper = styled.div`
+  padding: 2rem;
+`;
+
+const Header = styled.h1`
+  text-align: center;
+  margin-bottom: 1rem;
+`;
+
+const IntroText = styled.p`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const SectionHeading = styled.h2`
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.5rem;
+`;
+
+const NavigationLinks = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.5rem;
+`;
+
+const StyledLink = styled(Link)`
+  background-color: #28a745;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+  text-decoration: none;
+  width: 200px;
+  text-align: center;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+
+// const AdminDashboard = () => {
+//   return (
+//     <DashboardWrapper>
+//       <Header>Admin Dashboard</Header>
+//       <IntroText>Welcome to the admin panel. Here you can manage services, projects, inquiries, and users.</IntroText>
+//       <NavigationLinks>
+//         <StyledLink to="/admin/manage-services">Manage Services</StyledLink>
+//         <StyledLink to="/admin/add-service">Add New Service</StyledLink>
+//         <StyledLink to="/admin/add-project">Add New Projects</StyledLink>
+//         <StyledLink to="/admin/manage-projects">Project Management</StyledLink>
+//         <StyledLink to="/admin/manage-inquiries">Manage Inquiries</StyledLink>
+
+
+
+//         {/* Add more navigation links as needed */}
+//       </NavigationLinks>
+//     </DashboardWrapper>
+//   );
+// };
+
+// export default AdminDashboard;
 
 // function AdminDashboard() {
 //   return (

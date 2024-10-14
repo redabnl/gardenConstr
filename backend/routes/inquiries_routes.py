@@ -71,6 +71,8 @@ def respond_to_inquiry(inquiry_id):
     try:
         data = request.json
         db = get_db()
+        print(f"Inquiry ID received: {inquiry_id}")
+
 
         # Find the inquiry by id
         inquiry = db.client_inquiries.find_one({"_id": ObjectId(inquiry_id)})
