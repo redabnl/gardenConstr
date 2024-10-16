@@ -1,106 +1,176 @@
-import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import HeroSection from './hero';
 
 
 // Styled Components
-const HomeWrapper = styled.div`
-  font-family: 'Arial', sans-serif;
-`;
-
-const Section = styled.section`
-  padding: 3rem 0;
-  text-align: center;
-`;
-
 const Container = styled.div`
-  width: 90%;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 20px;
 `;
 
-const ServiceGrid = styled.div`
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-`;
+// const HeroSection = styled.section`
+//   text-align: center;
+//   margin-bottom: 50px;
+  
+//   h1 {
+//     font-size: 3rem;
+//     margin-bottom: 20px;
+//   }
 
-const ServiceItem = styled.div`
-  flex: 1;
-  margin: 1rem;
-  min-width: 250px;
-  background-color: #f9f9f9;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-`;
+//   p {
+//     font-size: 1.2rem;
+//     color: #555;
+//   }
+// `;
 
-const StyledLink = styled.a`
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.8rem 2rem;
-  color: white;
-  background-color: #007bff;
-  border-radius: 4px;
-  text-decoration: none;
-  &:hover {
-    background-color: #0056b3;
+const FeaturedServicesSection = styled.section`
+  text-align: center;
+  margin-bottom: 50px;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
   }
 `;
 
+const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Col = styled.div`
+  flex: 0 0 30%;
+  max-width: 30%;
+  margin-bottom: 20px;
+`;
+
+const Card = styled.div`
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #777;
+  }
+`;
+
+const ButtonPrimary = styled(Link)`
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+`;
+
+const ButtonSecondary = styled(Link)`
+  background-color: #6c757d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-top: 20px;
+  display: inline-block;
+`;
+
+const CTASection = styled.section`
+  text-align: center;
+  margin-top: 50px;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+`;
 
 const Home = () => {
-  return (
-    <HomeWrapper>
-      <Section className="welcome-section">
-        <Container>
-          <h1>Welcome to Our Website</h1>
-          <p>
-            We provide top-quality services in garden and deck construction. Explore our services and let us help you transform your outdoor spaces.
-          </p>
-          <StyledLink className="btn btn-primary" href="/services">
-            View Our Services
-          </StyledLink>
-        </Container>
-      </Section>
+  const [services, setServices] = useState([]);
 
-      <Section className="featured-services">
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/services');
+        setServices(response.data);
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  return (
+    <div>
+      <div>
+      <HeroSection />
+      {/* Your existing Featured Services and CTA Section */}
+      </div>
+       { /* <HeroSection>
+      //   <Container>
+      //     <h1>Welcome to Our Website</h1>
+      //     <p>We provide top-quality services in garden and deck construction. Explore our Portfolio and let us help you transform your outdoor spaces.</p>
+      //     <ButtonPrimary to="/services">View Our done projects</ButtonPrimary>
+      //   </Container>
+      // </HeroSection> */}
+
+       {/* Featured Services Section */}
+      <FeaturedServicesSection>
         <Container>
           <h2>Our Featured Services</h2>
-          <ServiceGrid>
-            <ServiceItem>
-              <h3>Deck Building</h3>
-              <p>Custom-designed decks that are perfect for outdoor living.</p>
-            </ServiceItem>
-            <ServiceItem>
-              <h3>Landscaping</h3>
-              <p>Beautiful landscapes designed and built to fit your home.</p>
-            </ServiceItem>
-            <ServiceItem>
-              <h3>Garden Construction</h3>
-              <p>We create custom gardens tailored to your vision.</p>
-            </ServiceItem>
-          </ServiceGrid>
-          <StyledLink className="btn btn-secondary" href="/services">
-            Explore All Services
-          </StyledLink>
+          <Row>
+            {services.slice(0, 3).map((service, index) => (
+              <Col key={index}>
+                <Card>
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                  <img src="/img/no_image.jpg"/>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+          <ButtonSecondary to="/services">Explore All Services</ButtonSecondary>
         </Container>
-      </Section>
+      </FeaturedServicesSection>
 
-      <Section className="cta-section">
+      {/* CTA Section */}
+      <CTASection>
         <Container>
           <h2>Ready to Start Your Project?</h2>
           <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
-          <StyledLink className="btn btn-primary" href="/contact">
-            Contact Us
-          </StyledLink>
+          <ButtonPrimary to="/contact">Contact Us</ButtonPrimary>
         </Container>
-      </Section>
-    </HomeWrapper>
+      </CTASection>
+    </div>
   );
 };
 
 export default Home;
+
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
+import styled from 'styled-components';
+
+// Styled components
+const StyledFormWrapper = styled.div`
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+`;
+
+const FormGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+
+  label {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+`;
+
+const FormControl = styled.input`
+  padding: 0.75rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #28a745;
+  }
+
+  &[as='textarea'] {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  &[as='select'] {
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+`;
+
+const SubmitButton = styled.button`
+  padding: 0.75rem 1.5rem;
+  font-size: 1.2rem;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #218838;
+  }
+`;
+
+
 
 function ContactForm() {
   const [formData, setFormData] = useState({
@@ -53,70 +124,69 @@ function ContactForm() {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group>
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          type="text"
-          name="client_name"
-          value={formData.client_name}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
+    <StyledFormWrapper>
+      <h2>Contact Us</h2>
+      <StyledForm onSubmit={handleSubmit}>
+        <FormGroup>
+          <label htmlFor="client_name">Name</label>
+          <FormControl
+            type="text"
+            name="client_name"
+            value={formData.client_name}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
 
-      <Form.Group>
-        <Form.Label>Email</Form.Label>
-        <Form.Control
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
+        <FormGroup>
+          <label htmlFor="email">Email</label>
+          <FormControl
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
 
-      <Form.Group>
-        <Form.Label>Phone Number</Form.Label>
-        <Form.Control
-          type="text"
-          name="phone_number"
-          value={formData.phone_number}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
+        <FormGroup>
+          <label htmlFor="phone_number">Phone Number</label>
+          <FormControl
+            type="text"
+            name="phone_number"
+            value={formData.phone_number}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
 
-      <Form.Group>
-        <Form.Label>Select a Service</Form.Label>
-        <Form.Control
-          as="select"
-          name="service_id"  // We now store the service ID
-          value={formData.service_id}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select a service</option>
-          {services.map(service => (
-            <option key={service._id} value={service._id}>{service.title}</option>  // Store service_id as value
-          ))}
-        </Form.Control>
-      </Form.Group>
+        <FormGroup>
+          <label htmlFor="service_id">Select a Service</label>
+          <FormControl as="select" name="service_id" value={formData.service_id} onChange={handleChange} required>
+            <option value="">Select a service</option>
+            {services.map((service) => (
+              <option key={service._id} value={service._id}>
+                {service.title}
+              </option>
+            ))}
+          </FormControl>
+        </FormGroup>
 
-      <Form.Group>
-        <Form.Label>Message</Form.Label>
-        <Form.Control
-          as="textarea"
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          required
-        />
-      </Form.Group>
+        <FormGroup>
+          <label htmlFor="message">Message</label>
+          <FormControl
+            as="textarea"
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          />
+        </FormGroup>
 
-      <button type="submit">Submit</button>
-    </Form>
+        <SubmitButton type="submit">Submit</SubmitButton>
+      </StyledForm>
+    </StyledFormWrapper>
   );
-}
+};
 
 export default ContactForm;

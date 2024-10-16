@@ -12,6 +12,15 @@ import AddService from './components/admin/addService';
 import AddProject from './components/admin/addProject';
 import ManageProjects from './components/admin/manageProjects';
 import ManageInquiries from './components/admin/manageInquiries';
+import Portfolio from './components/portfolio';
+import ProjectSlider from './components/projectSlider';
+import ProjectDetails from './components/projectDetails';
+import ServicesDisplay from './components/servicesDisplay';
+
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
 
 
 function App() {
@@ -19,20 +28,26 @@ function App() {
     <Router>
       <NavigationBar />
       <Routes>  {/* Use Routes instead of Switch */}
+        <Route path="/" element={<Home />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/services" element={<Services />} />
         <Route path="/hero" element={<Hero />} />
+        <Route path="/services" element={<ServicesDisplay />} />
+        <Route path="/projects"  element={<Portfolio />} />
+        <Route path="/projects/:id" element={<ProjectDetails />} />
         <Route path="/contact" element={<ContactForm />} />
+
         {/* Admin Routes */}
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        {/* PROJECTS MANAGEMENT  */}
         <Route path="/admin/add-project" element={<AddProject />} />
         <Route path="/admin/manage-projects" element={<ManageProjects />} />
         <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
 
-        {/* 
+        {/* INQUIRIES MANAGEMENT */}
         <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
-        <Route path="/admin/manage-users" element={<ManageUsers />} /> */}
+        
+        {/* SERVICES MANAGEMENT  */}
 
         <Route path="/admin/manage-services" element={<ManageServices />} />
         <Route path="/admin/add-service" element={<AddService />} />

@@ -1,6 +1,7 @@
 from datetime import datetime 
 from bson.objectid import ObjectId
 from .db import get_db
+from flask import request, jsonify
 
 
 ## function to fetch all done projects (PORTFOLIO)
@@ -9,9 +10,10 @@ def get_all_projects_admin():
     
     # Fetch all admins from gthe 'admin_users' collection
     projects =list(db.projects.find({}))
-    print(f"projexts fetched : {projects}")
+    print(f"projects fetched : {projects}")
     
     for project in projects:    
+        print(f"image paths : {project['gallery_images']}")
         project['_id'] = str(project['_id'])
         if 'service_id' in project:
             project['service_id'] = str(project['service_id'])  # Convert ObjectId to string
@@ -23,6 +25,29 @@ def get_all_projects_admin():
         #     project['completed_at'] = project['completed_at'].isoformat()
 
     return projects
+
+
+def get_all_projects():
+    db = get_db()
+    
+    projects = db.projects.find({})
+    if (projects):
+        print()
+    for project in projects : 
+        project['_id'] = project['_id']
+        print(f"project {project['title']} with id {project['_id']}")
+        # print(f"project fetched  : {project['title']}")
+    return projects
+        
+def get_project_id(project_id):
+    data = request.json
+    db = get_db()
+    
+    project = db.projects.find_one({
+        "_id":ObjectId(project_id)
+    })
+    
+    return project
 
 # Function to add a new project
 def add_project(title, description, location, gallery_images, completed_at):

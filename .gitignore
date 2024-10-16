@@ -1,14 +1,17 @@
 # Ignore .env file (environment variables)
 .env
 
+/backend/images/*
+
 # Python virtual environment
 backend/venv/
+
 
 #folder for documentation and screenshots
 documentation/
 
 # Node.js dependencies
-frontend/node_modules/
+# frontend/node_modules/
 
 # Ignore log files
 *.log

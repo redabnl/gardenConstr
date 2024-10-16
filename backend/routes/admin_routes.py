@@ -250,7 +250,7 @@ def update_service(service_id):
 ##############################################
 ## PORTFOLIO MANAGEMENT
 
-# Route to add a new project
+# Route to get all projects
 # @token_required
 @admin_routes.route('/api/admin/projects', methods=['GET'])
 # @token_required  # You can comment this out for now during testing
