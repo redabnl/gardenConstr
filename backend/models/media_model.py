@@ -13,10 +13,36 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-UPLOAD_FOLDER = '/backend/img/'
-def save_media_metadata(media_metadata):
+UPLOAD_FOLDER = '/backend/images/'
+
+########################################################
+########################################################
+##  Upload image and save img info in the database 
+# def save_media_metadata(media_metadata):
+#     db = get_db()
+#     db.media.insert_one(media_metadata)
+def save_media(file, entity_type, entity_id, uploaded_by):
     db = get_db()
-    db.media.insert_one(media_metadata)
+    media_entry = {
+        "file": f"/images/{entity_type}/{file.filename}",
+        "entity_id": entity_id,
+        "entity_type": entity_type,
+        "uploaded_by": uploaded_by,
+        "tags": [],
+        "folder_path": f"/images/{entity_type}/",
+    }
+    db.media.insert_one(media_entry)
+
+
+
+########################################################
+########################################################
+## FUNC TO RETREIVE MEDIA FOR DISPLAY       
+def get_media_for_service(service_id):
+    db = get_db()
+    images = db.media.find({"entity_id": service_id, "entity_type": "service"})
+    return list(images)
+
     
 
 def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploaded_by):
@@ -59,6 +85,19 @@ def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploade
     else:
         return {"error": "File type not allowed or no file provided"}, 400    
 
+
+
+def get_media_by_associated_id(associated_id):
+    db = get_db()
+    media = list(db.media.find({"associated_id": ObjectId(associated_id)}))
+
+    # Remove ObjectId serialization issues
+    for item in media:
+        item['_id'] = str(item['_id'])
+        item['associated_id'] = str(item['associated_id'])
+        item['uploaded_by'] = str(item['uploaded_by'])
+
+    return media
 
 # Helper function for handling media upload for both services and projects
 # def handle_media_upload(file, entity_id, entity_type, folder_path, tags=["NONE"], uploaded_by="admin"):
@@ -110,17 +149,7 @@ def handle_media_upload(file, entity_id, entity_type, folder_path, tags, uploade
 #     else:
 #         return {"error": "File type not allowed or no file provided"}, 400
 
-def get_media_by_associated_id(associated_id):
-    db = get_db()
-    media = list(db.media.find({"associated_id": ObjectId(associated_id)}))
 
-    # Remove ObjectId serialization issues
-    for item in media:
-        item['_id'] = str(item['_id'])
-        item['associated_id'] = str(item['associated_id'])
-        item['uploaded_by'] = str(item['uploaded_by'])
-
-    return media
     
 # def get_service_media(service_id):
 #     db = get_db()

@@ -1,57 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import HeroSection from './hero';
+import { Link } from 'react-router-dom';
 
 
-const ServiceContainer = styled.div`
+
+const ServicesContainer = styled.div`
+  background-color: #f9f9f9;
+  padding: 60px 20px;
+  text-align: center;
+`;
+
+const ServiceCardContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  grid-template-columns: repeat(2, 1fr);  // You can change the value to 3 to match the desired layout
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
 `;
 
 const ServiceCard = styled.div`
-  background: white;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  &:hover {
-  transform: translateY(-5px);
-}
+  position: relative;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 400px;  // Adjust height based on your preference
 `;
 
-
 const ServiceImage = styled.img`
-  max-width: 100%;
-  height: auto;
-  border-radius: 8px;
-  margin-bottom: 16px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const ServiceOverlay = styled.div`
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  color: #fff;
+  padding: 20px;
+  text-align: left;
 `;
 
 const ServiceTitle = styled.h3`
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 8px;
+  font-size: 24px;
+  margin: 0;
 `;
 
-const ServiceButton = styled.a`
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
+const ServiceDescription = styled.p`
+  font-size: 16px;
+  margin: 10px 0;
+`;
+
+const LearnMoreButton = styled.a`
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: #28a745;
   text-decoration: none;
-`;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 
-const ServicesWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  &:hover {
+    background-color: #218838;
+  }
 `;
 
 // const ServiceCard = styled.div`
@@ -105,6 +121,7 @@ const Services = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/services');
         setServices(response.data);
+        
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -114,16 +131,23 @@ const Services = () => {
   }, []);
 
   return (
-    <ServicesWrapper>
-      {services.map((service) => (
-        <ServiceCard key={service._id}>
-          <ServiceImage src={service.image || 'img/services/serviceIMG.jpg'} alt={service.title} />
-          <ServiceTitle>{service.title}</ServiceTitle>
-          <p>{service.description}</p>
-          <ServiceButton href={`/services/${service._id}`}>Learn More</ServiceButton>
-        </ServiceCard>
-      ))}
-    </ServicesWrapper>
+    <div className="container">
+      < HeroSection/>
+    <ServicesContainer>
+      <ServiceCardContainer>
+        {services.map((service, index) => (
+          <ServiceCard key={index}>
+            <ServiceImage src={'/img/serices/serviceIMG.jpg'} alt={service.title} />
+            <ServiceOverlay>
+              <ServiceTitle>{service.title}</ServiceTitle>
+              <ServiceDescription>{service.description}</ServiceDescription>
+              <Link to="/">Learn More</Link>
+            </ServiceOverlay>
+          </ServiceCard>
+        ))}
+      </ServiceCardContainer>
+    </ServicesContainer>
+    </div>
   );
 };
 

@@ -1,15 +1,72 @@
 from flask import Blueprint, jsonify
-from ..models.services_model import get_all_services, get_services_titles
+from ..models.services_model import get_all_services
+from bson import json_util, ObjectId
+
 
 services_routes = Blueprint('services_routes', __name__)
+
+# @services_routes.route('/api/services', methods=['GET'])
+# def fetch_services():
+#     try:
+#         services = get_services_titles()  # Get services from MongoDB
+#         all_services = []
+#         for service in services:
+#             print(f'service fetched : {service}')
+#             service_fetched = get_service_by_name(service['title'])  # Adjust based on your structure
+#             print(f'service Id fetched : {service_fetched}')
+            
+#             if service_fetched:
+#                 all_services.append(service_fetched)
+#             else:
+#                 print(f"Service with title '{service['title']}' not found.")
+            
+#         return jsonify(all_services)
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
+
+
+# @services_routes.route('/api/services', methods=['GET'])
+# def fetch_services():
+#     try:
+#         services = get_services_titles()  # Get services from MongoDB
+#         all_services = []
+#         for service in services:
+#             print(f'service fetched : {service}')
+#             service_fetched = get_service_by_name(service['title'])
+#             print(f'service Id fetched : {service_fetched}')
+            
+#             if service_fetched:
+#                 all_services.append(service_fetched)
+#             else:
+#                 print(f"Service with title '{service['title']}' not found.")
+            
+#         return json_util.dumps(all_services), 200, {'Content-Type': 'application/json'}
+#     except Exception as e:
+#         return jsonify({"error": str(e)}), 500
+
 
 @services_routes.route('/api/services', methods=['GET'])
 def fetch_services():
     try:
-        services = get_services_titles()  # Get services from MongoDB
-        return jsonify(services), 200
+        services = get_all_services()
+        print(f"fetched all the servicesand ready to display as wished !")
+        print(f'fetched services succesfully ! : \n {services}')
+        return jsonify(services)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+        # services_list = []
+        # for service in services:
+        #     services_list.append({
+        #         "title": service.get("title"),
+        #         "description": service.get("description"),
+        #         "price_range": service.get("price_range", "N/A"),
+        #         "tags": service.get("tags", []),
+        #         "image_url": service.get("image_url", "/img/no_image.jpg")  # Optional image URL field
+        #     })
 
 
 

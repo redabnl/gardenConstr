@@ -4,7 +4,7 @@ from bson import ObjectId
 from flask import current_app as app
 from werkzeug.utils import secure_filename
 from flask import Blueprint, request, jsonify
-from ..models.media_model import UPLOAD_FOLDER, save_media_metadata, get_media_by_associated_id, handle_media_upload
+from ..models.media_model import UPLOAD_FOLDER, save_media, get_media_by_associated_id, handle_media_upload
 
 
 
@@ -24,6 +24,29 @@ def allowed_file(filename):
 
 #######################################################################
 ## MEDIA MANAGEMENT
+@media_routes.route('/api/upload', methods=['POST'])
+def upload_file():
+    if 'file' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        entity_type = request.form.get('entity_type')
+        entity_id = request.form.get('entity_id')
+        uploaded_by = request.form.get('uploaded_by')
+
+        # Save file to the server
+        file.save(os.path.join(UPLOAD_FOLDER, filename))
+        
+        # Save metadata to the database
+        save_media(file, entity_type, entity_id, uploaded_by)
+
+        return jsonify({"message": "File successfully uploaded"}), 200
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
+
 
 # Route for uploading media related to a service
 @media_routes.route('/api/services/<service_id>/media', methods=['POST'])

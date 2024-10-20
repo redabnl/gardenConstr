@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';  // Importing Bootstrap components
 
-
 function AddService() {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     price_range: '', 
-    tags : ''
+    tags: '', 
+    image: null
   });
+  const [image, setImage] = useState(null);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [message, setMessage] = useState('')
@@ -21,31 +22,46 @@ function AddService() {
     });
   };
 
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   setImage(file);
+  // };
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      image: e.target.files[0]
+    });
+  };
+  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    const serviceData = {
-      title: formData.title,
-      description: formData.description,
-      tags : formData.tags.split(',').map(tag => tag.trim()),
-      price_range: formData.price_range
-    };
+      const serviceData = new FormData(); // Using FormData for multipart form submission
+      serviceData.append('title', formData.title);
+      serviceData.append('description', formData.description);
+      serviceData.append('tags', formData.tags.split(',').map(tag => tag.trim()));
+      serviceData.append('price_range', formData.price_range);
+      serviceData.append('image', formData.image); // Adding the image to the form data
+
+      if (image) {
+        serviceData.append('image', image); // Add the image file if present
+      }
     
-      const response = await axios.post('http://localhost:5000/api/admin/services',serviceData,
-      {
+      const response = await axios.post('http://localhost:5000/api/admin/services', serviceData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data',
           // 'x-access-token': localStorage.getItem('admin_token')
         }
-      
       });
 
       setSuccess('Service added successfully!');
-      setFormData({ title: '', description: '', price_range: '', tags: ''});  // Clear form
+      setFormData({ title: '', description: '', price_range: '', tags: '' });  // Clear form
+      setImage(null); // Clear the image input
     } catch (error) {
-      setError('Error adding service : ', console.error( error));
-
-     
+      setError('Error adding service: ' + error.message);
+      console.error(error);
     }
   };
 
@@ -107,6 +123,15 @@ function AddService() {
                 value={formData.price_range}
                 onChange={handleChange}
                 required
+              />
+            </Form.Group>
+
+            <Form.Group controlId="serviceImage" className="mb-3">
+              <Form.Label>Upload Image</Form.Label>
+              <Form.Control 
+                type="file" 
+                accept="image/*" 
+                onChange={handleFileChange} 
               />
             </Form.Group>
 

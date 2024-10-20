@@ -16,7 +16,7 @@ from .db import get_db
 #     db.services.insert_one(new_service)
 #     return new_service.get(title)
 
-def create_service(title, description, tags, price_range):
+def create_service(title, description, tags, price_range, image):
     db = get_db()  # Get the database connection
     service = {
         "title": title,
@@ -24,25 +24,32 @@ def create_service(title, description, tags, price_range):
         "tags": tags,
         "price_range": price_range,
         "is_active": True,  # Default to active
-        "created_at": datetime.datetime.utcnow()
+        "created_at": datetime.datetime.utcnow(), 
+        "image" : image
     }
     result = db.services.insert_one(service)  # Insert the service into MongoDB
     service['_id'] = str(result.inserted_id)  # Convert ObjectId to string
-    return service
+    print(f"new service created successfully with ID {result['_id']}")
+    return result.inserted_id
 
 def get_all_services():
     db = get_db()
-    services = db.services.find()  # Fetch all documents from 'services' collection
-    services_list = []
-    for service in services:
-        services_list.append({
-            "title": service.get("title"),
-            "description": service.get("description"),
-            "price_range": service.get("price_range", "N/A"),
-            "tags": service.get("tags", []),
-            "image_url": service.get("image_url", "")  # Optional image URL field
-        })
-    return services_list
+    services = list(db.services.find())
+    for service in services :        # Fetch all documents from 'services' collection
+        service['_id'] = str(service['_id'])  # Convert ObjectId to string
+        print(f"service fetched succesfully from fatabase : {service['title']}" )
+        
+    return services
+    # services_list = []
+    # for service in services:
+    #     services_list.append({
+    #         "title": service.get("title"),
+    #         "description": service.get("description"),
+    #         "price_range": service.get("price_range", "N/A"),
+    #         "tags": service.get("tags", []),
+    #         "image_url": service.get("image_url", "")  # Optional image URL field
+    #     })
+    # return services_list
 
 def get_services_titles():
     db = get_db()
@@ -53,7 +60,7 @@ def get_service_by_name(service_title):
     db = get_db()  # Get the database reference
     service = db.services.find_one({"title": service_title})
     if service:
-        return service["_id"]  # Return the ObjectId
+        return jsonify(service)  # Return the ObjectId
     return None
 
 

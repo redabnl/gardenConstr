@@ -6,6 +6,54 @@ import HeroSection from './hero';
 
 
 // Styled Components
+const FeaturedServicesSection = styled.section`
+  padding: 80px 0;
+  text-align: center;
+  background-color: #f8f9fa;
+`;
+
+const ServiceCard = styled.div`
+  border: none;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+  }
+
+  p {
+    color: #6c757d;
+  }
+`;
+
+const ButtonSecondary = styled.a`
+  display: inline-block;
+  margin-top: 40px;
+  padding: 10px 30px;
+  background-color: #343a40;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #495057;
+  }
+`;
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -16,26 +64,26 @@ const Container = styled.div`
 //   text-align: center;
 //   margin-bottom: 50px;
   
-//   h1 {
-//     font-size: 3rem;
-//     margin-bottom: 20px;
-//   }
+// //   h1 {
+// //     font-size: 3rem;
+// //     margin-bottom: 20px;
+// //   }
 
-//   p {
-//     font-size: 1.2rem;
-//     color: #555;
+// //   p {
+// //     font-size: 1.2rem;
+// //     color: #555;
+// //   }
+// // `;
+
+// const FeaturedServicesSection = styled.section`
+//   text-align: center;
+//   margin-bottom: 50px;
+
+//   h2 {
+//     font-size: 2.5rem;
+//     margin-bottom: 30px;
 //   }
 // `;
-
-const FeaturedServicesSection = styled.section`
-  text-align: center;
-  margin-bottom: 50px;
-
-  h2 {
-    font-size: 2.5rem;
-    margin-bottom: 30px;
-  }
-`;
 
 const Row = styled.div`
   display: flex;
@@ -48,22 +96,22 @@ const Col = styled.div`
   margin-bottom: 20px;
 `;
 
-const Card = styled.div`
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 20px;
-  text-align: center;
+// const Card = styled.div`
+//   background-color: #f9f9f9;
+//   border: 1px solid #ddd;
+//   border-radius: 5px;
+//   padding: 20px;
+//   text-align: center;
 
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
+//   h3 {
+//     font-size: 1.5rem;
+//     margin-bottom: 10px;
+//   }
 
-  p {
-    color: #777;
-  }
-`;
+//   p {
+//     color: #777;
+//   }
+// `;
 
 const ButtonPrimary = styled(Link)`
   background-color: #007bff;
@@ -75,17 +123,17 @@ const ButtonPrimary = styled(Link)`
   text-decoration: none;
 `;
 
-const ButtonSecondary = styled(Link)`
-  background-color: #6c757d;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  color: #fff;
-  font-size: 1rem;
-  text-decoration: none;
-  margin-top: 20px;
-  display: inline-block;
-`;
+// const ButtonSecondary = styled(Link)`
+//   background-color: #6c757d;
+//   border: none;
+//   padding: 10px 20px;
+//   border-radius: 5px;
+//   color: #fff;
+//   font-size: 1rem;
+//   text-decoration: none;
+//   margin-top: 20px;
+//   display: inline-block;
+// `;
 
 const CTASection = styled.section`
   text-align: center;
@@ -123,41 +171,35 @@ const Home = () => {
       <HeroSection />
       {/* Your existing Featured Services and CTA Section */}
       </div>
-       { /* <HeroSection>
-      //   <Container>
-      //     <h1>Welcome to Our Website</h1>
-      //     <p>We provide top-quality services in garden and deck construction. Explore our Portfolio and let us help you transform your outdoor spaces.</p>
-      //     <ButtonPrimary to="/services">View Our done projects</ButtonPrimary>
-      //   </Container>
-      // </HeroSection> */}
+      
 
        {/* Featured Services Section */}
       <FeaturedServicesSection>
-        <Container>
-          <h2>Our Featured Services</h2>
-          <Row>
-            {services.slice(0, 3).map((service, index) => (
-              <Col key={index}>
-                <Card>
-                  <h3>{service.title}</h3>
-                  <p>{service.description}</p>
-                  <img src="/img/no_image.jpg"/>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-          <ButtonSecondary to="/services">Explore All Services</ButtonSecondary>
-        </Container>
+      <Container>
+        <h2>Our Featured Services</h2>
+        <Row>
+          {services.slice(0, 3).map((service, index) => (
+            <Col key={index} md={4}>
+              <ServiceCard>
+                <img src={service.images || "/img/no_image.jpg"} alt={service.title} />
+                <h3>{service.title}</h3>
+                <p>{service.description}</p>
+              </ServiceCard>
+            </Col>
+          ))}
+        </Row>
+        <ButtonSecondary href="/services">Explore All Services</ButtonSecondary>
+      </Container>
       </FeaturedServicesSection>
 
       {/* CTA Section */}
       <CTASection>
-        <Container>
-          <h2>Ready to Start Your Project?</h2>
-          <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
-          <ButtonPrimary to="/contact">Contact Us</ButtonPrimary>
-        </Container>
-      </CTASection>
+      <Container>
+        <h2>Ready to Start Your Project?</h2>
+        <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
+        <ButtonPrimary href="/contact">Contact Us</ButtonPrimary>
+      </Container>
+    </CTASection>
     </div>
   );
 };

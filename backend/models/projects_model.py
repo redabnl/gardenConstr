@@ -5,7 +5,7 @@ from flask import request, jsonify
 
 
 ## function to fetch all done projects (PORTFOLIO)
-def get_all_projects_admin():
+def get_all_projects_details():
     db = get_db()
     
     # Fetch all admins from gthe 'admin_users' collection
@@ -27,17 +27,17 @@ def get_all_projects_admin():
     return projects
 
 
-def get_all_projects():
-    db = get_db()
+# def get_all_projects():
+#     db = get_db()
     
-    projects = db.projects.find({})
-    if (projects):
-        print()
-    for project in projects : 
-        project['_id'] = project['_id']
-        print(f"project {project['title']} with id {project['_id']}")
-        # print(f"project fetched  : {project['title']}")
-    return projects
+#     projects = db.projects.find({})
+#     if (projects):
+#         print()
+#     for project in projects : 
+#         project['_id'] = str(project['_id'])
+#         print(f"project {project['title']} with id {project['_id']}")
+#         # print(f"project fetched  : {project['title']}")
+#     return jsonify(projects)
         
 def get_project_id(project_id):
     data = request.json

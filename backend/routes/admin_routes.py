@@ -1,11 +1,11 @@
 from bson import ObjectId
 from werkzeug.security import generate_password_hash
 from ..models.db import get_db
-from ..models.projects_model import get_all_projects_admin, add_project, update_project, delete_project
+from ..models.projects_model import  add_project, update_project, delete_project, get_all_projects_details
 # from models.admin_users_model import create_admin_user, get_admin_by_username
 from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
 from ..models.services_model import update_service_by_id, get_service_by_id, create_service
-from ..models.media_model import UPLOAD_FOLDER, save_media_metadata
+from ..models.media_model import  save_media
 import jwt
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -23,14 +23,17 @@ db = get_db()
 admin_routes = Blueprint('admin_routes', __name__)
 
 
-# Allowed extensions for image uploads
+# Folder to store and Allowed extensions for image uploads
+UPLOAD_FOLDER = '/backend/images/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 # Function to check allowed file extensions
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    
+    
+    
 ###########################################################
 ## ADMIN USERS MANAGEMENT
 
@@ -131,25 +134,60 @@ def get_admin_profile(admin_id):
 ## CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
 def add_service():
-    data = request.json
-    title = data.get('title')
-    description = data.get('description')
-    tags = data.get('tags')
-    price_range = data.get('price_range')
+    if 'image' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+    file = request.files['image']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(UPLOAD_FOLDER, filename)
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        file.save(filepath)
+        print(f"Request files: {request.files}")
+        print(f"Request form: {request.form}")
+        
+        # Get the rest of the data
+        # title = request.form.get('title')
+        # description = request.form.get('description')
+        # tags = request.form.get('tags').split(',')
+        # price_range = request.form.get('price_range')
 
-    # Validate inputs
-    if not title or not description or not tags or not price_range:
-        return jsonify({"error": "All fields are required"}), 400
+        # Save the service details and file path in your database
+        service_data = {
+            "title": request.form.get('title'),
+            "description": request.form.get('description'),
+            "tags": request.form.get('tags').split(','),
+            "price_range": request.form.get('title'),
+            "image_path": filepath  # Save the path of the file
+        }
+        
+        # Save the service data (you might need to adjust this according to your database logic)
+        # Example:
+        db.services.insert_one(service_data)
+        
+        return jsonify({"message": "Service added successfully!"}), 201
+    else:
+        return jsonify({"error": "File type not allowed"}), 400
+    # data = request.json
+    # title = data.get('title')
+    # description = data.get('description')
+    # tags = data.get('tags')
+    # price_range = data.get('price_range')
 
-    try:
-        # Call the create_service function
-        service = create_service(title, description, tags, price_range)
-        return jsonify({
-            "message": "Service created successfully!",
-            "service": service
-        }), 201
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    # # Validate inputs
+    # if not title or not description or not tags or not price_range:
+    #     return jsonify({"error": "All fields are required"}), 400
+
+    # try:
+    #     # Call the create_service function
+    #     service = create_service(title, description, tags, price_range)
+    #     return jsonify({
+    #         "message": "Service created successfully!",
+    #         "service": service
+    #     }), 201
+    # except Exception as e:
+    #     return jsonify({"error": str(e)}), 500
 
 # def create_service(title, description, tags, price_range): ## 
 #     title = request.form.get('title')
@@ -250,13 +288,15 @@ def update_service(service_id):
 ##############################################
 ## PORTFOLIO MANAGEMENT
 
-# Route to get all projects
+
+
+## Route to get all projects
 # @token_required
 @admin_routes.route('/api/admin/projects', methods=['GET'])
 # @token_required  # You can comment this out for now during testing
 def get_all_projects():
     try:
-        projects = get_all_projects_admin()  # Assuming you have a get_projects function
+        projects = get_all_projects_details()  # Assuming you have a get_projects function
         return jsonify({"projects": projects}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

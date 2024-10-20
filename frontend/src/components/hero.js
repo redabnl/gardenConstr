@@ -47,6 +47,9 @@ const HeroText = styled.div`
 `;
 
 const Overlay = styled.div`
+  padding: 80px 0; // Adjust the padding for better spacing
+  background-color: #f8f9fa;
+  text-align: center;
   position: absolute;
   width: 100%;
   height: 7%;
@@ -66,10 +69,11 @@ const HeroCarousel = styled(Slider)`
 const HeroContainer = styled.div`
   background-color: #18A558; /* Primary color */
   color: white;
-  padding: 60px 0;
+  padding: 20px 0;
   text-align: center;
   height: 400px;
   overflow: hidden;
+  margin: 0 auto;
 `;
 
 // const HeroText = styled.h1`
