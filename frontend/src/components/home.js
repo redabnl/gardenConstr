@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import HeroSection from './hero';
+import ServicesSection from './services_catg';
+import Conclusion from './conclusion';
 
 
 // Styled Components
@@ -150,47 +152,243 @@ const CTASection = styled.section`
   }
 `;
 
-const Home = () => {
-  const [services, setServices] = useState([]);
+const FeaturedProjectsSection = styled.div`
+  margin: 2rem 0;
+  text-align: center;
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/services');
-        setServices(response.data);
-      } catch (error) {
-        console.error('Error fetching services:', error);
-      }
-    };
-    fetchServices();
-  }, []);
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+
+  .project-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    max-width: 300px;
+    text-align: left;
+  }
+
+  .project-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .project-content {
+    padding: 1rem;
+  }
+
+  .project-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .project-description {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .learn-more {
+    background-color: #6c757d;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+  }
+`;
+
+const GridItem = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Makes the grid responsive */
+  gap: 20px;
+`;
+
+// const ProjectGrid = styled.div`
+//   position: relative;
+//   overflow: hidden;
+//   border-radius: 8px;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   cursor: pointer;
+//   &:hover {
+//     transform: scale(1.05);
+//     transition: 0.3s ease;
+//   }
+  
+// `;
+const GridContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 40px;
+`;
+
+const ProjectGrid = styled.div`
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    &:hover {
+        transform: scale(1.05);
+        transition: 0.3s ease;
+    }
+`;
+
+const ProjectImage = styled.img`
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    transition: all 0.3s ease-in-out;
+`;
+
+const ProjectHover = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    opacity: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
+    transition: opacity 0.3s ease-in-out;
+    ${ProjectGrid}:hover & {
+        opacity: 1;
+    }
+`;
+
+
+// const ProjectImage = styled.img`
+//   width: 100%;
+//   height: 200px;
+//   object-fit: cover;
+//   transition: all 0.3s ease-in-out;
+// `;
+
+// const ProjectHover = styled.div`
+//   position: absolute;
+//   top: 0;
+//   left: 0;
+//   width: 100%;
+//   height: 100%;
+//   background-color: rgba(0, 0, 0, 0.6);
+//   color: white;
+//   opacity: 0;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
+//   padding: 10px;
+//   transition: opacity 0.3s ease-in-out;
+//   ${ProjectGrid}:hover & {
+//     opacity: 1;
+//   }
+// `;
+
+const Home = () => {
+  const [projects, setProjects] = useState([]);
+  const [project, setSelectedProject] = useState(null)
+
+    useEffect(() => {
+        const fetchProjects = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/projects');
+                setProjects(response.data.slice(0,5));
+                console.log('Projects fetched successfully:', response.data);
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+            }
+        };
+
+        fetchProjects();
+    }, []);
+  // const [services, setServices] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchServices = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:5000/api/services');
+  //       setServices(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching services:', error);
+  //     }
+  //   };
+  //   fetchServices();
+  // }, []);
 
   return (
     <div>
-      <div>
-      <HeroSection />
-      {/* Your existing Featured Services and CTA Section */}
+      <div >
+        <HeroSection />
       </div>
+      <ServicesSection />
+
+
+      {/* featured projects */}
+
+      <GridContainer>
+            {projects.slice(0, 3).map((project, index) => (
+                <GridItem key={index}>
+                    <ProjectGrid onClick={() => setSelectedProject(project)}>
+                        <ProjectImage
+                            src={project.gallery_images[0]}
+                            alt={project.title}
+                        />
+                        <ProjectHover>
+                            <h3>{project.title}</h3>
+                            <p>{project.brief}</p>
+                        </ProjectHover>
+                    </ProjectGrid>
+                </GridItem>
+            ))}
+            {projects.length > 3 && (
+                <ButtonSecondary href="/projects/portfolio">View All Projects</ButtonSecondary>
+            )}
+        </GridContainer>
+
+
+
+      {/* <FeaturedProjectsSection>
+      <h2>Our Featured Projects</h2>
+      <div className="project-grid">
+        {projects.slice(0, 3).map((project, index) => (
+          <div className="project-card" key={index}>
+            <img
+              src={project.gallery_images[0] || "/img/no_image.jpg"}
+              alt={project.title}
+              className="project-image"
+            />
+            <div className="project-content">
+              <h3 className="project-title">{project.title}</h3>
+              <p className="project-description">{project.description}</p>
+              <a href={`/projects/${project._id}`} className="learn-more">
+                Learn More
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </FeaturedProjectsSection> */}
+
+    <Conclusion />
       
 
-       {/* Featured Services Section */}
-      <FeaturedServicesSection>
-      <Container>
-        <h2>Our Featured Services</h2>
-        <Row>
-          {services.slice(0, 3).map((service, index) => (
-            <Col key={index} md={4}>
-              <ServiceCard>
-                <img src={service.images || "/img/no_image.jpg"} alt={service.title} />
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-              </ServiceCard>
-            </Col>
-          ))}
-        </Row>
-        <ButtonSecondary href="/services">Explore All Services</ButtonSecondary>
-      </Container>
-      </FeaturedServicesSection>
 
       {/* CTA Section */}
       <CTASection>
@@ -209,11 +407,67 @@ export default Home;
 
 
 
+       {/* Featured Services Section */}
+       {/* <section className="featured-services">
+        <div className="container">
+          <h2>Our Featured Services</h2>
+          <div className="services-grid">
+            <div className="service-item">
+              <h3>Deck Building</h3>
+              <p>Custom-designed decks that are perfect for outdoor living.</p>
+            </div>
+            <div className="service-item">
+              <h3>Landscaping</h3>
+              <p>Beautiful landscapes designed and built to fit your home.</p>
+            </div>
+            <div className="service-item">
+              <h3>Garden Construction</h3>
+              <p>We create custom gardens tailored to your vision.</p>
+            </div>
+          </div>
+          <Link to="/services" className="btn btn-secondary">Explore All Services</Link>
+        </div>
+      </section> */}
+      {/* <FeaturedProjectsSection>
+      <Container>
+                <h2>Our Featured Projects</h2>
+                <Row>
+                    {projects.slice(0, 3).map((project, index) => (
+                        <Col key={index} md={4}>
+                            <div className="service-card">
+                                <img
+                                    src={project.gallery_images[0] || "/img/no_image.jpg"}
+                                    alt={project.title}
+                                />
+                                <h3>{project.title}</h3>
+                                <p>{project.description}</p>
+                                <a href={`/projects/${project._id}`} className="btn btn-primary">Learn More</a>
+                            </div>
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
+      </FeaturedProjectsSection> */}
 
 
 
+      // PROJECT MAPPING WITH PICTURE HOVER ### STYLE ALREADY IN CODE PORTFOLIO.JS
 
-
+      // <GridItem>
+        
+      //   {projects.map((project, index) => (
+      //     <ProjectGrid key={index} onClick={() => setSelectedProject(project)}>
+      //       <ProjectImage
+      //         src={project.gallery_images[0]} /* Ensure the image path is correct */
+      //         alt={project.title}
+      //       />
+      //       <ProjectHover>
+      //         <h3>{project.title}</h3>
+      //         <p>{project.brief}</p>
+      //       </ProjectHover>
+      //     </ProjectGrid>
+      //   ))}
+      // </GridItem>
 
 
 
@@ -239,26 +493,26 @@ export default Home;
 //       </section>
 
 //       {/* Featured Services */}
-//       <section className="featured-services">
-//         <div className="container">
-//           <h2>Our Featured Services</h2>
-//           <div className="services-grid">
-//             <div className="service-item">
-//               <h3>Deck Building</h3>
-//               <p>Custom-designed decks that are perfect for outdoor living.</p>
-//             </div>
-//             <div className="service-item">
-//               <h3>Landscaping</h3>
-//               <p>Beautiful landscapes designed and built to fit your home.</p>
-//             </div>
-//             <div className="service-item">
-//               <h3>Garden Construction</h3>
-//               <p>We create custom gardens tailored to your vision.</p>
-//             </div>
-//           </div>
-//           <Link to="/services" className="btn btn-secondary">Explore All Services</Link>
-//         </div>
-//       </section>
+      // <section className="featured-services">
+      //   <div className="container">
+      //     <h2>Our Featured Services</h2>
+      //     <div className="services-grid">
+      //       <div className="service-item">
+      //         <h3>Deck Building</h3>
+      //         <p>Custom-designed decks that are perfect for outdoor living.</p>
+      //       </div>
+      //       <div className="service-item">
+      //         <h3>Landscaping</h3>
+      //         <p>Beautiful landscapes designed and built to fit your home.</p>
+      //       </div>
+      //       <div className="service-item">
+      //         <h3>Garden Construction</h3>
+      //         <p>We create custom gardens tailored to your vision.</p>
+      //       </div>
+      //     </div>
+      //     <Link to="/services" className="btn btn-secondary">Explore All Services</Link>
+      //   </div>
+      // </section>
 
 //       {/* Call to Action */}
 //       <section className="cta-section">

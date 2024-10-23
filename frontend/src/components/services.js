@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import HeroSection from './hero';
 import { Link } from 'react-router-dom';
+import Conclusion from './conclusion';
 
 
 
@@ -131,7 +132,7 @@ const Services = () => {
   }, []);
 
   return (
-    <div className="container">
+    <div>
       < HeroSection/>
     <ServicesContainer>
       <ServiceCardContainer>
@@ -147,6 +148,7 @@ const Services = () => {
         ))}
       </ServiceCardContainer>
     </ServicesContainer>
+    <Conclusion />
     </div>
   );
 };

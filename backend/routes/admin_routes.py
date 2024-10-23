@@ -132,13 +132,16 @@ def get_admin_profile(admin_id):
 ## ADMIN services MANAGEMENT
 
 ## CREATE SERVICES WITH IMAGE UPLOAD
+# CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
 def add_service():
-    if 'image' not in request.files:
-        return jsonify({"error": "No file part"}), 400
-    file = request.files['image']
+    if 'image_path' not in request.files:
+        return jsonify({"error": "No file path"}), 400
+    
+    file = request.files['image_path']
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
+    
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         filepath = os.path.join(UPLOAD_FOLDER, filename)
@@ -148,27 +151,27 @@ def add_service():
         print(f"Request form: {request.form}")
         
         # Get the rest of the data
-        # title = request.form.get('title')
-        # description = request.form.get('description')
-        # tags = request.form.get('tags').split(',')
-        # price_range = request.form.get('price_range')
+        title = request.form.get('title')
+        description = request.form.get('description')
+        tags = request.form.get('tags').split(',')
+        price_range = request.form.get('price_range')
 
         # Save the service details and file path in your database
         service_data = {
-            "title": request.form.get('title'),
-            "description": request.form.get('description'),
-            "tags": request.form.get('tags').split(','),
-            "price_range": request.form.get('title'),
+            "title": title,
+            "description": description,
+            "tags": tags,
+            "price_range": price_range,
             "image_path": filepath  # Save the path of the file
         }
         
         # Save the service data (you might need to adjust this according to your database logic)
-        # Example:
         db.services.insert_one(service_data)
         
         return jsonify({"message": "Service added successfully!"}), 201
     else:
         return jsonify({"error": "File type not allowed"}), 400
+
     # data = request.json
     # title = data.get('title')
     # description = data.get('description')

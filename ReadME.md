@@ -52,7 +52,7 @@ Admins can:
 ## Potential Features to Discuss (Future Enhancements)
 
 - **User Reviews & Testimonials**: Allow clients to leave reviews or testimonials for projects.
-- **Booking System**: Enable clients to schedule consultations directly through the website.
+<!-- - **Booking System**: Enable clients to schedule consultations directly through the website. -->
 - **Project Progress Tracking**: Provide clients with a secure way to track the progress of ongoing projects.
 - **Enhanced Search Filters**: Allow clients to filter services or projects by categories, locations, or project types.
 - **Service Pricing Estimator**: Give clients a preliminary quote by selecting services and entering project details.

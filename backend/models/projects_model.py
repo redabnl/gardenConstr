@@ -27,17 +27,21 @@ def get_all_projects_details():
     return projects
 
 
-# def get_all_projects():
-#     db = get_db()
+def get_all_projects():
+    db = get_db()
     
-#     projects = db.projects.find({})
-#     if (projects):
-#         print()
-#     for project in projects : 
-#         project['_id'] = str(project['_id'])
-#         print(f"project {project['title']} with id {project['_id']}")
-#         # print(f"project fetched  : {project['title']}")
-#     return jsonify(projects)
+    projects = db.projects.find({})
+    project_list = []
+    for project in projects : 
+        project['_id'] = str(project['_id'])
+        if 'service_id' in project:
+            project['service_id'] = str(project['service_id'])  # Convert ObjectId to string
+        if 'testimonial_id' in project and project['testimonial_id'] is not None:
+            project['testimonial_id'] = str(project['testimonial_id'])  # Convert ObjectId to string if it exists
+        print(f"project {project['title']} with id {project['_id']}")
+        project_list.append(project)
+
+    return project_list
         
 def get_project_id(project_id):
     data = request.json
