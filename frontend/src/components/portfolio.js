@@ -6,15 +6,25 @@ import Conclusion from "./conclusion";
 
 
 
+// const GridContainer = styled.div`
+//   display: grid;
+//   grid-template-columns: 2fr 1fr; /* Two-thirds for the images, one-third for details */
+//   gap: 20px;
+//   padding: 20px;
+//   @media (max-width: 900px) {
+//     grid-template-columns: 1fr; /* Stack on smaller screens */
+//   }
+// `;
 const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* Two-thirds for the images, one-third for details */
-  gap: 20px;
-  padding: 20px;
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr; /* Stack on smaller screens */
-  }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin: 0 auto;
 `;
+
 
 const GridItem = styled.div`
   display: grid;
@@ -108,7 +118,7 @@ return (
         {projects.map((project, index) => (
           <ProjectGrid key={index} onClick={() => setSelectedProject(project)}>
             <ProjectImage
-              src={project.gallery_images[0]} /* Ensure the image path is correct */
+              src={project.images[0]['url']} 
               alt={project.title}
             />
             <ProjectHover>

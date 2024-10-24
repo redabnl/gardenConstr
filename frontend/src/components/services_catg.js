@@ -15,13 +15,18 @@ const ServicesSection = () => {
       try {
         const response = await axios.get('http://localhost:5000/api/services');
         const services = response.data;
+        console.log(`services fetched ${services}`)
 
         // Filter services into indoor and outdoor categories
-        const outdoor = services.filter(service => service.isOutdoor);
-        const indoor = services.filter(service => !service.isOutdoor);
+        const outdoor = services.filter(service => service.is_outdoor);
+        const indoor = services.filter(service => !service.is_outdoor);
 
         setOutdoorServices(outdoor);
         setIndoorServices(indoor);
+
+        console.log(`indoor services : ${indoor}`)
+        console.log(`outdoor services : ${outdoor}`)
+        
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -56,7 +61,7 @@ const ServicesSection = () => {
         {outdoorServices.length > 0 && (
           <ServiceCard>
             <CardTitle>{outdoorServices[0].title}</CardTitle>
-            <CardImage src={outdoorServices[0].image_url || 'img/no_img.jpg'} alt="Outdoor Service" />
+            <CardImage src={'img/outdoor_sketch.jpg'} alt="Outdoor Service" />
             <CardDescription>{outdoorServices[0].description}</CardDescription>
             <CardButton to={`/services/${outdoorServices[0]._id}`}>Explore Outdoor</CardButton>
           </ServiceCard>
@@ -66,7 +71,7 @@ const ServicesSection = () => {
         {indoorServices.length > 0 && (
           <ServiceCard>
             <CardTitle>{indoorServices[0].title}</CardTitle>
-            <CardImage src={indoorServices[0].image_url || 'img/no_img.jpg'} alt="Indoor Service" />
+            <CardImage src={ 'img/indoor_sketch.png'} alt="Indoor Service" />
             <CardDescription>{indoorServices[0].description}</CardDescription>
             <CardButton to={`/services/${indoorServices[0]._id}`}>Explore Indoor</CardButton>
           </ServiceCard>

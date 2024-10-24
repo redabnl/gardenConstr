@@ -1,9 +1,32 @@
 from flask import Blueprint, jsonify
-from ..models.services_model import get_all_services
+from ..models.services_model import get_all_services, get_service_by_id
 from bson import json_util, ObjectId
 
 
 services_routes = Blueprint('services_routes', __name__)
+
+
+@services_routes.route('/api/services', methods=['GET'])
+def fetch_services():
+    try:
+        services = get_all_services()
+        print(f"fetched all the servicesand ready to display as wished !")
+        print(f'fetched services succesfully ! : \n {services}')
+        return jsonify(services)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    
+@services_routes.route('/api/service/<service_id>', methods=['GET'])
+def get_single_service(service_id):
+    try :    
+        service = get_service_by_id(service_id)
+        if service:
+            return jsonify(service), 200
+        return jsonify({"error": "Service not found"}), 404
+    except Exception as e :
+        return jsonify({"error": str(e)}), 500
+    
 
 # @services_routes.route('/api/services', methods=['GET'])
 # def fetch_services():
@@ -46,15 +69,7 @@ services_routes = Blueprint('services_routes', __name__)
 #         return jsonify({"error": str(e)}), 500
 
 
-@services_routes.route('/api/services', methods=['GET'])
-def fetch_services():
-    try:
-        services = get_all_services()
-        print(f"fetched all the servicesand ready to display as wished !")
-        print(f'fetched services succesfully ! : \n {services}')
-        return jsonify(services)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+
 
 
 

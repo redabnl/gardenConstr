@@ -27,6 +27,26 @@ def get_all_projects_details():
     return projects
 
 
+
+def serialize_project(project):
+    # Convert ObjectId to string
+    project['_id'] = str(project['_id'])
+    
+    
+    # Convert any other ObjectId fields, like foreign keys, if they exist
+    if 'service_id' in project:
+        project['service_id'] = str(project['service_id'])
+    if 'testimonial_id' in project and project['testimonial_id'] is not None:
+        project['testimonial_id'] = str(project['testimonial_id'])
+
+    # If the project has arrays of ObjectIds (e.g., related images or media), convert those too
+    if 'images' in project:
+        for image in project['images']:
+            if 'id' in image:
+                image['id'] = str(image['id'])
+
+    return project
+
 def get_all_projects():
     db = get_db()
     
@@ -44,14 +64,15 @@ def get_all_projects():
     return project_list
         
 def get_project_id(project_id):
-    data = request.json
     db = get_db()
-    
-    project = db.projects.find_one({
-        "_id":ObjectId(project_id)
-    })
-    
-    return project
+    try:
+        project = db.projects.find_one({
+            "_id": ObjectId(project_id)
+        })
+        return project
+    except Exception as e:
+        print(f"Error fetching project by ID: {e}")
+        return None
 
 # Function to add a new project
 def add_project(title, description, location, gallery_images, completed_at):

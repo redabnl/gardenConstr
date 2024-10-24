@@ -1,5 +1,5 @@
 from flask import jsonify, Blueprint, request
-from ..models.projects_model import  get_project_id, get_all_projects_details, get_all_projects
+from ..models.projects_model import  get_project_id, get_all_projects_details, get_all_projects, serialize_project
 
 
 projects_routes = Blueprint('projects_routes', __name__)
@@ -36,9 +36,19 @@ def fetch_all_projects_hero():
 
 @projects_routes.route('/api/project/<project_id>', methods=['GET'])
 def fetch_project_by_ID(project_id):
+    try:
+        project = get_project_id(project_id)
+        if project:
+            project = serialize_project(project)  # Serialize the project
+            print(f"project fetched from backend {project['title']}")
+            return jsonify(project), 200
+        else:
+            return jsonify({"message": "project not found"}), 404
+    except Exception as e:
+        print(f"Route error for fetching project by ID: {e}")
+        return jsonify({"message": "An error occurred"}), 500
+
+
     
-    project_id = request.args
-    project = get_project_id(project_id)
     
     
-    return jsonify(project)

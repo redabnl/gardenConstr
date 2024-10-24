@@ -116,6 +116,8 @@ const LearnMoreButton = styled.a`
 
 const Services = () => {
   const [services, setServices] = useState([]);
+  // const [indoorServices, setIndoorServices] = useState([]);
+  // const [outdoorServices, setOutdoorServices] = useState([]);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -123,6 +125,7 @@ const Services = () => {
         const response = await axios.get('http://localhost:5000/api/services');
         setServices(response.data);
         
+
       } catch (error) {
         console.error('Error fetching services:', error);
       }
@@ -138,7 +141,7 @@ const Services = () => {
       <ServiceCardContainer>
         {services.map((service, index) => (
           <ServiceCard key={index}>
-            <ServiceImage src={'/img/serices/serviceIMG.jpg'} alt={service.title} />
+            <ServiceImage src={'/img/no_image.jpg'} alt={service.title} />
             <ServiceOverlay>
               <ServiceTitle>{service.title}</ServiceTitle>
               <ServiceDescription>{service.description}</ServiceDescription>

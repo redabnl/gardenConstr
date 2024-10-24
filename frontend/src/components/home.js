@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import HeroSection from './hero';
 import ServicesSection from './services_catg';
 import Conclusion from './conclusion';
+import Footer from './footer';
+import Banner from './banner';
+// import FeaturedProjects from './featured_projects';
 
 
 // Styled Components
@@ -42,20 +45,20 @@ const ServiceCard = styled.div`
   }
 `;
 
-const ButtonSecondary = styled.a`
-  display: inline-block;
-  margin-top: 40px;
-  padding: 10px 30px;
-  background-color: #343a40;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+// const ButtonSecondary = styled.a`
+//   display: inline-block;
+//   margin-top: 40px;
+//   padding: 10px 30px;
+//   background-color: #343a40;
+//   color: white;
+//   text-decoration: none;
+//   border-radius: 5px;
+//   transition: background-color 0.3s ease;
 
-  &:hover {
-    background-color: #495057;
-  }
-`;
+//   &:hover {
+//     background-color: #495057;
+//   }
+// `;
 const Container = styled.div`
   max-width: 1200px;
   margin: 0 auto;
@@ -125,17 +128,17 @@ const ButtonPrimary = styled(Link)`
   text-decoration: none;
 `;
 
-// const ButtonSecondary = styled(Link)`
-//   background-color: #6c757d;
-//   border: none;
-//   padding: 10px 20px;
-//   border-radius: 5px;
-//   color: #fff;
-//   font-size: 1rem;
-//   text-decoration: none;
-//   margin-top: 20px;
-//   display: inline-block;
-// `;
+const ButtonSecondary = styled(Link)`
+  background-color: #6c757d;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+  margin-top: 20px;
+  display: inline-block;
+`;
 
 const CTASection = styled.section`
   text-align: center;
@@ -231,19 +234,31 @@ const GridContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    margin-bottom: 40px;
+    margin: 0 auto;
+    jsutify-content: center
 `;
 
+// const ProjectGrid = styled.div`
+//     position: relative; 
+//     overflow: hidden;
+//     border-radius: 8px;
+//     box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.1);
+//     cursor: pointer;
+//     &:hover {
+//         transform: scale(1.05);
+//         transition: 0.3s ease;
+//     }
+// `;
 const ProjectGrid = styled.div`
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-    &:hover {
-        transform: scale(1.05);
-        transition: 0.3s ease;
-    }
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 4px 8px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+    transition: 0.3s ease;
+  }
 `;
 
 const ProjectImage = styled.img`
@@ -272,7 +287,28 @@ const ProjectHover = styled.div`
         opacity: 1;
     }
 `;
+const ViewAllIcon = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  background-color: #333;
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  cursor: pointer;
+  &:hover {
+    background-color: #555;
+    transition: 0.2s;
+  }
+`;
 
+const Title = styled.h2`
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+`;
 
 // const ProjectImage = styled.img`
 //   width: 100%;
@@ -301,6 +337,21 @@ const ProjectHover = styled.div`
 //   }
 // `;
 
+
+  // const [services, setServices] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchServices = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:5000/api/services');
+  //       setServices(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching services:', error);
+  //     }
+  //   };
+  //   fetchServices();
+  // }, []);
+
 const Home = () => {
   const [projects, setProjects] = useState([]);
   const [project, setSelectedProject] = useState(null)
@@ -318,19 +369,7 @@ const Home = () => {
 
         fetchProjects();
     }, []);
-  // const [services, setServices] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchServices = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:5000/api/services');
-  //       setServices(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching services:', error);
-  //     }
-  //   };
-  //   fetchServices();
-  // }, []);
 
   return (
     <div>
@@ -339,28 +378,57 @@ const Home = () => {
       </div>
       <ServicesSection />
 
-
+{/* <FeaturedProjects/> */}
       {/* featured projects */}
+      <Title>Our Featured Projects</Title>
+      {/* <FeaturedProjects/> */}
+      
 
       <GridContainer>
-            {projects.slice(0, 3).map((project, index) => (
-                <GridItem key={index}>
-                    <ProjectGrid onClick={() => setSelectedProject(project)}>
-                        <ProjectImage
-                            src={project.gallery_images[0]}
-                            alt={project.title}
-                        />
-                        <ProjectHover>
-                            <h3>{project.title}</h3>
-                            <p>{project.brief}</p>
-                        </ProjectHover>
-                    </ProjectGrid>
-                </GridItem>
-            ))}
-            {projects.length > 3 && (
-                <ButtonSecondary href="/projects/portfolio">View All Projects</ButtonSecondary>
-            )}
-        </GridContainer>
+        {projects.slice(0, 3).map((project, index) => (
+          <GridItem key={index}>
+            <ProjectGrid onClick={() => setSelectedProject(project)}>
+              <ProjectImage
+                src={project.gallery_images[0]}
+                alt={project.title}
+              />
+              <ProjectHover>
+                <h3>{project.title}</h3>
+                <p>{project.brief}</p>
+              </ProjectHover>
+            </ProjectGrid>
+          </GridItem>
+        ))}
+      </GridContainer>
+
+        {projects.length > 3 && (
+          <ViewAllIcon href="/projects" aria-label="View All Projects">
+            <i className="bi bi-briefcase-fill" /> {/* FontAwesome grid icon */}
+          </ViewAllIcon>
+        )}
+
+      <Conclusion />
+            
+
+
+          {/* CTA Section */}
+        <CTASection>
+        <Container>
+          <h2>Ready to Start Your Project?</h2>
+          <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
+          <ButtonPrimary href="/contact">Contact Us</ButtonPrimary>
+        </Container>
+      </CTASection>
+      <Banner />
+      <Footer/>
+
+
+
+    </div>
+        );
+      };
+
+      export default Home;
 
 
 
@@ -386,23 +454,7 @@ const Home = () => {
       </div>
     </FeaturedProjectsSection> */}
 
-    <Conclusion />
-      
 
-
-      {/* CTA Section */}
-      <CTASection>
-      <Container>
-        <h2>Ready to Start Your Project?</h2>
-        <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
-        <ButtonPrimary href="/contact">Contact Us</ButtonPrimary>
-      </Container>
-    </CTASection>
-    </div>
-  );
-};
-
-export default Home;
 
 
 

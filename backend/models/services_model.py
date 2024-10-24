@@ -64,9 +64,9 @@ def get_service_by_name(service_title):
     return None
 
 
-def get_service_by_id(service_name):
+def get_service_by_id(service_id):
     db = get_db()
-    return db.services.find_one({"title": service_name})
+    return db.services.find_one({"_id": service_id})
 
 def update_service_by_id(service_id, title, description, price_range, tags):
     db = get_db()
