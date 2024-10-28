@@ -7,7 +7,7 @@ from .routes.projects_routes import projects_routes
 from .routes.admin_routes import admin_routes
 from .routes.media_routes import media_routes
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 CORS(app)
 
 # app.register_blueprint(db_tests)

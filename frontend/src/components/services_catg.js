@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
-const ServicesSection = () => {
+const ServicesCategories = () => {
     // States for outdoor and indoor services
   const [outdoorServices, setOutdoorServices] = useState([]);
   const [indoorServices, setIndoorServices] = useState([]);
@@ -139,4 +139,4 @@ const CardButton = styled(Link)`
 `;
 
 // Export the component
-export default ServicesSection;
+export default ServicesCategories;

@@ -75,7 +75,7 @@ const HeroCarousel = styled(Slider)`
 const HeroContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh; /* Full viewport height */
+  height: 75vh; /* Full viewport height */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,7 +112,25 @@ const HeroSection = () => {
     autoplaySpeed: 4000,
     arrows: true
   };  
+  // Dummy images for the carousel (you can replace these later with dynamic images from the database)  
+  const dumy_images = [
+    '/img/hero/hero_1.jpg',
+    '/img/hero/hero_2.jpg',
+    '/img/hero/hero_3.jpg'
+  ];
+    // '/img/services/deck1.png',
+    // '/img/services/deckWood.jpg',
+    // '/img/services/garden.jpg',
+    // '/img/services/renovation_1.jpg',
+    // '/img/services/renovation_2.jpg',
+    // '/img/services/renovation_3.jpg',
+    // '/img/services/renovation_4.jpg'
 
+  
+
+  // {project.images.map((image, index) => (
+  //   <img key={index} src={image.url} alt={`Project image ${index + 1}`} />
+  // ))}
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -142,14 +160,20 @@ const HeroSection = () => {
       {/* Display the images in the carousel */}
       {projects && projects.length > 0 && (
         <HeroCarousel {...settings}>
-          {projects.map((project, index) => (
-            project.images && project.images.map((image, imgIndex) => (
-              <div key={`${index}-${imgIndex}`}>
-                <img src={image.url} alt={`Project image ${index + 1}`} />
-              </div>
-            ))
+          {dumy_images.map((image, index) => (
+            <img key={index} src={image} alt={`Dummy project image ${index + 1}`} />
           ))}
         </HeroCarousel>
+      
+        // <HeroCarousel {...settings}>
+        //   {projects.map((project, index) => (
+        //     project.images && project.images.map((image, imgIndex) => (
+              // <div key={`${index}-${imgIndex}`}>
+              //   <img src={image.url} alt={`Project image ${index + 1}`} />
+              // </div>
+        //     ))
+        //   ))}
+        // </HeroCarousel> 
       )}
     </HeroContainer>
 

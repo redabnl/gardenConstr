@@ -1,192 +1,237 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Form } from 'react-bootstrap';
 import styled from 'styled-components';
 
-// Styled components
-const StyledFormWrapper = styled.div`
+const ContactFormContainer = styled.div`
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 `;
 
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-`;
-
-const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-
-  label {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-    color: #333;
-  }
-`;
-
-const FormControl = styled.input`
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 5px;
+const InputField = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
   border: 1px solid #ccc;
-  outline: none;
-  transition: border-color 0.3s;
+`;
 
-  &:focus {
-    border-color: #28a745;
-  }
+const TextArea = styled.textarea`
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+`;
 
-  &[as='textarea'] {
-    resize: vertical;
-    min-height: 120px;
-  }
+const Select = styled.select`
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+`;
 
-  &[as='select'] {
-    padding: 0.75rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
+const CheckboxContainer = styled.div`
+  margin: 10px 0;
+`;
+
+const CheckboxLabel = styled.label`
+  margin-right: 10px;
+`;
+
+const FileInput = styled.input`
+  display: block;
+  margin: 10px 0;
 `;
 
 const SubmitButton = styled.button`
-  padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
-  background-color: #28a745;
-  color: white;
+  width: 100%;
+  padding: 15px;
+  background-color: #000;
+  color: #fff;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #218838;
-  }
 `;
-
-
 
 function ContactForm() {
   const [formData, setFormData] = useState({
     client_name: '',
     email: '',
     phone_number: '',
-    service_id: '',  // Now we store the service ID
-    message: ''
+    service_id: '',
+    message: '',
+    address: '',
+    length_width: '',
+    start_time: '',
+    note: '',
+    material: [],
+    source: '',
+    file: null,
   });
 
   const [services, setServices] = useState([]);
-  const [successMessage, setSuccessMessage] = useState('');  // For success messages
-  const [errorMessage, setErrorMessage] = useState('');      // For error messages
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  // Fetch services when component mounts
   useEffect(() => {
+    // Fetch services from backend
     const fetchServices = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/services');
-        setServices(response.data);  // Assuming the backend returns an array of services
-        
+        setServices(response.data);
       } catch (error) {
         console.error('Error fetching services:', error);
-        setErrorMessage('');
+        setErrorMessage('Failed to load services');
       }
     };
-
     fetchServices();
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, file: e.target.files[0] });
+  };
+
+  const handleMaterialChange = (e) => {
+    const { value, checked } = e.target;
+    setFormData((prevData) => {
+      let updatedMaterials = prevData.material;
+      if (checked) {
+        updatedMaterials = [...updatedMaterials, value];
+      } else {
+        updatedMaterials = updatedMaterials.filter((item) => item !== value);
+      }
+      return { ...prevData, material: updatedMaterials };
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:5000/api/inquiries', formData);
+      setSuccessMessage('Your inquiry was sent successfully, we will get back to you later');
       console.log('Inquiry sent:', response.data);
-      setSuccessMessage('your inquiry was sent succesfully, we will get back to you later');
-      setErrorMessage('');
     } catch (error) {
-      console.error('Error sending inquiry:', error);
-      setErrorMessage('');
+      setErrorMessage('Failed to send inquiry');
     }
   };
 
   return (
-    <StyledFormWrapper>
-      <h2>Contact Us</h2>
-      <StyledForm onSubmit={handleSubmit}>
-        <FormGroup>
-          <label htmlFor="client_name">Name</label>
-          <FormControl
-            type="text"
-            name="client_name"
-            value={formData.client_name}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
+    <ContactFormContainer>
+      <form onSubmit={handleSubmit}>
+        <h2>Contact Us</h2>
+        <InputField
+          type="text"
+          name="client_name"
+          placeholder="Nom/Name"
+          value={formData.client_name}
+          onChange={handleInputChange}
+          required
+        />
+        <InputField
+          type="email"
+          name="email"
+          placeholder="Adresse courriel/Email"
+          value={formData.email}
+          onChange={handleInputChange}
+          required
+        />
+        <InputField
+          type="text"
+          name="phone_number"
+          placeholder="Cellulaire/Cell Phone"
+          value={formData.phone_number}
+          onChange={handleInputChange}
+        />
+        <InputField
+          type="text"
+          name="address"
+          placeholder="Adresse/Address"
+          value={formData.address}
+          onChange={handleInputChange}
+        />
+        <InputField
+          type="text"
+          name="length_width"
+          placeholder="Quelle est la longueur et la largeur approximatives du patio?"
+          value={formData.length_width}
+          onChange={handleInputChange}
+        />
+        
+          {/* <label>Type de matériaux que vous aimeriez utiliser?</label>
+          <CheckboxLabel>
+            <input type="checkbox" value="Composite" onChange={handleMaterialChange} /> Composite
+          </CheckboxLabel>
+          <CheckboxLabel>
+            <input type="checkbox" value="Indécise" onChange={handleMaterialChange} /> Indécise
+          </CheckboxLabel>
+          <CheckboxLabel>
+            <input type="checkbox" value="Bois traité" onChange={handleMaterialChange} /> Bois traité
+          </CheckboxLabel>
+          <CheckboxLabel>
+            <input type="checkbox" value="Cèdre" onChange={handleMaterialChange} /> Cèdre
+          </CheckboxLabel> */}
+        
+        <label htmlFor="service_id">Select a Service</label>
+        <select
+          name="service_id"
+          value={formData.service_id}
+          onChange={handleInputChange}
+        >
+          <option value="">Select a service</option>
+          {services.map((service) => (
+            <option key={service._id} value={service._id}>
+              {service.title}
+            </option>
+          ))}
+        </select>
 
-        <FormGroup>
-          <label htmlFor="email">Email</label>
-          <FormControl
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
+        
+        
+        <InputField
+          type="text"
+          name="start_time"
+          placeholder="Date idéale de commencement"
+          value={formData.start_time}
+          onChange={handleInputChange}
+        />
 
-        <FormGroup>
-          <label htmlFor="phone_number">Phone Number</label>
-          <FormControl
-            type="text"
-            name="phone_number"
-            value={formData.phone_number}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
+        <Select name="source" onChange={handleInputChange}>
+          <option value="">Comment avez-vous pris connaissance de Gazon Nordic?</option>
+          <option value="Facebook">Facebook</option>
+          <option value="Instagram">Instagram</option>
+          <option value="Recommendation">Recommendation</option>
+          
+        </Select>
 
-        <FormGroup>
-          <label htmlFor="service_id">Select a Service</label>
-          <FormControl as="select" name="service_id" value={formData.service_id} onChange={handleChange} required>
-            <option value="">Select a service</option>
-            {services.map((service) => (
-              <option key={service._id} value={service._id}>
-                {service.title}
-              </option>
-            ))}
-          </FormControl>
-        </FormGroup>
+        <TextArea
+          name="note"
+          placeholder="Note (optional)"
+          value={formData.note}
+          onChange={handleInputChange}
+        />
 
-        <FormGroup>
-          <label htmlFor="message">Message</label>
-          <FormControl
-            as="textarea"
-            name="message"
-            value={formData.message}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
+        <FileInput type="file" name="file" onChange={handleFileChange} />
 
-        <SubmitButton type="submit">Submit</SubmitButton>
-      </StyledForm>
-    </StyledFormWrapper>
+        <SubmitButton type="submit">Envoyer/Submit</SubmitButton>
+      </form>
+      {successMessage && <p>{successMessage}</p>}
+      {errorMessage && <p>{errorMessage}</p>}
+    </ContactFormContainer>
   );
-};
+}
 
 export default ContactForm;

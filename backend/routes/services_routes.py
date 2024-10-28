@@ -1,3 +1,4 @@
+import os
 from flask import Blueprint, jsonify
 from ..models.services_model import get_all_services, get_service_by_id
 from bson import json_util, ObjectId
@@ -26,6 +27,28 @@ def get_single_service(service_id):
         return jsonify({"error": "Service not found"}), 404
     except Exception as e :
         return jsonify({"error": str(e)}), 500
+    
+# @services_routes.route('/api/service_images/<service_id>', methods=['GET'])
+# def get_service_images(service_id):
+#     # Fetch service details from the database based on the service_id
+#     service = get_service_by_id(service_id)  # Your existing function
+#     if not service:
+#         return jsonify({"error": "Service not found"}), 404
+
+#     gallery_path = service.get('gallery_path')
+#     if not gallery_path:
+#         return jsonify({"error": "No gallery path specified"}), 400
+
+#     # Ensure the directory exists
+#     full_path = os.path.join(os.getcwd(), 'frontend/public', gallery_path)
+#     if not os.path.exists(full_path):
+#         return jsonify({"error": "Directory not found"}), 404
+
+#     # List files in the directory
+#     images = [f for f in os.listdir(full_path) if os.path.isfile(os.path.join(full_path, f))]
+#     image_urls = [f"{gallery_path}/{image}" for image in images]
+
+#     return jsonify({"images": image_urls}), 200
     
 
 # @services_routes.route('/api/services', methods=['GET'])

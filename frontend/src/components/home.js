@@ -3,8 +3,10 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import HeroSection from './hero';
-import ServicesSection from './services_catg';
+import ServicesCategories from './services_catg';
+import FeaturedProjects from './featured_projects';
 import Conclusion from './conclusion';
+import Testimonials from './testimonials';
 import Footer from './footer';
 import Banner from './banner';
 // import FeaturedProjects from './featured_projects';
@@ -287,23 +289,7 @@ const ProjectHover = styled.div`
         opacity: 1;
     }
 `;
-const ViewAllIcon = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 24px;
-  background-color: #333;
-  color: white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: 0 auto;
-  cursor: pointer;
-  &:hover {
-    background-color: #555;
-    transition: 0.2s;
-  }
-`;
+
 
 const Title = styled.h2`
   font-size: 2.5rem;
@@ -353,22 +339,7 @@ const Title = styled.h2`
   // }, []);
 
 const Home = () => {
-  const [projects, setProjects] = useState([]);
-  const [project, setSelectedProject] = useState(null)
 
-    useEffect(() => {
-        const fetchProjects = async () => {
-            try {
-                const response = await axios.get('http://localhost:5000/api/projects');
-                setProjects(response.data.slice(0,5));
-                console.log('Projects fetched successfully:', response.data);
-            } catch (error) {
-                console.error('Error fetching projects:', error);
-            }
-        };
-
-        fetchProjects();
-    }, []);
 
 
   return (
@@ -376,49 +347,33 @@ const Home = () => {
       <div >
         <HeroSection />
       </div>
-      <ServicesSection />
+      
+      <ServicesCategories />
 
-{/* <FeaturedProjects/> */}
-      {/* featured projects */}
       <Title>Our Featured Projects</Title>
-      {/* <FeaturedProjects/> */}
+
+
+      <FeaturedProjects />
+      
       
 
-      <GridContainer>
-        {projects.slice(0, 3).map((project, index) => (
-          <GridItem key={index}>
-            <ProjectGrid onClick={() => setSelectedProject(project)}>
-              <ProjectImage
-                src={project.gallery_images[0]}
-                alt={project.title}
-              />
-              <ProjectHover>
-                <h3>{project.title}</h3>
-                <p>{project.brief}</p>
-              </ProjectHover>
-            </ProjectGrid>
-          </GridItem>
-        ))}
-      </GridContainer>
 
-        {projects.length > 3 && (
-          <ViewAllIcon href="/projects" aria-label="View All Projects">
-            <i className="bi bi-briefcase-fill" /> {/* FontAwesome grid icon */}
-          </ViewAllIcon>
-        )}
+
+
 
       <Conclusion />
             
 
-
-          {/* CTA Section */}
-        <CTASection>
+      <Testimonials />
+      {/* CTA Section */}
+      <CTASection>
         <Container>
           <h2>Ready to Start Your Project?</h2>
           <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
           <ButtonPrimary href="/contact">Contact Us</ButtonPrimary>
         </Container>
       </CTASection>
+      
       <Banner />
       <Footer/>
 
@@ -428,7 +383,7 @@ const Home = () => {
         );
       };
 
-      export default Home;
+ export default Home;
 
 
 

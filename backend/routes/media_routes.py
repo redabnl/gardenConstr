@@ -1,7 +1,7 @@
 import datetime
 import os
 from bson import ObjectId
-from flask import current_app as app
+from flask import abort, current_app as app
 from werkzeug.utils import secure_filename
 from flask import Blueprint, request, jsonify
 from ..models.media_model import UPLOAD_FOLDER, save_media, get_media_by_associated_id, handle_media_upload
@@ -20,6 +20,57 @@ def allowed_file(filename):
     allowed = '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
     print(f"Allowed file: {allowed}")
     return allowed
+
+
+# @media_routes.route('/api/service_images/<path:folder>', methods=['GET'])
+# def get_service_images(folder):
+#     base_dir = os.path.join(app.root_path, 'frontend/public')  # Adjust if your images are stored elsewhere
+#     gallery_folder = os.path.join(base_dir, folder)
+#     print(f"Base directory: {base_dir}")
+#     print(f"Gallery folder path: {gallery_folder}")
+
+
+#     # Check if the folder exists
+#     if not os.path.exists(gallery_folder):
+#         return jsonify({"error": "Gallery folder not found"}), 404
+    
+   
+#     # List all image files in the folder
+#     images = [
+#         f"/{folder}/{file}"
+#         for file in os.listdir(gallery_folder)
+#         if os.path.isfile(os.path.join(gallery_folder, file)) and file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+#     ]
+    
+#     return jsonify(images), 200
+
+
+@media_routes.route('/api/service_images/<path:folder>', methods=['GET'])
+def get_service_images(folder):
+    try:
+        base_dir = os.path.join(app.root_path, 'static', 'images', 'services') # 
+        gallery_folder = os.path.join(base_dir, folder)
+        
+        # Print the constructed path to verify
+        print(f"Full gallery folder path: {gallery_folder}")
+
+        # Check if the folder exists
+        if not os.path.exists(gallery_folder):
+            print("Gallery folder not found")
+            return jsonify({"error": "Gallery folder not found"}), 404
+
+        # List all image files in the folder
+        images = [
+            f"/static/images/services/{folder}/{file}"
+            for file in os.listdir(gallery_folder)
+            if os.path.isfile(os.path.join(gallery_folder, file)) and file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif'))
+        ]
+        return jsonify(images), 200
+    except Exception as e:
+        print("Error encountered:", e)
+        return jsonify({"error": "Internal server error"}), 500
+
+
 
 
 #######################################################################

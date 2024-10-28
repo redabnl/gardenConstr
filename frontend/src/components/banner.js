@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const BannerContainer = styled.div`
-  background: url('path/to/your/background-image.jpg') no-repeat center center;
+  background: url('') no-repeat center center;
   background-size: cover;
   padding: 50px 20px;
   text-align: center;

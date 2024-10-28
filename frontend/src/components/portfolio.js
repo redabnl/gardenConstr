@@ -1,154 +1,49 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
-import Conclusion from "./conclusion";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import PortfolioIntro from './PortfolioIntro';
+import ProjectFilter from './ProjectFilter';
+import ProjectGallery from './ProjectGallery';
 
+function PortfolioPage() {
+    const [projects, setProjects] = useState([]);
+    const [filteredProjects, setFilteredProjects] = useState([]);
+    const [filter, setFilter] = useState('All'); // Initial filter
 
+    useEffect(() => {
+        // Fetch projects from the database
+        const fetchProjects = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/projects');
+                setProjects(response.data);
+                setFilteredProjects(response.data); // Set initial projects
+            } catch (error) {
+                console.error("Error fetching projects:", error);
+            }
+        };
+        fetchProjects();
+    }, []);
 
-// const GridContainer = styled.div`
-//   display: grid;
-//   grid-template-columns: 2fr 1fr; /* Two-thirds for the images, one-third for details */
-//   gap: 20px;
-//   padding: 20px;
-//   @media (max-width: 900px) {
-//     grid-template-columns: 1fr; /* Stack on smaller screens */
-//   }
-// `;
-const GridContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    margin: 0 auto;
-`;
-
-
-const GridItem = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Makes the grid responsive */
-  gap: 20px;
-`;
-
-const ProjectGrid = styled.div`
-  position: relative;
-  overflow: hidden;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.05);
-    transition: 0.3s ease;
-  }
-`;
-
-const ProjectImage = styled.img`
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  transition: all 0.3s ease-in-out;
-`;
-
-const ProjectHover = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  opacity: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-  transition: opacity 0.3s ease-in-out;
-  ${ProjectGrid}:hover & {
-    opacity: 1;
-  }
-`;
-
-const ProjectDetails = styled.div`
-  background-color: #333;
-  color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  height: fit-content;
-  @media (max-width: 900px) {
-    margin-top: 20px;
-  }
-`;
-
-
-
-
-
-const Portfolio = () => {
-  const [projects, setProjects] = useState([]);
-  const [filter, setFilter] = useState("all");
-  const [selectedProject, setSelectedProject] = useState(null); // State to store selected project
-
-  const handleSelectProject = (project) => {
-    setSelectedProject(project);
-  };
-
-  useEffect(() => {
-    const fetchProjects = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/projects/portfolio");
-        setProjects(response.data);
-        console.log(`image paths fetched in  the frontend : ${response.data.gallery_images}`)
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
+    // Handle filtering based on category
+    const handleFilterChange = (category) => {
+        setFilter(category);
+        if (category === 'All') {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(projects.filter(project => project.category === category));
+        }
     };
 
-    fetchProjects();
-  }, []);
-
-// <ProjectImage src={project.gallery_images['0']} alt={project.title} />
-
-return (
-    <GridContainer>
-      <GridItem>
-        {projects.map((project, index) => (
-          <ProjectGrid key={index} onClick={() => setSelectedProject(project)}>
-            <ProjectImage
-              src={project.images[0]['url']} 
-              alt={project.title}
-            />
-            <ProjectHover>
-              <h3>{project.title}</h3>
-              <p>{project.brief}</p>
-            </ProjectHover>
-          </ProjectGrid>
-        ))}
-      </GridItem>
-  
-      <ProjectDetails>
-        {selectedProject ? (
-          <>
-            <h2>{selectedProject.title}</h2>
-            <p>{selectedProject.description}</p>
-            <p>{selectedProject.overview}</p>
-            <p>Materials: {selectedProject.materials}</p>
-            <p>Status: {selectedProject.status || "we do that"}</p>
-          </>
-        ) : (
-          <p>Select a project to view details</p>
-        )}
-      </ProjectDetails>
-    </GridContainer>
-    
-  );
-  
+    return (
+        <div>
+            <PortfolioIntro />
+            <ProjectFilter filter={filter} onFilterChange={handleFilterChange} />
+            <ProjectGallery projects={filteredProjects} />
+        </div>
+    );
 }
 
-export default Portfolio;
+export default PortfolioPage;
+
 
 //     <PortfolioContainer>
 //     <Heading>Our Completed Projects</Heading>
