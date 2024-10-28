@@ -24,3 +24,16 @@ __pycache__/
 .vscode/
 .idea/
 .DS_Store
+
+# Node modules and lock files
+node_modules/
+package-lock.json
+yarn.lock
+
+# Python cache files
+__pycache__/
+
+# Image files
+*.jpg
+
+.pyc
