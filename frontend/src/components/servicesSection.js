@@ -191,11 +191,12 @@ const GridContainer = styled.div`
   grid-template-rows: repeat(2, auto); /* 2 rows */
   gap: 20px; /* Space between grid items */
   padding: 10px;
+  
 `;
 const ServiceCard = styled.div`
   position: relative;
   width: 100%;
-  height: 250px; /* Set a fixed height */
+  height: 100%; /* Set a fixed height */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -203,9 +204,8 @@ const ServiceCard = styled.div`
 
 const ProjectImage = styled.img`
   width: 100%;
-  height: 100%;
   object-fit: cover;
-  position: center;
+  position: relative;
   display: block;
 `;
 

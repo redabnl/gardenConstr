@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import PortfolioIntro from './PortfolioIntro';
-import ProjectFilter from './ProjectFilter';
-import ProjectGallery from './ProjectGallery';
+import PortfolioIntro from './intro_portfolio';
+import ProjectFilter from './projects_filter';
+import ProjectGallery from './projects_gallery';
+
 
 function PortfolioPage() {
     const [projects, setProjects] = useState([]);
@@ -43,6 +44,7 @@ function PortfolioPage() {
 }
 
 export default PortfolioPage;
+
 
 
 //     <PortfolioContainer>

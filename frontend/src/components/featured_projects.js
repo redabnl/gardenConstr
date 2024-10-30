@@ -98,6 +98,7 @@ const ProjectCard = ({ project }) => {
     );
   };
 
+
 const FeaturedProjects = () => {
     const [projects, setProjects] = useState([]);
     const [project, setSelectedProject] = useState(null)
@@ -106,7 +107,7 @@ const FeaturedProjects = () => {
           const fetchProjects = async () => {
               try {
                   const response = await axios.get('http://localhost:5000/api/projects');
-                  setProjects(response.data.slice(0,5));
+                  setProjects(response.data.slice(0,3));
                   console.log('Projects fetched successfully:', response.data);
               } catch (error) {
                   console.error('Error fetching projects:', error);
@@ -133,16 +134,9 @@ const FeaturedProjects = () => {
             </ProjectGrid>
           </GridItem>
         ))}
-      </GridContainer>       
-        {/* <GridContainer>
-          {(projects.slice ? projects.slice(0, 3) : []).map((project, index) => (
-            <ProjectCard
-              key={index}
-              project={project}
-              onClick={() => setSelectedProject(project)}
-            />
-          ))}
-        </GridContainer> */}
+      </GridContainer>   
+          {/* here comes the section projects images 'ProjectCards' in cards displaying with some text details appearing with hover actions  */}
+        
         {projects.length > 3 && (
           <ViewAllIcon href="/projects" aria-label="View All Projects">
             <i className="bi bi-briefcase-fill" /> {/* FontAwesome grid icon */}
@@ -153,5 +147,16 @@ const FeaturedProjects = () => {
   };
   
   export default FeaturedProjects;
+
+
+// {/* <GridContainer>
+//           {(projects.slice ? projects.slice(0, 3) : []).map((project, index) => (
+//             <ProjectCard
+//               key={index}
+//               project={project}
+//               onClick={() => setSelectedProject(project)}
+//             />
+//           ))}
+//         </GridContainer> */}
   
 

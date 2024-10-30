@@ -16,54 +16,6 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 
 
-// const ServicesContainer = styled.div`
-//   background-color: #f9f9f9;
-//   padding: 60px 20px;
-//   text-align: center;
-// `;
-
-// const ServiceCardContainer = styled.div`
-//   display: grid;
-//   grid-template-columns: repeat(2, 1fr);  // You can change the value to 3 to match the desired layout
-//   gap: 40px;
-//   max-width: 1200px;
-//   margin: 0 auto;
-// `;
-
-// const ServiceCard = styled.div`
-//   position: relative;
-//   background-color: #fff;
-//   border-radius: 10px;
-//   overflow: hidden;
-//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-//   height: 400px;  // Adjust height based on your preference
-// `;
-
-// const ServiceImage = styled.img`
-//   width: 100%;
-//   height: 100%;
-//   object-fit: cover;
-// `;
-
-// const ServiceOverlay = styled.div`
-//   position: absolute;
-//   bottom: 0;
-//   background: rgba(0, 0, 0, 0.5);
-//   width: 100%;
-//   color: #fff;
-//   padding: 20px;
-//   text-align: left;
-// `;
-
-// const ServiceTitle = styled.h3`
-//   font-size: 24px;
-//   margin: 0;
-// `;
-
-// const ServiceDescription = styled.p`
-//   font-size: 16px;
-//   margin: 10px 0;
-// `;
 
 
 
@@ -223,6 +175,56 @@ const Services = () => {
 };
 
 export default Services;  
+
+
+// const ServicesContainer = styled.div`
+//   background-color: #f9f9f9;
+//   padding: 60px 20px;
+//   text-align: center;
+// `;
+
+// const ServiceCardContainer = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);  // You can change the value to 3 to match the desired layout
+//   gap: 40px;
+//   max-width: 1200px;
+//   margin: 0 auto;
+// `;
+
+// const ServiceCard = styled.div`
+//   position: relative;
+//   background-color: #fff;
+//   border-radius: 10px;
+//   overflow: hidden;
+//   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   height: 400px;  // Adjust height based on your preference
+// `;
+
+// const ServiceImage = styled.img`
+//   width: 100%;
+//   height: 100%;
+//   object-fit: cover;
+// `;
+
+// const ServiceOverlay = styled.div`
+//   position: absolute;
+//   bottom: 0;
+//   background: rgba(0, 0, 0, 0.5);
+//   width: 100%;
+//   color: #fff;
+//   padding: 20px;
+//   text-align: left;
+// `;
+
+// const ServiceTitle = styled.h3`
+//   font-size: 24px;
+//   margin: 0;
+// `;
+
+// const ServiceDescription = styled.p`
+//   font-size: 16px;
+//   margin: 10px 0;
+// `;
 
 
 

@@ -4,7 +4,29 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 
+
+
+
 const ServicesCategories = () => {
+
+  // Dummy data for testing
+  const outdoor = [
+    {
+      title: 'Indoor Services',
+      description: 'Transform your home with our comprehensive indoor renovation and finishing services. From remodeling to finishing touches, we make your indoor spaces shine with style and quality.',
+      // imageUrl: 'img/default.jpg', // Replace with an actual image path or URL
+      link: '/services'
+    }
+  ];
+
+  const indoor = [
+    {
+      title: 'Outdoor Services',
+      description: 'Create stunning outdoor environments with our landscaping and construction services. We design functional and beautiful outdoor spaces that enhance your property.',
+      // imageUrl: 'img/default.jpg', // Replace with an actual image path or URL
+      link: '/services'
+    }
+  ];
     // States for outdoor and indoor services
   const [outdoorServices, setOutdoorServices] = useState([]);
   const [indoorServices, setIndoorServices] = useState([]);
@@ -34,46 +56,33 @@ const ServicesCategories = () => {
 
     fetchServices();
   }, []);
-//   // Dummy data for testing
-//   const outdoorServices = [
-//     {
-//       title: 'Deck Building',
-//       description: 'We offer high-quality custom decks.',
-//       imageUrl: 'img/default.jpg', // Replace with an actual image path or URL
-//       link: '/services'
-//     }
-//   ];
 
-//   const indoorServices = [
-//     {
-//       title: 'Indoor Renovations',
-//       description: 'Transform your interiors with our renovation services.',
-//       imageUrl: 'img/default.jpg', // Replace with an actual image path or URL
-//       link: '/services'
-//     }
-//   ];
 
   return (
     <Container>
       <Title>Our Services</Title>
       <MainSection>
         {/* Outdoor Services Card */}
-        {outdoorServices.length > 0 && (
+        {outdoor.length > 0 && (
           <ServiceCard>
-            <CardTitle>{outdoorServices[0].title}</CardTitle>
+            <CardTitle>{outdoor.title}</CardTitle>
             <CardImage src={'img/outdoor_sketch.jpg'} alt="Outdoor Service" />
-            <CardDescription>{outdoorServices[0].description}</CardDescription>
-            <CardButton to={`/services/${outdoorServices[0]._id}`}>Explore Outdoor</CardButton>
+            <CardDescription>
+              Create stunning outdoor environments with our landscaping and construction services. We design functional and beautiful outdoor spaces that enhance your property.
+            </CardDescription>
+            <CardButton to={`/services`}>Explore Outdoor</CardButton>
           </ServiceCard>
         )}
         
         {/* Indoor Services Card */}
-        {indoorServices.length > 0 && (
+        {indoor.length > 0 && (
           <ServiceCard>
-            <CardTitle>{indoorServices[0].title}</CardTitle>
+            <CardTitle>{indoor.title}</CardTitle>
             <CardImage src={ 'img/indoor_sketch.png'} alt="Indoor Service" />
-            <CardDescription>{indoorServices[0].description}</CardDescription>
-            <CardButton to={`/services/${indoorServices[0]._id}`}>Explore Indoor</CardButton>
+            <CardDescription>
+              Transform your home with our comprehensive indoor renovation and finishing services. From remodeling to finishing touches, we make your indoor spaces shine with style and quality.
+            </CardDescription>            
+            <CardButton to={`/services`}>Explore Indoor</CardButton>
           </ServiceCard>
         )}
       </MainSection>
@@ -140,3 +149,5 @@ const CardButton = styled(Link)`
 
 // Export the component
 export default ServicesCategories;
+
+

@@ -18,36 +18,106 @@ import axios from 'axios';
 //   top: 50%;
 //  left: 50%;
 
+// const HeroText = styled.div`
+//   position: absolute;
+//   text-align: center;
+//   transform: translate(-50%, -50%);
+//   top: 50%;
+//   left: 50%;
+//   background: rgba(0, 0, 0, 0.6);
+//   color: white;
+//   z-index: 2;
+//   border-radius: 8px;
+//   padding: 20px;
+//   max-width: 80%;
+//   width: auto;
+
+//   h1 {
+//     font-size: 4rem;
+//     margin-bottom: 20px;
+//     color: white;
+//     @media (max-width: 768px) {
+//       font-size: 2.5rem;
+//     }
+//   }
+
+//   p {
+//     font-size: 1.5rem;
+//     color: #f0f0f0;
+//     margin-bottom: 30px;
+//     @media (max-width: 768px) {
+//       font-size: 1rem;
+//     }
+//   }
+// `;
+
+
+// const HeroButton = styled(Link)`
+//   background-color: #28a745;
+//   padding: 10px 20px;
+//   color: white;
+//   border: none;
+//   border-radius: 5px;
+//   font-size: 1rem;
+//   text-decoration: none;
+//   margin-top: 20px;
+//   cursor: pointer;
+//   transition: background-color 0.3s;
+  
+//   &:hover {
+//     background-color: #218838;
+//   }
+// `;
 const HeroText = styled.div`
   position: absolute;
   text-align: center;
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  background: rgba(0, 0, 0, 0.6);
+  width: auto;
+  background: rgba(0, 0, 0, 0.7); // Slightly less opacity for a cleaner look
   color: white;
   z-index: 2;
-  border-radius: 8px;
-  padding: 20px;
-  max-width: 80%;
-  width: auto;
+  border-radius: 12px; // Smoother rounded corners
+  padding: 30px 40px; // Increased padding for a balanced look
 
   h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
     margin-bottom: 20px;
-    color: white;
+    color: #FFFFFF; // Pure white for the header
     @media (max-width: 768px) {
       font-size: 2.5rem;
     }
   }
 
   p {
-    font-size: 1.5rem;
-    color: #f0f0f0;
+    font-size: 1.2rem;
+    color: #F0F0F0; // Light grey for body text
+    line-height: 1.6;
     margin-bottom: 30px;
+    max-width: 600px;
     @media (max-width: 768px) {
-      font-size: 1rem;
+      font-size: 1.1rem;
     }
+  }
+`;
+
+const HeroButton = styled(Link)`
+  display: inline-block;
+  background: linear-gradient(135deg, #32a852, #3fbf76); // Gradient for more depth
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  // transition: background 0.3s ease, transform 0.2s ease;
+
+
+  &:hover {
+    background: #2d9c4b; // Slightly darker on hover
+    // transform: scale(.05); // Small scaling effect on hover
   }
 `;
 
@@ -81,22 +151,6 @@ const HeroContainer = styled.div`
   align-items: center;
   overflow: hidden;
 `;
-const HeroButton = styled(Link)`
-  background-color: #28a745;
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  text-decoration: none;
-  margin-top: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  
-  &:hover {
-    background-color: #218838;
-  }
-`;
 
 const HeroSection = () => {
 
@@ -113,24 +167,25 @@ const HeroSection = () => {
     arrows: true
   };  
   // Dummy images for the carousel (you can replace these later with dynamic images from the database)  
+  // '/img/services/deck1.png',
+  // '/img/services/deckWood.jpg',
+  // '/img/services/garden.jpg',
+  // '/img/services/renovation_1.jpg',
+  // '/img/services/renovation_2.jpg',
+  // '/img/services/renovation_3.jpg',
+  // '/img/services/renovation_4.jpg'
+
+
+
+// {project.images.map((image, index) => (
+//   <img key={index} src={image.url} alt={`Project image ${index + 1}`} />
+// ))}
+
   const dumy_images = [
     '/img/hero/hero_1.jpg',
     '/img/hero/hero_2.jpg',
     '/img/hero/hero_3.jpg'
   ];
-    // '/img/services/deck1.png',
-    // '/img/services/deckWood.jpg',
-    // '/img/services/garden.jpg',
-    // '/img/services/renovation_1.jpg',
-    // '/img/services/renovation_2.jpg',
-    // '/img/services/renovation_3.jpg',
-    // '/img/services/renovation_4.jpg'
-
-  
-
-  // {project.images.map((image, index) => (
-  //   <img key={index} src={image.url} alt={`Project image ${index + 1}`} />
-  // ))}
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -151,10 +206,11 @@ const HeroSection = () => {
       <HeroText>
         <h1>Welcome to Our Website</h1>
         <p>
-          We provide top-quality services in garden and deck construction.
-          Explore our Portfolio and let us help you transform your outdoor spaces.
+        Transforming your vision into reality, we specialize in premium garden, landscape, and deck construction services. 
+        With a passion for creating outdoor spaces that blend beauty, functionality, and sustainability, we work alongside you to bring your dream projects to life. 
+        Browse our services and let us help you make the most of your outdoor space.
         </p>
-        <HeroButton to="/projects" className='cta-button'>View Our Done Projects</HeroButton>
+        <HeroButton to="/services" className='cta-button'>Browse services</HeroButton>
       </HeroText>
 
       {/* Display the images in the carousel */}

@@ -12,7 +12,7 @@ import AddService from './components/admin/addService';
 import AddProject from './components/admin/addProject';
 import ManageProjects from './components/admin/manageProjects';
 import ManageInquiries from './components/admin/manageInquiries';
-import Portfolio from './components/portfolio';
+import PortfolioPage from './components/portfolio';
 import ProjectSlider from './components/projectSlider';
 import ProjectDetails from './components/projectDetails';
 import ServicesDisplay from './components/servicesDisplay';
@@ -32,7 +32,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/hero" element={<Hero />} />
         <Route path="/services" element={<Services />} />
-        <Route path="/projects"  element={<Portfolio />} />
+        <Route path="/projects/portfolio"  element={<PortfolioPage />} />
         <Route path="/projects/:id" element={<ProjectDetails />} />
         <Route path="/contact" element={<ContactForm />} />
 
