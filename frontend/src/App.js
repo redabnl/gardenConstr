@@ -16,6 +16,7 @@ import PortfolioPage from './components/portfolio';
 import ProjectSlider from './components/projectSlider';
 import ProjectDetails from './components/projectDetails';
 import ServicesDisplay from './components/servicesDisplay';
+import NewProject from './components/admin/newProject'
 
 
 import "slick-carousel/slick/slick.css";
@@ -41,6 +42,8 @@ function App() {
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
         {/* PROJECTS MANAGEMENT  */}
         <Route path="/admin/add-project" element={<AddProject />} />
+        <Route path="/admin/new-project" element={<NewProject />} />
+
         <Route path="/admin/manage-projects" element={<ManageProjects />} />
         <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
 

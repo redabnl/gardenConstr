@@ -3,6 +3,9 @@ import axios from 'axios';
 import PortfolioIntro from './intro_portfolio';
 import ProjectFilter from './projects_filter';
 import ProjectGallery from './projects_gallery';
+// import ProjectDetails from './project_details';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 
 function PortfolioPage() {
@@ -16,12 +19,13 @@ function PortfolioPage() {
             try {
                 const response = await axios.get('http://localhost:5000/api/projects');
                 setProjects(response.data);
-                setFilteredProjects(response.data); // Set initial projects
+                // setFilteredProjects(response.data); // Set initial projects
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
         };
-        fetchProjects();
+        fetchProjects()
+        
     }, []);
 
     // Handle filtering based on category
@@ -40,8 +44,68 @@ function PortfolioPage() {
             <ProjectFilter filter={filter} onFilterChange={handleFilterChange} />
             <ProjectGallery projects={filteredProjects} />
         </div>
+        // <div>
+        // <ProjectFilter>
+        //   <button onClick={() => handleFilterChange("all")}>All</button>
+        //   <button onClick={() => handleFilterChange("Residential")}>Residential</button>
+        //   <button onClick={() => handleFilterChange("Commercial")}>Commercial</button>
+        //   <button onClick={() => handleFilterChange("Other")}>Other</button>
+        // </ProjectFilter>
+  
+        // <ProjectGrid>
+        //   {filteredProjects.map((project) => (
+        //     <ProjectCard key={project._id}>
+        //       <h2>{project.name}</h2>
+             
+        //     {project.images.map((image, index) => (
+        //       <div key={index}>
+        //         <img src={image.url} alt={project.title} />
+        //         <p>{image.description}</p>  
+        //       </div>
+        //     ))}
+        //     <div className="project-info">
+        //       <h3>{project.title}</h3>
+        //       <p>{project.description}</p>
+        //       <Link className="view-btn" to={`/projects/${project._id}`}>
+        //         View Details
+        //       </Link>
+        //     </div>
+        //   </ProjectCard>
+        //   ))}
+        // </ProjectGrid>
+        // </div>
     );
 }
+
+
+// Styled Components
+const ProjectGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+`;
+
+const ProjectCard = styled.div`
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  background-color: #fff;
+  text-align: center;
+`;
+
+const ProjectImage = styled.img`
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+`;
+
+const ProjectTitle = styled.h3`
+  font-size: 1.2rem;
+  color: #333;
+  padding: 10px;
+`;
 
 export default PortfolioPage;
 

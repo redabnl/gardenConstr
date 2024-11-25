@@ -21,7 +21,7 @@ const AdminDashboard = () => {
       {/* Projects Section */}
       <SectionHeading>Project Management</SectionHeading>
       <NavigationLinks>
-        <StyledLink to="/admin/add-project">Add New Projects</StyledLink>
+        <StyledLink to="/admin/new-project">Add New Projects</StyledLink>
         <StyledLink to="/admin/manage-projects">Project Management</StyledLink>
       </NavigationLinks>
 

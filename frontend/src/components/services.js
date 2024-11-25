@@ -137,7 +137,10 @@ const ServicesList = styled.div`
   width: 65%; /* Adjust as needed */
   padding: 20px;
 `;
-
+// -----------------------------------------------------
+// DESCRIPTION FOR CONCRETE 
+// Whether, its driveways and patios or sidewalks, planters and retaining walls the professional staff we dedicate to your projects are skilled in all facets of forming and prepping, as well as; placing and finishing of all types of concrete finishes.
+// ------------------------------------------------------
 
 
 

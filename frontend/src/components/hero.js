@@ -84,6 +84,7 @@ const HeroText = styled.div`
   h1 {
     font-size: 3.5rem;
     margin-bottom: 20px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     color: #FFFFFF; // Pure white for the header
     @media (max-width: 768px) {
       font-size: 2.5rem;
@@ -112,12 +113,13 @@ const HeroButton = styled(Link)`
   font-weight: bold;
   text-decoration: none;
   transition: background-color 0.3s;
-  // transition: background 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease-in-out;
+
 
 
   &:hover {
-    background: #2d9c4b; // Slightly darker on hover
-    // transform: scale(.05); // Small scaling effect on hover
+    background: #45a860; /* Slightly lighter green */
+    transform: translateY(-3px);
   }
 `;
 
@@ -150,6 +152,8 @@ const HeroContainer = styled.div`
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
+
 `;
 
 const HeroSection = () => {
@@ -204,7 +208,7 @@ const HeroSection = () => {
     <HeroContainer>
       <Overlay />
       <HeroText>
-        <h1>Welcome to Our Website</h1>
+        <h1>Welcome to Nordic Gazon</h1>
         <p>
         Transforming your vision into reality, we specialize in premium garden, landscape, and deck construction services. 
         With a passion for creating outdoor spaces that blend beauty, functionality, and sustainability, we work alongside you to bring your dream projects to life. 
