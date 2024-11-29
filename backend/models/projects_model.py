@@ -29,23 +29,32 @@ def get_all_projects_details():
 
 
 def serialize_project(project):
-    # Convert ObjectId to string
     project['_id'] = str(project['_id'])
-    
-    
-    # Convert any other ObjectId fields, like foreign keys, if they exist
-    if 'service_id' in project:
-        project['service_id'] = str(project['service_id'])
-    if 'testimonial_id' in project and project['testimonial_id'] is not None:
-        project['testimonial_id'] = str(project['testimonial_id'])
-
-    # If the project has arrays of ObjectIds (e.g., related images or media), convert those too
-    if 'images' in project:
-        for image in project['images']:
-            if 'id' in image:
-                image['id'] = str(image['id'])
-
+    project['service_id'] = str(project.get('service_id', ''))
+    project['testimonial_id'] = str(project.get('testimonial_id', ''))
+    project['images_folder'] = project.get('images_folder', '')
+    project['image_urls'] = project.get('image_urls', [])
     return project
+
+
+# def serialize_project(project):
+#     # Convert ObjectId to string
+#     project['_id'] = str(project['_id'])
+    
+    
+#     # Convert any other ObjectId fields, like foreign keys, if they exist
+#     if 'service_id' in project:
+#         project['service_id'] = str(project['service_id'])
+#     if 'testimonial_id' in project and project['testimonial_id'] is not None:
+#         project['testimonial_id'] = str(project['testimonial_id'])
+
+#     # If the project has arrays of ObjectIds (e.g., related images or media), convert those too
+#     if 'images' in project:
+#         for image in project['images']:
+#             if 'id' in image:
+#                 image['id'] = str(image['id'])
+
+    # return project
 
 
 def get_all_projects():
@@ -100,15 +109,13 @@ def get_all_projects():
 
 
         
-def get_project_id(project_id):
+def get_project_id(id):
     db = get_db()
     try:
-        project = db.projects.find_one({
-            "_id": ObjectId(project_id)
-        })
-        return project
+        # Convert string ID to ObjectId
+        return db.projects.find_one({"_id": ObjectId(id)})
     except Exception as e:
-        print(f"Error fetching project by ID: {e}")
+        print("Error fetching project by ID:", e)
         return None
 
 # Function to add a new project

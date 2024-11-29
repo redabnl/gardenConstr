@@ -21,6 +21,7 @@ import NewProject from './components/admin/newProject'
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import ProjectGallery from './components/projects_gallery';
 
 
 
@@ -34,6 +35,7 @@ function App() {
         <Route path="/hero" element={<Hero />} />
         <Route path="/services" element={<Services />} />
         <Route path="/projects/portfolio"  element={<PortfolioPage />} />
+        <Route path="/projects/gallery"  element={<ProjectGallery />} />
         <Route path="/projects/:id" element={<ProjectDetails />} />
         <Route path="/contact" element={<ContactForm />} />
 

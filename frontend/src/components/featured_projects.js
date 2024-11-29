@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { redirect } from 'react-router-dom';
 
 const GridContainer = styled.div`
   display: grid;
@@ -72,6 +74,16 @@ const ViewAllIcon = styled.a`
 
 const FeaturedProjects = () => {
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState([])
+  const navigate = useNavigate()
+
+
+
+  const handleProjectClick = (project) => {
+    setSelectedProject(project); // Set the selected project
+    redirect(`/projects/${project._id}`)
+
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -90,9 +102,14 @@ const FeaturedProjects = () => {
   return (
     <div>
       <GridContainer>
-        {projects.map((project, index) => (
-          <GridItem key={index}>
-            <ProjectGrid>
+        {projects.map((project, _id) => (
+          <GridItem 
+          key={project._id}
+          >
+            <ProjectGrid
+              
+              onClick={()=> handleProjectClick(project)}
+            >
               <ProjectImage
                 src={project.image_urls?.[0] || '/img/no_image.jpg'} // Fetch the first image or default
                 alt={project.title}

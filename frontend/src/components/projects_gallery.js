@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import { Navigate, redirect, useNavigate } from "react-router-dom";
 
 // Styled Components
 const GalleryContainer = styled.div`
@@ -100,7 +101,10 @@ const ProjectGallery = () => {
 
   const handleProjectClick = (project) => {
     setSelectedProject(project); // Set the selected project
+    navigate(`/projects/${project._id}`)
+
   };
+  const navigate = useNavigate()
 
   const handleBackToGallery = () => {
     setSelectedProject(null); // Clear the selected project
@@ -113,8 +117,8 @@ const ProjectGallery = () => {
           <BackButton onClick={handleBackToGallery}>&larr; Back to Gallery</BackButton>
           <h2>{selectedProject.title}</h2>
           <p>{selectedProject.description}</p>
-          <h4>Duration: {selectedProject.duration}</h4>
-          <h4>Materials:</h4>
+          <h4>Duration: {selectedProject.duration}</h4>  {/* to be rmoved */}
+          <h4>Materials:</h4>                            {/* to be rmoved */}
           <MaterialsList>
             {selectedProject.materials.map((material, index) => (
               <MaterialItem key={index}>{material}</MaterialItem>
@@ -144,6 +148,15 @@ const ProjectGallery = () => {
                   }
                   alt={project.title || "Project Image"}
                 />
+
+                {/* <ProjectImage
+                  src={
+                    project.image_urls && project.image_urls.length > 0
+                      ? project.image_urls[0]
+                      : "img/default_image.jpg"
+                  }
+                  alt={project.title || "Project Image"}
+                /> */}
                 <ProjectTitle>{project.title}</ProjectTitle>
               </ProjectCard>
             ))
@@ -155,6 +168,7 @@ const ProjectGallery = () => {
     </div>
   );
 };
+
 
 export default ProjectGallery;
 
