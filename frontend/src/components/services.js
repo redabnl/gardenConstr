@@ -8,6 +8,7 @@ import Banner from './banner';
 import ServicesSection from './servicesSection';
 import Testimonials from './testimonials';
 import ServiceCarousel from './service_carousel';
+import Footer from './footer';
 
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -142,6 +143,35 @@ const ServicesList = styled.div`
 // Whether, its driveways and patios or sidewalks, planters and retaining walls the professional staff we dedicate to your projects are skilled in all facets of forming and prepping, as well as; placing and finishing of all types of concrete finishes.
 // ------------------------------------------------------
 
+const CTASection = styled.section`
+  text-align: center;
+  margin-top: 50px;
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    color: #555;
+  }
+`;
+const ButtonPrimary = styled(Link)`
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  text-decoration: none;
+`;
+
+const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+`;
 
 
 const Services = () => {
@@ -173,6 +203,15 @@ const Services = () => {
       < Banner />
       <Testimonials/>
       <Conclusion />
+      {/* CTA Section */}
+      <CTASection>
+        <Container>
+          <h2>Ready to Start Your Project?</h2>
+          <p>Contact us today to get a free consultation on your next garden or deck construction project.</p>
+          <ButtonPrimary href="/contact">Contact Us</ButtonPrimary>
+        </Container>
+      </CTASection>
+      <Footer />
     </div>
   );
 };

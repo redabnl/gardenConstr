@@ -7,6 +7,7 @@ from .routes.inquiries_routes import inquiries_routes
 from .routes.projects_routes import projects_routes
 from .routes.admin_routes import admin_routes
 from .routes.media_routes import media_routes
+from .routes.testimonials_routes import testimonials_routes
 
 app = Flask(__name__, static_url_path='/static')
 CORS(app)
@@ -17,7 +18,7 @@ app.register_blueprint(inquiries_routes)
 app.register_blueprint(projects_routes)
 app.register_blueprint(admin_routes)
 app.register_blueprint(media_routes)
-
+app.register_blueprint(testimonials_routes)
 
 
 @app.route('/')

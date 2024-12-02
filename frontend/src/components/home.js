@@ -9,6 +9,8 @@ import Conclusion from './conclusion';
 import Testimonials from './testimonials';
 import Footer from './footer';
 import Banner from './banner';
+import { createGlobalStyle } from 'styled-components';
+
 // import FeaturedProjects from './featured_projects';
 
 
@@ -338,12 +340,23 @@ const Title = styled.h2`
   //   fetchServices();
   // }, []);
 
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: #e9ecef /* Light grey shade */
+    color: #333; /* Text color for better readability */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+  `;  
 const Home = () => {
 
 
 
   return (
     <div>
+      <GlobalStyle />
       <div >
         <HeroSection />
       </div>

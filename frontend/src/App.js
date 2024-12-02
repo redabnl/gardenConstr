@@ -23,40 +23,58 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ProjectGallery from './components/projects_gallery';
 
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: #e9ecef /* Light grey shade */
+    color: #333; /* Text color for better readability */
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+`;
+
 
 
 function App() {
   return (
     <Router>
-      <NavigationBar />
-      <Routes>  {/* Use Routes instead of Switch */}
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/hero" element={<Hero />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/projects/portfolio"  element={<PortfolioPage />} />
-        <Route path="/projects/gallery"  element={<ProjectGallery />} />
-        <Route path="/projects/:id" element={<ProjectDetails />} />
-        <Route path="/contact" element={<ContactForm />} />
-
-        {/* Admin Routes */}
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        {/* PROJECTS MANAGEMENT  */}
-        <Route path="/admin/add-project" element={<AddProject />} />
-        <Route path="/admin/new-project" element={<NewProject />} />
-
-        <Route path="/admin/manage-projects" element={<ManageProjects />} />
-        <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
-
-        {/* INQUIRIES MANAGEMENT */}
-        <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
+      <>
+        <GlobalStyle />
+        <NavigationBar />
         
-        {/* SERVICES MANAGEMENT  */}
+        
+        <Routes>  {/* Use Routes instead of Switch */}
+          
+          <Route path="/" element={<Home />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/hero" element={<Hero />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/projects/portfolio"  element={<PortfolioPage />} />
+          <Route path="/projects/gallery"  element={<ProjectGallery />} />
+          <Route path="/projects/:id" element={<ProjectDetails />} />
+          <Route path="/contact" element={<ContactForm />} />
 
-        <Route path="/admin/manage-services" element={<ManageServices />} />
-        <Route path="/admin/add-service" element={<AddService />} />
-      </Routes>
+          {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          {/* PROJECTS MANAGEMENT  */}
+          <Route path="/admin/add-project" element={<AddProject />} />
+          <Route path="/admin/new-project" element={<NewProject />} />
+
+          <Route path="/admin/manage-projects" element={<ManageProjects />} />
+          <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
+
+          {/* INQUIRIES MANAGEMENT */}
+          <Route path="/admin/manage-inquiries" element={<ManageInquiries />} />
+          
+          {/* SERVICES MANAGEMENT  */}
+
+          <Route path="/admin/manage-services" element={<ManageServices />} />
+          <Route path="/admin/add-service" element={<AddService />} />
+        </Routes>
+      </>
     </Router>
   );
 }
