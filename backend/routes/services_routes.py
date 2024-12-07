@@ -1,6 +1,6 @@
 import os
 from flask import Blueprint, jsonify
-from ..models.services_model import get_all_services, get_service_by_id
+from models.services_model import get_all_services, get_service_by_id
 from bson import json_util, ObjectId
 
 

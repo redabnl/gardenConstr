@@ -1,10 +1,10 @@
 from bson import ObjectId, errors
 from flask import Blueprint, request, jsonify
 import datetime
-from ..models.db import get_db, db
+from models.db import get_db, db
 from .auth_helpers import token_required
-from ..models.inquiries_model import save_inquiries, get_all_inquiries
-from ..models.services_model import get_service_by_name
+from models.inquiries_model import save_inquiries, get_all_inquiries
+from models.services_model import get_service_by_name
 
 inquiries_routes = Blueprint('inquiries_routes', __name__)
 

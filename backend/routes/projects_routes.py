@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, Blueprint, request, send_from_directory
-from ..models.projects_model import  get_project_id, get_all_projects_details, get_all_projects, serialize_project, save_project
+from models.projects_model import  get_project_id, get_all_projects_details, get_all_projects, serialize_project, save_project
 import os 
 
 projects_routes = Blueprint('projects_routes', __name__)

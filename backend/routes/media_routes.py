@@ -4,7 +4,7 @@ from bson import ObjectId
 from flask import abort, current_app as app
 from werkzeug.utils import secure_filename
 from flask import Blueprint, request, jsonify
-from ..models.media_model import UPLOAD_FOLDER, save_media, get_media_by_associated_id, handle_media_upload
+from models.media_model import UPLOAD_FOLDER, save_media, get_media_by_associated_id, handle_media_upload
 
 
 

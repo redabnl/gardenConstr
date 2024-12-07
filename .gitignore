@@ -37,3 +37,20 @@ __pycache__/
 *.jpg
 
 .pyc
+
+# Docker-specific files
+docker-compose.yml
+**/Dockerfile
+**/.dockerignore
+
+# Ignore nginx.conf
+frontend/nginx.conf
+
+# Ignore __init__.py files in specific directories
+backend/models/__init__.py
+backend/routes/__init__.py
+
+# (Optional) Ignore all __init__.py files globally if necessary
+**/__init__.py
+
+

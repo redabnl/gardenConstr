@@ -1,11 +1,11 @@
 from bson import ObjectId
 from werkzeug.security import generate_password_hash
-from ..models.db import get_db
-from ..models.projects_model import  get_project_id
+from models.db import get_db
+from models.projects_model import  get_project_id
 # from models.admin_users_model import create_admin_user, get_admin_by_username
-from ..models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
-from ..models.services_model import update_service_by_id, get_service_by_id, create_service
-from ..models.media_model import  save_media
+from models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
+from models.services_model import update_service_by_id, get_service_by_id, create_service
+from models.media_model import  save_media
 import jwt
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -14,7 +14,7 @@ from flask import Blueprint, request, jsonify
 from flask import current_app as app
 from .auth_helpers import token_required
 from dotenv import load_dotenv
-from ..models.db import get_db
+from models.db import get_db
 
 import os
 load_dotenv()

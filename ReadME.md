@@ -44,9 +44,9 @@ Admins can:
 
 ## Technology Stack
 
-- **Backend**: Flask (Python)
+- **Backend**: Flask server
 - **Database**: MongoDB Atlas
-- **Frontend**: (To be decided)
+- **Frontend**: React Js
 - **Deployment**: (To be decided, potentially using Heroku for the backend and Vercel or Netlify for the frontend)
 
 ## Potential Features to Discuss (Future Enhancements)

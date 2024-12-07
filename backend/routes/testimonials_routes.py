@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from bson import ObjectId
-from ..models.testimonial_model import save_testimonial, get_all_testimonials
+from models.testimonial_model import save_testimonial, get_all_testimonials
 
 testimonials_routes = Blueprint('testimonials_routes', __name__)
 
