@@ -7,15 +7,19 @@ The **Gardening and Construction Services Website** is a responsive web applicat
 ## Key Features
 
 ### **Home Page**
+
 A visually appealing landing page introducing the business with featured services and project showcases.
 
 ### **Service Details**
+
 A section dedicated to exploring indoor and outdoor services, complete with descriptions and images.
 
 ### **Project Portfolio**
+
 A featured projects section highlighting completed works with high-quality images.
 
 ### **Admin Dashboard**
+
 A secure backend for administrators to manage services, projects, inquiries, and media.
 
 ---
@@ -23,38 +27,47 @@ A secure backend for administrators to manage services, projects, inquiries, and
 ## Features
 
 ### 1. **Home Page**
+
 - A dynamic and modern homepage welcoming users to "Nordic Gazon."
 - Prominent call-to-action buttons such as "Browse Services" for easy navigation.
 - A dedicated "Our Services" section to explore indoor and outdoor services.
 - Featured projects section showcasing high-quality completed works.
 
 ### 2. **Service Management**
+
 Admins can:
+
 - Add, update, view, and delete available services.
 - Categorize services for better client exploration.
 - Highlight key services on the homepage.
 
 ### 3. **Project Portfolio**
+
 - A gallery of featured projects is displayed for clients to review the company’s expertise.
-Admins can:
+  Admins can:
 - Add new projects with descriptions and images.
 - Update existing project details and images.
 - Control which projects appear as "featured."
 
 ### 4. **Client Inquiries**
+
 Clients can:
+
 - Submit inquiries via a user-friendly contact form.
-Admins can:
+  Admins can:
 - View and manage client inquiries.
 - Respond to inquiries directly via the admin dashboard.
 - Store inquiries for future reference and tracking.
 
 ### 5. **Media Management**
+
 Admins can:
+
 - Upload and manage images related to services and projects.
 - Organize the media library to ensure content relevancy and consistency.
 
 ### 6. **Admin Dashboard**
+
 - A protected area for administrators to manage:
   - Services
   - Projects
@@ -81,7 +94,7 @@ To ensure consistency and compatibility, the following specific versions of tech
   - **Docker**: v20.10.7
   - **Docker Compose**: v1.29.2
 
-*Note*: Ensure that your local development environment matches these versions to prevent compatibility issues.
+_Note_: Ensure that your local development environment matches these versions to prevent compatibility issues.
 
 ---
 
@@ -90,6 +103,7 @@ To ensure consistency and compatibility, the following specific versions of tech
 ### Prerequisites
 
 Ensure you have the following installed:
+
 - **Python 3.8+**
 - **Node.js 14+** and **npm**
 - **MongoDB** (local instance or access to a remote instance)
@@ -100,6 +114,67 @@ Ensure you have the following installed:
    ```bash
    git clone <repository-url>
    cd <repository-directory>/backend
+   ```
+2. **Set Up a Virtual Environment**:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate #on windows use : venv\Scripts\Activate
+   ```
+3. **Install BACKEND Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. **Configure Env Variables**:
+
+- Create a `.env` file in the root directory of the project.
+- Add your MongoDB Atlas connection string to the `.env` file.
+- Add your Flask app configuration to the `.env` file.
+
+5. **Run the Backend**:
+   ```bash
+   flask run
+   ```
+
+### FrontEnd Setup (Flask )
+
+1. **Navigate to the frontend Directory**:
+   ```bash
+   cd <repository-directory>/frontend
+   ```
+2. **Install Frontend dependencies** :
+   ```bash
+   npm install
+   ```
+3. **Configure Environment Variables** :
+
+- Create a `.env` file in the root directory of the project.
+- Add the React API Url variable
+  ```bash
+  REACT_APP_API_URL=http://127.0.0.1:5000
+  ```
+
+4. **Start the Frontend** :
+
+   ```bash
+   npm start
+
+   ```
+
+### Database setup:
+
+1. MongoDB Connection:
+
+- If using a local MongoDB instance, ensure it is running on the default port 27017.
+- If using MongoDB Atlas, ensure the URI includes your database credentials and database name.
+  -example of a MongoDb URI:
+  ```bash
+  " mongodb+srv://<username>:<password>@cluster0.mongodb.net/<database-name>?retryWrites=true&w=majority "
+
+  ```
+
+2. Database initialization:
+
+- Upon starting the backend, the necessary collections (services, projects, inquiries) will be created automatically if they do not already exist.
 
 <!-- # Gardening and Construction Services Web Application Documentation
 
@@ -157,9 +232,9 @@ Admins can:
 - **User Reviews & Testimonials**: Allow clients to leave reviews or testimonials for projects.
 <!-- - **Booking System**: Enable clients to schedule consultations directly through the website. -->
 
-- **Project Progress Tracking**: Provide clients with a secure way to track the progress of ongoing projects.
+<!-- - **Project Progress Tracking**: Provide clients with a secure way to track the progress of ongoing projects.
 - **Enhanced Search Filters**: Allow clients to filter services or projects by categories, locations, or project types.
-- **Service Pricing Estimator**: Give clients a preliminary quote by selecting services and entering project details. -->
+- **Service Pricing Estimator**: Give clients a preliminary quote by selecting services and entering project details.  -->
 
 <!-- ## ######################################################################################### -->
 
