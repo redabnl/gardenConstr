@@ -144,7 +144,7 @@ const ProjectGallery = () => {
                   src={
                     project.image_urls && project.image_urls.length > 0
                       ? project.image_urls[0]
-                      : "img/default_image.jpg"
+                      : "img/defaulr.jpg"
                   }
                   alt={project.title || "Project Image"}
                 />

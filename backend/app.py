@@ -10,7 +10,7 @@ from routes.admin_routes import admin_routes
 from routes.media_routes import media_routes
 from routes.testimonials_routes import testimonials_routes
 
-app = Flask(__name__, static_folder='frontend/build' , static_url_path='/static')
+app = Flask(__name__ , static_url_path='/static')
 CORS(app)
 
 # app.register_blueprint(db_tests)
