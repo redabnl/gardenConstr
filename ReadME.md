@@ -82,17 +82,17 @@ Admins can:
 To ensure consistency and compatibility, the following specific versions of technologies are used:
 
 - **Frontend**:
-  - **React.js**: v17.0.2
-  - **Node.js**: v14.17.0
-  - **npm**: v6.14.13
+  - **React.js**: v19.0.0
+  - **Node.js**: v20.10.0
+  - **npm**: v10.2.3
 - **Backend**:
-  - **Flask**: v1.1.2
-  - **Python**: v3.8.5
+  - **Flask**: v3.0.3
+  - **Python**: v3.10.11
 - **Database**:
-  - **MongoDB Atlas**: Cluster running MongoDB v4.4.6
+  - **MongoDB Atlas**: Cluster running MongoDB v8.0.3
 - **Deployment**:
-  - **Docker**: v20.10.7
-  - **Docker Compose**: v1.29.2
+  - **Docker**: v27.3.1
+  - **Docker Compose**: v2.30.3
 
 _Note_: Ensure that your local development environment matches these versions to prevent compatibility issues.
 
@@ -167,6 +167,7 @@ Ensure you have the following installed:
 - If using a local MongoDB instance, ensure it is running on the default port 27017.
 - If using MongoDB Atlas, ensure the URI includes your database credentials and database name.
   -example of a MongoDb URI:
+
   ```bash
   " mongodb+srv://<username>:<password>@cluster0.mongodb.net/<database-name>?retryWrites=true&w=majority "
 
