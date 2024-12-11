@@ -74,6 +74,7 @@ const GridContainer = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   margin-top: 30px;
+  
 `;
 
 const GridImage = styled.img`
@@ -85,8 +86,30 @@ const GridImage = styled.img`
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.05);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
   }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
 `;
 
 // // const fetchImages = async (images_fodler, id) => {
@@ -180,7 +203,16 @@ const ProjectDetails = () => {
       <GridContainer>
         {images.length > 0 ? (
           images.map((url, index) => (
-            <GridImage key={index} src={url} alt={`Project ${index}`} />
+            <GridImage key={index} 
+              src={
+                project.image_urls && project.image_urls.length > 0
+                  ? project.image_urls[0]
+                  : "img/default_image.jpg"
+              } 
+              alt={`Project ${index}`} 
+            >
+            <Overlay className="overlay">{project.title}</Overlay>
+            </GridImage>
           ))
         ) : (
           <p>No additional images available</p>

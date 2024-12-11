@@ -10,21 +10,56 @@ const GalleryContainer = styled.div`
   gap: 20px;
   padding: 20px;
 `;
-
 const ProjectCard = styled.div`
+  position: relative;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
   cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
 
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
   }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
 `;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+`;
+// const ProjectCard = styled.div`
+//   background-color: #fff;
+//   border: 1px solid #ddd;
+//   border-radius: 8px;
+//   overflow: hidden;
+//   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+//   transition: transform 0.3s, box-shadow 0.3s;
+//   cursor: pointer;
+
+//   &:hover {
+//     transform: translateY(-5px);
+//     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+//   }
+// `;
 
 const ProjectImage = styled.img`
   width: 100%;
@@ -136,29 +171,42 @@ const ProjectGallery = () => {
         <GalleryContainer>
           {projects.length > 0 ? (
             projects.map((project) => (
-              <ProjectCard
-                key={project._id}
-                onClick={() => handleProjectClick(project)}
-              >
+              <ProjectCard key={project._id} onClick={() => handleProjectClick(project)}>
                 <ProjectImage
-                  src={
-                    project.image_urls && project.image_urls.length > 0
-                      ? project.image_urls[0]
-                      : "img/defaulr.jpg"
-                  }
-                  alt={project.title || "Project Image"}
-                />
-
-                {/* <ProjectImage
                   src={
                     project.image_urls && project.image_urls.length > 0
                       ? project.image_urls[0]
                       : "img/default_image.jpg"
                   }
                   alt={project.title || "Project Image"}
-                /> */}
-                <ProjectTitle>{project.title}</ProjectTitle>
+                />
+                <Overlay className="overlay">{project.title}</Overlay>
               </ProjectCard>
+
+
+              // <ProjectCard
+              //   key={project._id}
+              //   onClick={() => handleProjectClick(project)}
+              // >
+              //   <ProjectImage
+              //     src={
+              //       project.image_urls && project.image_urls.length > 0
+              //         ? project.image_urls[0]
+              //         : "img/defaulr.jpg"
+              //     }
+              //     alt={project.title || "Project Image"}
+              //   />
+
+              //   {/* <ProjectImage
+              //     src={
+              //       project.image_urls && project.image_urls.length > 0
+              //         ? project.image_urls[0]
+              //         : "img/default_image.jpg"
+              //     }
+              //     alt={project.title || "Project Image"}
+              //   /> */}
+              //   <ProjectTitle>{project.title}</ProjectTitle>
+              // </ProjectCard>
             ))
           ) : (
             <p>No projects available.</p>
