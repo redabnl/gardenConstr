@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import ServiceDetails from './serviceDetails';
+import { API_BASE_URL } from '../config';
 
 const renderDescription = (description) => {
   return description.split('\n').map((line, index) => (
@@ -43,9 +44,9 @@ const ServicesSection = ({ services }) => {
 
   const fetchImages = async (galleryPath, serviceId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/service_images/${galleryPath}`);
+      const response = await fetch(`${API_BASE_URL}/api/service_images/${galleryPath}`);
       const images = await response.json();
-      const fullImagePaths = images.map(image => `http://localhost:5000/${image}`);
+      const fullImagePaths = images.map(image => `${API_BASE_URL}/${image}`);
       setServiceImages(prev => ({ ...prev, [serviceId]: fullImagePaths }));
     } catch (error) {
       console.error("Error fetching service images:", error);

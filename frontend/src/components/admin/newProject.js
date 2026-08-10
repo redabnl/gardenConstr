@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
 const NewProject = () => {
   const [formData, setFormData] = useState({
@@ -46,7 +47,7 @@ const NewProject = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/admin/project', projectData, {
+      await axios.post(`${API_BASE_URL}/api/admin/project`, projectData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

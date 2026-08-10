@@ -56,7 +56,7 @@ def fetch_project_by_ID(project_id):
 
         if os.path.exists(images_folder_path):
             images = [
-                f"http://localhost:5000/static/images/projects/{images_folder}/{img}"
+                f"/static/images/projects/{images_folder}/{img}"
                 for img in os.listdir(images_folder_path)
                 if os.path.isfile(os.path.join(images_folder_path, img))
             ]

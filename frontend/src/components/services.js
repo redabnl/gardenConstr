@@ -183,7 +183,7 @@ const Services = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services');
+        const response = await axios.get(`${API_BASE_URL}/api/services`);
         setServices(response.data);
         
 

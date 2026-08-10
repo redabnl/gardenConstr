@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../config';
 
 const GridContainer = styled.div`
   display: grid;
@@ -82,7 +83,7 @@ const FeaturedProjects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/projects');
+        const response = await axios.get(`${API_BASE_URL}/api/projects`);
         console.log('Projects fetched successfully:', response.data);
         setProjects(response.data.slice(0, 3)); // Fetch only the first three projects
       } catch (error) {

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 
 
@@ -35,7 +36,7 @@ const ServicesCategories = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services');
+        const response = await axios.get(`${API_BASE_URL}/api/services`);
         const services = response.data;
         console.log(`services fetched ${services}`)
 

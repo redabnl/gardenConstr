@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 
 
@@ -193,7 +194,7 @@ const HeroSection = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/projects");
+        const response = await axios.get(`${API_BASE_URL}/api/projects`);
         setProjects(response.data);
         // console.log(`image paths fetched in  the frontend : ${response.data.gallery_images}`)
       } catch (error) {
@@ -347,7 +348,7 @@ const HeroSection = () => {
 //   useEffect(() => {
 //     const fetchProjects = async () => {
 //       try {
-//         const response = await axios.get("http://localhost:5000/api/projects");
+//         const response = await axios.get(`${API_BASE_URL}/api/projects`);
 //         setProjects(response.data);
 //         // console.log(`image paths fetched in  the frontend : ${response.data.gallery_images}`)
 //       } catch (error) {

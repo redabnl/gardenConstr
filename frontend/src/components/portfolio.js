@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PortfolioIntro from './intro_portfolio';
+import { API_BASE_URL } from '../config';
 import ProjectFilter from './projects_filter';
 import ProjectGallery from './projects_gallery';
 // import ProjectDetails from './project_details';
@@ -17,7 +18,7 @@ function PortfolioPage() {
         // Fetch projects from the database
         const fetchProjects = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/projects');
+                const response = await axios.get(`${API_BASE_URL}/api/projects`);
                 setProjects(response.data);
                 // setFilteredProjects(response.data); // Set initial projects
             } catch (error) {

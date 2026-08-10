@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
 
 // Styled Components
 const GalleryContainer = styled.div`
@@ -123,7 +124,7 @@ const ProjectGallery = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/projects");
+        const response = await axios.get(`${API_BASE_URL}/api/projects`);
         setProjects(response.data); // Load all projects
         console.log("Projects fetched successfully:", response.data);
       } catch (error) {
@@ -174,12 +175,13 @@ const ProjectGallery = () => {
               <ProjectCard key={project._id} onClick={() => handleProjectClick(project)}>
                 <ProjectImage
                   src={
-                    project.image_urls && project.image_urls.length > 0
+                    project.image_urls && project.image_urls[0]
                       ? project.image_urls[0]
                       : "img/default_image.jpg"
                   }
                   alt={project.title || "Project Image"}
                 />
+
                 <Overlay className="overlay">{project.title}</Overlay>
               </ProjectCard>
 
@@ -263,7 +265,7 @@ export default ProjectGallery;
 //     useEffect(() => {
 //       const fetchProjects = async () => {
 //         try {
-//           const response = await axios.get("http://localhost:5000/api/projects");
+//           const response = await axios.get(`${API_BASE_URL}/api/projects`);
 //           setProjects(response.data.slice(0, 3)); // Load only the first 3 projects
 //           console.log("Projects fetched successfully:", response.data);
 //         } catch (error) {

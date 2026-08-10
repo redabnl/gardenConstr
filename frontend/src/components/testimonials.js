@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import Slider from 'react-slick';
+import { API_BASE_URL } from '../config';
 
 const TestimonialsSection = styled.section`
   background-color: #333; /* Dark background */
@@ -63,7 +64,7 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/testimonials'); // Adjust backend URL
+        const response = await axios.get(`${API_BASE_URL}/api/testimonials`); // Adjust backend URL
         setTestimonials(response.data);
       } catch (error) {
         console.error('Error fetching testimonials:', error);

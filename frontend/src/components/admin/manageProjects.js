@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
 
 // Styled components
 const Table = styled.table`
@@ -61,7 +62,7 @@ const ManageProjects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/admin/projects', {
+        const response = await axios.get(`${API_BASE_URL}/api/admin/projects`, {
           headers: {
             'x-access-token': localStorage.getItem('admin_token'),
           },
@@ -83,7 +84,7 @@ const ManageProjects = () => {
 
   const handleDelete = async (projectId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/projects/${projectId}`, {
+      await axios.delete(`${API_BASE_URL}/api/projects/${projectId}`, {
         headers: {
           'x-access-token': localStorage.getItem('admin_token'),
         },

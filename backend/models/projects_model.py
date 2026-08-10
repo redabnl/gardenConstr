@@ -64,7 +64,7 @@ def get_all_projects():
     project_list = []
 
     # Base URL for serving static images
-    static_url = current_app.config.get('STATIC_URL', 'http://localhost:5000/static/images/projects/')
+    static_url = current_app.config.get('STATIC_URL', '/static/images/projects/')
 
     for project in projects: 
         project['_id'] = str(project['_id'])

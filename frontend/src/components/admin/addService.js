@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';  // Importing Bootstrap components
+import { API_BASE_URL } from '../../config';
 
 function AddService() {
   const [formData, setFormData] = useState({
@@ -49,7 +50,7 @@ function AddService() {
         serviceData.append('image', image); // Add the image file if present
       }
     
-      const response = await axios.post('http://localhost:5000/api/admin/services', serviceData, {
+      const response = await axios.post(`${API_BASE_URL}/api/admin/services`, serviceData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           // 'x-access-token': localStorage.getItem('admin_token')

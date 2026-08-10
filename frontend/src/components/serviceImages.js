@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config';
 
 const ServiceImages = ({ serviceId }) => {
     const [images, setImages] = useState([]);
@@ -7,7 +8,7 @@ const ServiceImages = ({ serviceId }) => {
     useEffect(() => {
         const fetchImages = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/service_images/${serviceId}`);
+                const response = await axios.get(`${API_BASE_URL}/api/service_images/${serviceId}`);
                 setImages(response.data.images);
             } catch (error) {
                 console.error('Error fetching images:', error);

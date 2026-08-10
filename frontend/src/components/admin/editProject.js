@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { API_BASE_URL } from '../../config';
 
 // Styled components
 const FormWrapper = styled.div`
@@ -57,7 +58,7 @@ const EditProject = ({ match }) => {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/projects/${match.params.id}`);
+        const response = await axios.get(`${API_BASE_URL}/api/projects/${match.params.id}`);
         setFormData(response.data);
       } catch (error) {
         console.error('Error fetching project data:', error);
@@ -74,7 +75,7 @@ const EditProject = ({ match }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:5000/api/projects/${match.params.id}`, formData, {
+      await axios.put(`${API_BASE_URL}/api/projects/${match.params.id}`, formData, {
         headers: {
           'x-access-token': localStorage.getItem('admin_token'),
         },

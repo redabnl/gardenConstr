@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Button, Container, Alert, Spinner } from 'react-bootstrap';
+import { API_BASE_URL } from '../../config';
 
 function ManageServices() {
   const [services, setServices] = useState([]);
@@ -11,7 +12,7 @@ function ManageServices() {
     // Fetch services when the component loads
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services', {
+        const response = await axios.get(`${API_BASE_URL}/api/services`, {
           headers: {
             'x-access-token': localStorage.getItem('admin_token'),
           },

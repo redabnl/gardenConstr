@@ -3,6 +3,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick'; // For the carousel
+import { API_BASE_URL } from '../config';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -138,7 +139,7 @@ const ProjectDetails = () => {
     console.log("Fetching project with ID:", id);
     const fetchProject = async () => {
         try {
-            const response = await axios.get(`http://localhost:5000/api/projects/${id}`);
+            const response = await axios.get(`${API_BASE_URL}/api/projects/${id}`);
             console.log("Fetched project:", response.data);
             setProject(response.data);
 
@@ -175,9 +176,16 @@ const ProjectDetails = () => {
         {/* Carousel */}
         <CarouselContainer>
           <Slider {...carouselSettings}>
-            {images.length > 0 ? (
+            {images && images.length > 0 ? (
               images.map((url, index) => (
-                <img key={index} src={url} alt={`${project.title} image ${index + 1}`} />
+                <img
+                  key={index}
+                  src={url} // URL directly from API
+                  alt={`${project.title} image ${index + 1}`}
+                  onError={(e) => {
+                    e.target.src = "/static/img/default_image.jpg"; // Fallback in case of errors
+                  }}
+                />
               ))
             ) : (
               <p>No images available</p>
@@ -203,6 +211,22 @@ const ProjectDetails = () => {
       <GridContainer>
         {images.length > 0 ? (
           images.map((url, index) => (
+            <GridImage
+              key={index}
+              src={url || "img/default_image.jpg"}
+              alt={`Project ${index}`}
+            >
+              <Overlay className="overlay">{project.title}</Overlay>
+            </GridImage>
+          ))
+        ) : (
+          <p>No additional images available</p>
+        )}
+      </GridContainer>
+
+      {/* <GridContainer>
+        {images.length > 0 ? (
+          images.map((url, index) => (
             <GridImage key={index} 
               src={
                 project.image_urls && project.image_urls.length > 0
@@ -217,7 +241,7 @@ const ProjectDetails = () => {
         ) : (
           <p>No additional images available</p>
         )}
-      </GridContainer>
+      </GridContainer> */}
     </PageContainer>
   );
 };
@@ -441,7 +465,7 @@ export default ProjectDetails;
 // //         const fetchProjectDetails = async () => {
 // //         if (id){
 // //             try {
-// //                 const response = await axios.get(`http://localhost:5000/api/projects/${id}`);
+// //                 const response = await axios.get(`${API_BASE_URL}/api/projects/${id}`);
 // //                 setProject(response.data);
 // //             } catch (error) {
 // //                 console.error("Error fetching project details:", error);

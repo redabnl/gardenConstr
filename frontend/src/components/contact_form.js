@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { API_BASE_URL } from '../config';
 
 const ContactFormContainer = styled.div`
   max-width: 600px;
@@ -83,7 +84,7 @@ function ContactForm() {
     // Fetch services from backend
     const fetchServices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/services');
+        const response = await axios.get(`${API_BASE_URL}/api/services`);
         setServices(response.data);
       } catch (error) {
         console.error('Error fetching services:', error);
@@ -121,7 +122,7 @@ function ContactForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/inquiries', formData);
+      const response = await axios.post(`${API_BASE_URL}/api/inquiries`, formData);
       setSuccessMessage('Your inquiry was sent successfully, we will get back to you later');
       console.log('Inquiry sent:', response.data);
     } catch (error) {

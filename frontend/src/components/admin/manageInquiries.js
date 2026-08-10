@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { API_BASE_URL } from '../../config';
 
 const Container = styled.div`
   padding: 20px;
@@ -63,7 +64,7 @@ const ManageInquiries = () => {
   useEffect(() => {
     const fetchInquiries = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/inquiries', {
+        const response = await axios.get(`${API_BASE_URL}/api/inquiries`, {
           headers: {
             'x-access-token': localStorage.getItem('admin_token')
           }
@@ -83,7 +84,7 @@ const ManageInquiries = () => {
     if (!responseMessage) return;
   
     try {
-      const url = `http://localhost:5000/api/inquiries/${inquiryId}/respond`;
+      const url = `${API_BASE_URL}/api/inquiries/${inquiryId}/respond`;
       console.log(`Sending request to: ${url}`);
       
       await axios.put(url, {
