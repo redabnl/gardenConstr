@@ -7,11 +7,9 @@ services:
     buildCommand: |
       cd backend && pip install -r requirements.txt && cd ../frontend && npm install && DISABLE_ESLINT_PLUGIN=true npm run build
     startCommand: cd backend && gunicorn app:app
-    nodeVersion: 20.10.0
     envVars:
       - key: MONGO_URI
         sync: false
       - key: SECRET_KEY
         generateValue: true
-      - key: REACT_APP_API_URL
-        value: ""
+        sync: false
