@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import Slider from 'react-slick'; // For the carousel
 import { API_BASE_URL } from '../config';
+import { IMAGES } from '../images';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
@@ -183,7 +184,7 @@ const ProjectDetails = () => {
                   src={url} // URL directly from API
                   alt={`${project.title} image ${index + 1}`}
                   onError={(e) => {
-                    e.target.src = "/static/img/default_image.jpg"; // Fallback in case of errors
+                    e.target.src = IMAGES.noImage; // Fallback in case of errors
                   }}
                 />
               ))
@@ -213,7 +214,7 @@ const ProjectDetails = () => {
           images.map((url, index) => (
             <GridImage
               key={index}
-              src={url || "img/default_image.jpg"}
+              src={url || IMAGES.noImage}
               alt={`Project ${index}`}
             >
               <Overlay className="overlay">{project.title}</Overlay>

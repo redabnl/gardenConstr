@@ -12,6 +12,7 @@ const NewProject = () => {
     duration: '',
     location: '',
     completed_at: '',
+    service_id: '',
     gallery_images: []
   });
   const [message, setMessage] = useState('');
@@ -41,13 +42,14 @@ const NewProject = () => {
     projectData.append('duration', formData.duration);
     projectData.append('location', formData.location);
     projectData.append('completed_at', formData.completed_at);
+    projectData.append('service_id', formData.service_id);
 
     for (let i = 0; i < formData.gallery_images.length; i++) {
       projectData.append('gallery_images', formData.gallery_images[i]);
     }
 
     try {
-      await axios.post(`${API_BASE_URL}/api/admin/project`, projectData, {
+      await axios.post(`${API_BASE_URL}/api/admin/projects`, projectData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -133,6 +135,18 @@ const NewProject = () => {
             id="completed_at"
             value={formData.completed_at}
             onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="service_id">Service ID</label>
+          <input
+            type="text"
+            name="service_id"
+            id="service_id"
+            value={formData.service_id}
+            onChange={handleChange}
+            placeholder="Enter the service ID this project belongs to"
             required
           />
         </div>

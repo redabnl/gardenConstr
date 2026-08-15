@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { IMAGES } from '../images';
 
 
 
@@ -76,7 +77,7 @@ const HeroText = styled.div`
   top: 50%;
   left: 50%;
   width: auto;
-  background: rgba(0, 0, 0, 0.7); // Slightly less opacity for a cleaner look
+  background: rgba(15, 31, 27, 0.75); // Slightly less opacity for a cleaner look
   color: white;
   z-index: 2;
   border-radius: 12px; // Smoother rounded corners
@@ -106,7 +107,7 @@ const HeroText = styled.div`
 
 const HeroButton = styled(Link)`
   display: inline-block;
-  background: linear-gradient(135deg, #32a852, #3fbf76); // Gradient for more depth
+  background: linear-gradient(135deg, #16302b, #315e52); // Gradient for more depth
   color: #fff;
   padding: 15px 30px;
   border-radius: 8px;
@@ -119,7 +120,7 @@ const HeroButton = styled(Link)`
 
 
   &:hover {
-    background: #45a860; /* Slightly lighter green */
+    background: #0f1f1b; /* Slightly darker green */
     transform: translateY(-3px);
   }
 `;
@@ -187,9 +188,9 @@ const HeroSection = () => {
 // ))}
 
   const dumy_images = [
-    '/img/hero/hero_1.jpg',
-    '/img/hero/hero_2.jpg',
-    '/img/hero/hero_3.jpg'
+    IMAGES.hero1,
+    IMAGES.hero2,
+    IMAGES.hero3
   ];
   useEffect(() => {
     const fetchProjects = async () => {

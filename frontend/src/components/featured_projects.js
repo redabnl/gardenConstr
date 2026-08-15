@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../config';
+import { IMAGES } from '../images';
 
 const GridContainer = styled.div`
   display: grid;
@@ -59,7 +60,7 @@ const ViewAllIcon = styled.a`
   justify-content: center;
   align-items: center;
   font-size: 24px;
-  background-color: #333;
+  background-color: var(--color-primary);
   color: white;
   border-radius: 50%;
   width: 40px;
@@ -67,7 +68,7 @@ const ViewAllIcon = styled.a`
   margin: 0 auto;
   cursor: pointer;
   &:hover {
-    background-color: #555;
+    background-color: var(--color-primary-light);
     transition: 0.2s;
   }
 `;
@@ -101,7 +102,7 @@ const FeaturedProjects = () => {
           <GridItem key={project._id} onClick={() => handleProjectClick(project)}>
             <ProjectGrid>
               <ProjectImage
-                src={project.image_urls?.[0] || '/img/no_image.jpg'} // Fetch the first image or use a default one
+                src={project.image_urls?.[0] || IMAGES.noImage} // Fetch the first image or use a default one
                 alt={project.title}
               />
               <ProjectHover>

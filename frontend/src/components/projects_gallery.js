@@ -3,6 +3,7 @@ import axios from "axios";
 import styled from "styled-components";
 import { Navigate, redirect, useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
+import { IMAGES } from "../images";
 
 // Styled Components
 const GalleryContainer = styled.div`
@@ -177,7 +178,7 @@ const ProjectGallery = () => {
                   src={
                     project.image_urls && project.image_urls[0]
                       ? project.image_urls[0]
-                      : "img/default_image.jpg"
+                      : IMAGES.noImage
                   }
                   alt={project.title || "Project Image"}
                 />

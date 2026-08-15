@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
-  background-color: #2d2d2d;
-  color: white;
+  background-color: var(--color-primary-dark);
+  color: var(--color-white);
   padding: 20px;
   display: flex;
   flex-direction: column;

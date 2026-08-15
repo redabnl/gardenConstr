@@ -3,6 +3,7 @@ import { Carousel } from 'react-responsive-carousel';
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import ServiceDetails from './serviceDetails';
 import { API_BASE_URL } from '../config';
+import { IMAGES } from '../images';
 
 const renderDescription = (description) => {
   return description.split('\n').map((line, index) => (
@@ -42,27 +43,19 @@ const ServicesSection = ({ services }) => {
   const [serviceImages, setServiceImages] = useState({});
   const [selectedService, setSelectedService] = useState(null);
 
-  const fetchImages = async (galleryPath, serviceId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/service_images/${galleryPath}`);
-      const images = await response.json();
-      const fullImagePaths = images.map(image => `${API_BASE_URL}/${image}`);
-      setServiceImages(prev => ({ ...prev, [serviceId]: fullImagePaths }));
-    } catch (error) {
-      console.error("Error fetching service images:", error);
-    }
-  };
-
   useEffect(() => {
     const filtered = services.filter(service =>
       activeFilter === 'indoor' ? !service.is_outdoor : service.is_outdoor
     );
     setFilteredServices(filtered);
+    const nextImages = {};
     filtered.forEach(service => {
-      if (service.gallery_path && !serviceImages[service._id]) {
-        fetchImages(service.gallery_path, service._id);
+      const urls = (service.image_urls || []).filter(u => u && u.startsWith('http'));
+      if (urls.length > 0) {
+        nextImages[service._id] = urls;
       }
     });
+    setServiceImages(prev => ({ ...prev, ...nextImages }));
   }, [services, activeFilter]);
 
   return (
@@ -97,7 +90,7 @@ const ServicesSection = ({ services }) => {
                   ))}
                 </Carousel>
               ) : (
-                <ProjectImage src="/img/no_image.jpg" alt={service.title} />
+                <ProjectImage src={IMAGES.noImage} alt={service.title} />
               )}
               <ServiceOverlay>
                 <ServiceTitle>{service.title}</ServiceTitle>

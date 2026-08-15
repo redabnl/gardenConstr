@@ -5,7 +5,7 @@ import Slider from 'react-slick';
 import { API_BASE_URL } from '../config';
 
 const TestimonialsSection = styled.section`
-  background-color: #333; /* Dark background */
+  background-color: var(--color-primary); /* Dark background */
   color: #fff;
   padding: 50px 0;
   text-align: center;
@@ -40,7 +40,7 @@ const TestimonialCard = styled.div`
 
 const QuoteIcon = styled.span`
   font-size: 2em;
-  color: #ff9800;
+  color: var(--color-stone);
   position: absolute;
   top: -10px;
   left: 10px;

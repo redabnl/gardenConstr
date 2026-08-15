@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../config';
+import { IMAGES } from '../images';
 
 
 
@@ -67,7 +68,7 @@ const ServicesCategories = () => {
         {outdoor.length > 0 && (
           <ServiceCard>
             <CardTitle>{outdoor.title}</CardTitle>
-            <CardImage src={'img/outdoor_sketch.jpg'} alt="Outdoor Service" />
+            <CardImage src={IMAGES.outdoorSketch} alt="Outdoor Service" />
             <CardDescription>
               Create stunning outdoor environments with our landscaping and construction services. We design functional and beautiful outdoor spaces that enhance your property.
             </CardDescription>
@@ -79,7 +80,7 @@ const ServicesCategories = () => {
         {indoor.length > 0 && (
           <ServiceCard>
             <CardTitle>{indoor.title}</CardTitle>
-            <CardImage src={ 'img/indoor_sketch.png'} alt="Indoor Service" />
+            <CardImage src={IMAGES.indoorSketch} alt="Indoor Service" />
             <CardDescription>
               Transform your home with our comprehensive indoor renovation and finishing services. From remodeling to finishing touches, we make your indoor spaces shine with style and quality.
             </CardDescription>            
@@ -139,13 +140,17 @@ const CardDescription = styled.p`
 `;
 
 const CardButton = styled(Link)`
-  background-color: #6c757d;
+  background-color: var(--color-primary);
   color: white;
   padding: 10px 15px;
   text-decoration: none;
   border-radius: 5px;
   display: inline-block;
   font-size: 1rem;
+
+  &:hover {
+    background-color: var(--color-primary-light);
+  }
 `;
 
 // Export the component

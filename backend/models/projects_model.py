@@ -73,17 +73,24 @@ def get_all_projects():
         if 'testimonial_id' in project and project['testimonial_id'] is not None:
             project['testimonial_id'] = str(project['testimonial_id'])  # Convert ObjectId to string if it exists
 
-        # Add image URLs for the project
-        project_folder = project['title'].replace(' ', '_')
-        if project_folder:
-            image_folder_path = os.path.join(current_app.root_path, 'static', 'images', 'projects', project_folder)
-            if os.path.exists(image_folder_path):
-                image_files = [f"{static_url}{project_folder}/{img}" for img in os.listdir(image_folder_path) if img.endswith(('.jpg', '.png', '.jpeg'))]
-                project['image_urls'] = image_files
-            else:
-                project['image_urls'] = []  # Empty list if folder does not exist
+        # Use Cloudinary URLs stored in the DB if present (admin uploads)
+        db_image_urls = project.get('image_urls') or []
+        cloudinary_urls = [u for u in db_image_urls if u and u.startswith('http')]
+
+        if cloudinary_urls:
+            project['image_urls'] = cloudinary_urls
         else:
-            project['image_urls'] = []
+            # Fallback: scan the local static folder for legacy projects
+            project_folder = project['title'].replace(' ', '_')
+            if project_folder:
+                image_folder_path = os.path.join(current_app.root_path, 'static', 'images', 'projects', project_folder)
+                if os.path.exists(image_folder_path):
+                    image_files = [f"{static_url}{project_folder}/{img}" for img in os.listdir(image_folder_path) if img.endswith(('.jpg', '.png', '.jpeg'))]
+                    project['image_urls'] = image_files
+                else:
+                    project['image_urls'] = []  # Empty list if folder does not exist
+            else:
+                project['image_urls'] = []
 
         print(f"project {project['title']} with id {project['_id']}")
         project_list.append(project)

@@ -1,6 +1,7 @@
 
 import styled, { keyframes, createGlobalStyle } from 'styled-components';
 import { Carousel } from 'react-responsive-carousel';
+import { IMAGES } from '../images';
 
 const renderDescription = (description) => {
     return description.split('\n').map((line, index) => (
@@ -92,7 +93,7 @@ const ServiceDetails = ({ selectedService, serviceDescriptions, serviceImages, s
               ))}
             </Carousel>
           ) : (
-            <FixedImage src="/img/no_image.jpg" alt="No Image" />
+<FixedImage src={IMAGES.noImage} alt="No Image" />
           )}
         </FixedImageContainer>
         {/* Fixed Image Section
@@ -100,7 +101,7 @@ const ServiceDetails = ({ selectedService, serviceDescriptions, serviceImages, s
           {serviceImages[selectedService._id] && serviceImages[selectedService._id][0] ? (
             <FixedImage src={serviceImages[selectedService._id][0]} alt={selectedService.title} />
           ) : (
-            <FixedImage src="/img/no_image.jpg" alt="No Image" />
+            <FixedImage src={IMAGES.noImage} alt="No Image" />
           )}
         </FixedImageContainer> */}
         {/* Description Section */}

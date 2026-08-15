@@ -18,6 +18,8 @@ const AddProject = () => {
     category: '',
     duration: '',
     service_id: '',
+    location: '',
+    completed_at: '',
     materials: [],
     gallery_images: []
   });
@@ -54,8 +56,10 @@ const AddProject = () => {
     projectData.append('description', formData.description);
     projectData.append('category', formData.category);
     projectData.append('duration', formData.duration);
+    projectData.append('location', formData.location);
+    projectData.append('completed_at', formData.completed_at);
     projectData.append('service_id', formData.service_id);
-    formData.materials.forEach((material) => projectData.append('materials[]', material));
+    formData.materials.forEach((material) => projectData.append('materials', material));
   
     for (let i = 0; i < formData.gallery_images.length; i++) {
       projectData.append('gallery_images', formData.gallery_images[i]);
@@ -112,6 +116,7 @@ const AddProject = () => {
         <input type="text" name="description" value={formData.description} onChange={handleChange} required />
         <input type="text" name="location" value={formData.location} onChange={handleChange} required />
         <input type="date" name="completed_at" value={formData.completed_at} onChange={handleChange} required />
+        <input type="text" name="service_id" value={formData.service_id} onChange={handleChange} placeholder="Service ID" required />
         <input type="file" name="gallery_images" onChange={handleFileChange} multiple />
         <button type="submit">Add Project</button>
      </form>

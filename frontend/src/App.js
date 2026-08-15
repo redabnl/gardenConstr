@@ -27,8 +27,8 @@ import { createGlobalStyle } from 'styled-components';
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: #e9ecef /* Light grey shade */
-    color: #333; /* Text color for better readability */
+    background-color: var(--color-cloud);
+    color: var(--color-text);
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;

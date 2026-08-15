@@ -6,6 +6,7 @@ from models.projects_model import  get_project_id
 from models.admin_users_model import create_admin_user, get_admin_by_username, get_admin_by_id, get_all_admins
 from models.services_model import update_service_by_id, get_service_by_id, create_service
 from models.media_model import  save_media
+from models.cloudinary_utils import upload_image, delete_image
 import jwt
 from werkzeug.security import check_password_hash
 from werkzeug.utils import secure_filename
@@ -134,48 +135,36 @@ def get_admin_profile(admin_id):
 ## CREATE SERVICES WITH IMAGE UPLOAD
 @admin_routes.route('/api/admin/services', methods=['POST'])
 def add_service():
-    UPLOAD_FOLDER_SERVICES = os.path.join(UPLOAD_FOLDER, 'services')
-
     # Validate image upload
-    if 'image_path' not in request.files:
+    file = request.files.get('image') or request.files.get('image_path')
+    if file is None:
         return jsonify({"error": "No file uploaded"}), 400
-
-    file = request.files['image_path']
     if file.filename == '':
         return jsonify({"error": "No selected file"}), 400
 
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-
-        # Dynamically create a folder for the service
-        service_title = request.form.get('title')
-        if not service_title:
-            return jsonify({"error": "Service title is required"}), 400
-        service_folder = os.path.join(UPLOAD_FOLDER_SERVICES, service_title.replace(" ", "_"))
-        os.makedirs(service_folder, exist_ok=True)
-
-        filepath = os.path.join(service_folder, filename)
-        file.save(filepath)
-        
         # Retrieve other form data
+        service_title = request.form.get('title')
         description = request.form.get('description')
         tags = request.form.get('tags', '').split(',')
         price_range = request.form.get('price_range', 'To be discussed')
 
-        # Validate required fields
-        if not description or not tags:
+        if not service_title or not description or not tags:
             return jsonify({"error": "Description and tags are required"}), 400
 
-        # Save service data to the database
-        service_data = {
-            "title": service_title,
-            "description": description,
-            "tags": tags,
-            "price_range": price_range,
-            "is_active": True,
-            "image_path": filepath.replace("\\", "/")  # Ensure the path is URL-friendly
-        }
         try:
+            # Upload image to Cloudinary
+            image_url = upload_image(file, f"services/{service_title.replace(' ', '_')}")
+
+            # Save service data to the database
+            service_data = {
+                "title": service_title,
+                "description": description,
+                "tags": tags,
+                "price_range": price_range,
+                "is_active": True,
+                "image": image_url
+            }
             db.services.insert_one(service_data)
             return jsonify({"message": "Service added successfully!"}), 201
         except Exception as e:
@@ -187,8 +176,7 @@ def add_service():
 @admin_routes.route('/api/admin/services/<service_id>', methods=['PUT'])
 def update_service(service_id):
     data = request.form
-    file = request.files.get('image_path')  # Optional new image
-    UPLOAD_FOLDER_SERVICES = os.path.join(UPLOAD_FOLDER, 'services')
+    file = request.files.get('image') or request.files.get('image_path')  # Optional new image
 
     # Fetch the existing service
     service = db.services.find_one({"_id": ObjectId(service_id)})
@@ -210,20 +198,13 @@ def update_service(service_id):
 
     # Handle new image upload
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-
-        # Create/overwrite service folder
-        service_folder = os.path.join(UPLOAD_FOLDER_SERVICES, title.replace(" ", "_"))
-        os.makedirs(service_folder, exist_ok=True)
-
-        filepath = os.path.join(service_folder, filename)
-        file.save(filepath)
-        updated_data["image_path"] = filepath.replace("\\", "/")
+        image_url = upload_image(file, f"services/{title.replace(' ', '_')}")
+        updated_data["image"] = image_url
 
         # Optionally remove the old image (if necessary)
-        old_image_path = service.get("image_path")
-        if old_image_path and os.path.exists(old_image_path):
-            os.remove(old_image_path)
+        old_image = service.get("image")
+        if old_image and old_image.startswith("http"):
+            delete_image(old_image)
 
     try:
         db.services.update_one({"_id": ObjectId(service_id)}, {"$set": updated_data})
@@ -240,13 +221,10 @@ def delete_service(service_id):
         if not service:
             return jsonify({"error": "Service not found"}), 404
 
-        # Remove the image folder
-        image_path = service.get("image_path")
-        if image_path:
-            service_folder = os.path.dirname(image_path)
-            if os.path.exists(service_folder):
-                import shutil
-                shutil.rmtree(service_folder)
+        # Remove the Cloudinary image
+        image = service.get("image")
+        if image and image.startswith("http"):
+            delete_image(image)
 
         # Delete from the database
         db.services.delete_one({"_id": ObjectId(service_id)})
@@ -464,8 +442,6 @@ def create_upload_folder(folder_path):
 ## ROUTE TO ADD A NEW PROJECT 
 @admin_routes.route('/api/admin/projects', methods=['POST'])
 def add_project():
-    UPLOAD_FOLDER_PROJECTS = os.path.join(UPLOAD_FOLDER, 'projects')
-
     # Retrieve form data
     title = request.form.get('title')
     category = request.form.get('category')
@@ -473,24 +449,18 @@ def add_project():
     duration = request.form.get('duration')
     service_id = request.form.get('service_id')
     materials = request.form.getlist('materials')
-    files = request.files.getlist('project_images')
+    files = request.files.getlist('project_images') or request.files.getlist('gallery_images')
 
     if not title or not category or not description or not service_id:
         return jsonify({"error": "Missing required fields"}), 400
 
     try:
-        # Create folder dynamically
-        project_folder = os.path.join(UPLOAD_FOLDER_PROJECTS, title.replace(" ", "_"))
-        os.makedirs(project_folder, exist_ok=True)
-
-        # Save files and collect their paths
+        # Upload images to Cloudinary and collect their URLs
         image_urls = []
         for file in files:
             if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
-                filepath = os.path.join(project_folder, filename)
-                file.save(filepath)
-                image_urls.append(filepath.replace("\\", "/"))
+                url = upload_image(file, f"projects/{title.replace(' ', '_')}")
+                image_urls.append(url)
 
         # Save project details to the database
         project_data = {
@@ -591,8 +561,6 @@ def add_project():
 # UPDATE A SELECTED PROJECT
 @admin_routes.route('/api/projects/<project_id>', methods=['PUT'])
 def update_project(project_id):
-    UPLOAD_FOLDER_PROJECTS = os.path.join(UPLOAD_FOLDER, 'projects')
-
     # Fetch existing project
     project = db.projects.find_one({"_id": ObjectId(project_id)})
     if not project:
@@ -600,7 +568,7 @@ def update_project(project_id):
 
     # Retrieve updated data
     data = request.form
-    files = request.files.getlist('project_images')  # Optional new images
+    files = request.files.getlist('project_images') or request.files.getlist('gallery_images')
 
     title = data.get('title', project['title'])
     category = data.get('category', project['category'])
@@ -621,23 +589,11 @@ def update_project(project_id):
 
         # Handle image updates
         if files:
-            # Remove old images
-            for image_path in project.get("image_urls", []):
-                if os.path.exists(image_path):
-                    os.remove(image_path)
-
-            # Save new images
-            project_folder = os.path.join(UPLOAD_FOLDER_PROJECTS, title.replace(" ", "_"))
-            os.makedirs(project_folder, exist_ok=True)
-
             image_urls = []
             for file in files:
                 if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file_path = os.path.join(project_folder, filename)
-                    file.save(file_path)
-                    image_urls.append(file_path.replace("\\", "/"))
-
+                    url = upload_image(file, f"projects/{title.replace(' ', '_')}")
+                    image_urls.append(url)
             updated_data["image_urls"] = image_urls
 
         # Update the project in the database
@@ -677,12 +633,9 @@ def delete_project(project_id):
         if not project:
             return jsonify({"error": "Project not found"}), 404
 
-        # Delete the images folder
-        if "image_urls" in project and project["image_urls"]:
-            project_folder = os.path.dirname(project["image_urls"][0])
-            if os.path.exists(project_folder):
-                import shutil
-                shutil.rmtree(project_folder)
+        # Delete Cloudinary images
+        for url in project.get("image_urls", []):
+            delete_image(url)
 
         # Delete the project from the database
         db.projects.delete_one({"_id": ObjectId(project_id)})

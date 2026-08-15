@@ -123,17 +123,21 @@ const Col = styled.div`
 // `;
 
 const ButtonPrimary = styled(Link)`
-  background-color: #007bff;
+  background-color: var(--color-primary);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
   color: #fff;
   font-size: 1rem;
   text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-primary-light);
+  }
 `;
 
 const ButtonSecondary = styled(Link)`
-  background-color: #6c757d;
+  background-color: var(--color-stone);
   border: none;
   padding: 10px 20px;
   border-radius: 5px;
@@ -343,8 +347,8 @@ const Title = styled.h2`
 
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: #e9ecef /* Light grey shade */
-    color: #333; /* Text color for better readability */
+    background-color: var(--color-cloud);
+    color: var(--color-text);
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;

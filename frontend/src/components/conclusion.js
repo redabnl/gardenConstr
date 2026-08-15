@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { IMAGES } from '../images';
 
 
 const ConclusionSection = styled.section`
@@ -7,7 +8,7 @@ const ConclusionSection = styled.section`
   align-items: center;
   justify-content: space-between;
   padding: 60px 0;
-  background-color: #f8f9fa; // Light background for contrast
+  background-color: var(--color-white); // Light background for contrast
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -22,12 +23,12 @@ const TextContainer = styled.div`
   h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-    color: #343a40; // Darker text color
+    color: var(--color-primary); // Darker text color
   }
 
   p {
     font-size: 1.1rem;
-    color: #6c757d; // Grey text color
+    color: var(--color-text-light); // Grey text color
     line-height: 1.5;
   }
 `;
@@ -59,7 +60,7 @@ const Conclusion = () => {
         </p>
       </TextContainer>
       <ImageContainer>
-        <img src={'img/conclusion.png'} alt="Team working on a project" />
+        <img src={IMAGES.conclusion} alt="Team working on a project" />
       </ImageContainer>
     </ConclusionSection>
   );

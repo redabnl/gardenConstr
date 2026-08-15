@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { API_BASE_URL } from '../../config';
+import { IMAGES } from '../../images';
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -45,7 +46,7 @@ const AdminLogin = () => {
   return (
     <LoginContainer>
       <Logo> {/* Placeholder for your company logo */}
-        <img src="/public/img/LOGO.JPG" alt="Company Logo" />
+        <img src={IMAGES.logo} alt="Company Logo" />
       </Logo>
       <LoginForm onSubmit={handleSubmit}>
         <Title>Admin Login</Title>

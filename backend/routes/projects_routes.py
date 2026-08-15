@@ -49,22 +49,28 @@ def fetch_project_by_ID(project_id):
         if not project:
             return jsonify({"error": "Project not found"}), 404
 
-        # Construct image URLs
-        images_folder = project.get('images_folder', '')
-        static_img_folder = app.config.get('STATIC_IMG_FOLDER', 'static/images/projects')
-        images_folder_path = os.path.join(static_img_folder, images_folder.strip('./'))
+        # Use Cloudinary URLs stored in the DB if present (admin uploads)
+        db_image_urls = project.get('image_urls') or []
+        cloudinary_urls = [u for u in db_image_urls if u and u.startswith('http')]
 
-        if os.path.exists(images_folder_path):
-            images = [
-                f"/static/images/projects/{images_folder}/{img}"
-                for img in os.listdir(images_folder_path)
-                if os.path.isfile(os.path.join(images_folder_path, img))
-            ]
+        if cloudinary_urls:
+            project['image_urls'] = cloudinary_urls
         else:
-            images = []
+            # Fallback: scan the local static folder for legacy projects
+            images_folder = project.get('images_folder', '')
+            static_img_folder = app.config.get('STATIC_IMG_FOLDER', 'static/images/projects')
+            images_folder_path = os.path.join(static_img_folder, images_folder.strip('./'))
 
-        # Add image URLs to the project response
-        project['image_urls'] = images
+            if os.path.exists(images_folder_path):
+                images = [
+                    f"/static/images/projects/{images_folder}/{img}"
+                    for img in os.listdir(images_folder_path)
+                    if os.path.isfile(os.path.join(images_folder_path, img))
+                ]
+            else:
+                images = []
+            project['image_urls'] = images
+
         return jsonify(serialize_project(project)), 200
 
     except Exception as e:
