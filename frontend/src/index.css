@@ -26,3 +26,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Responsive helpers */
+@media (max-width: 768px) {
+  .navbar-logo {
+    width: 70px !important;
+    height: 70px !important;
+    margin-right: 10px !important;
+  }
+}

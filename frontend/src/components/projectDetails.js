@@ -16,6 +16,10 @@ const PageContainer = styled.div`
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -30,6 +34,11 @@ const CarouselContainer = styled.div`
   min-width: 300px;
   max-width: 500px;
 
+  @media (max-width: 768px) {
+    min-width: 100%;
+    max-width: 100%;
+  }
+
   .slick-slide img {
     border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -40,12 +49,21 @@ const DetailsContainer = styled.div`
   flex: 1;
   min-width: 300px;
   max-width: 500px;
+
+  @media (max-width: 768px) {
+    min-width: 100%;
+    max-width: 100%;
+  }
 `;
 
 const ProjectTitle = styled.h1`
   font-size: 2.5em;
   margin-bottom: 20px;
   color: #2c3e50;
+
+  @media (max-width: 768px) {
+    font-size: 1.8em;
+  }
 `;
 
 const ProjectDescription = styled.p`

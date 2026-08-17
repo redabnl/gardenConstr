@@ -17,11 +17,22 @@ const FooterTop = styled.div`
   width: 100%;
   max-width: 1200px;
   margin-bottom: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const FooterSection = styled.div`
   flex: 1;
   padding: 0 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 10px 0;
+  }
 `;
 
 const FooterTitle = styled.h3`

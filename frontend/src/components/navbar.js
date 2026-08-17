@@ -12,6 +12,7 @@ function NavigationBar() {
           <img
             src={IMAGES.logo}
             alt="Logo"
+            className="navbar-logo"
             style={{
               width: '120px', // Increased size
               height: '120px',

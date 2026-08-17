@@ -97,19 +97,34 @@ const Container = styled.div`
   padding: 40px;
   text-align: center;
   background-color: #f8f9fa;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 const Title = styled.h2`
   font-size: 2.5rem;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+  }
 `;
 
 const MainSection = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
   gap: 40px;
   margin-top: 40px;
+
+  @media (max-width: 768px) {
+    gap: 20px;
+    margin-top: 20px;
+  }
 `;
 
 const ServiceCard = styled.div`
@@ -119,6 +134,11 @@ const ServiceCard = styled.div`
   padding: 20px;
   width: 300px;
   text-align: center;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 320px;
+  }
 `;
 
 const CardTitle = styled.h3`

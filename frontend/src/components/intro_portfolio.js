@@ -11,6 +11,10 @@ const IntroSection = styled.section`
 const Title = styled.h1`
     font-size: 2.5rem;
     color: #333;
+
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
 `;
 
 const IntroText = styled.p`
@@ -19,6 +23,7 @@ const IntroText = styled.p`
     max-width: 800px;
     margin: 0 auto;
     line-height: 1.6;
+    padding: 0 15px;
 `;
 
 function PortfolioIntro() {

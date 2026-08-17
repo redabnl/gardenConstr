@@ -8,9 +8,13 @@ import { IMAGES } from "../images";
 // Styled Components
 const GalleryContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    padding: 15px;
+  }
 `;
 const ProjectCard = styled.div`
   position: relative;
@@ -47,6 +51,13 @@ const Overlay = styled.div`
   font-weight: bold;
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
+
+  @media (max-width: 768px) {
+    position: static;
+    opacity: 1;
+    font-size: 1.2em;
+    padding: 10px;
+  }
 `;
 // const ProjectCard = styled.div`
 //   background-color: #fff;
@@ -106,6 +117,10 @@ const DetailImage = styled.img`
   margin: 10px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+  }
 `;
 
 const MaterialsList = styled.ul`

@@ -142,6 +142,10 @@ const ServicesContainer = styled.div`
   flex-direction: column;
   padding: 20px;
   background-color: #f9f9f9;
+
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 
 const ServicesList = styled.div`
@@ -153,6 +157,10 @@ const FilterContainer = styled.div`
   justify-content: center;
   margin-bottom: 20px;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+  }
 `;
 
 const FilterButton = styled.button`
@@ -173,7 +181,7 @@ const FilterButton = styled.button`
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
 `;
 
@@ -205,6 +213,10 @@ const ProjectImage = styled.img`
   width: 100%;
   height: 250px;
   object-fit: cover;
+
+  @media (max-width: 768px) {
+    height: 200px;
+  }
 `;
 
 const ServiceDetailsContainer = styled.div`

@@ -151,15 +151,24 @@ const ButtonSecondary = styled(Link)`
 const CTASection = styled.section`
   text-align: center;
   margin-top: 50px;
+  padding: 0 20px;
 
   h2 {
     font-size: 2.5rem;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+      font-size: 1.8rem;
+    }
   }
 
   p {
     font-size: 1.2rem;
     color: #555;
+
+    @media (max-width: 768px) {
+      font-size: 1rem;
+    }
   }
 `;
 
@@ -300,6 +309,12 @@ const ProjectHover = styled.div`
 const Title = styled.h2`
   font-size: 2.5rem;
   margin-bottom: 40px;
+
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    padding: 0 15px;
+  }
 `;
 
 // const ProjectImage = styled.img`

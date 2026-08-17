@@ -89,7 +89,7 @@ const HeroText = styled.div`
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
     color: #FFFFFF; // Pure white for the header
     @media (max-width: 768px) {
-      font-size: 2.5rem;
+      font-size: 2rem;
     }
   }
 
@@ -100,8 +100,13 @@ const HeroText = styled.div`
     margin-bottom: 30px;
     max-width: 600px;
     @media (max-width: 768px) {
-      font-size: 1.1rem;
+      font-size: 1rem;
     }
+  }
+
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 20px;
   }
 `;
 
@@ -156,6 +161,9 @@ const HeroContainer = styled.div`
   overflow: hidden;
   background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6));
 
+  @media (max-width: 768px) {
+    height: 60vh;
+  }
 `;
 
 const HeroSection = () => {

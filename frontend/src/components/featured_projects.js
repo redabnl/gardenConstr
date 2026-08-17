@@ -7,7 +7,7 @@ import { IMAGES } from '../images';
 
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
   gap: 20px;
   margin-bottom: 40px;
 `;
@@ -33,6 +33,10 @@ const ProjectImage = styled.img`
   height: 200px;
   object-fit: cover;
   transition: opacity 0.5s ease-in-out;
+
+  @media (max-width: 768px) {
+    height: 180px;
+  }
 `;
 
 const ProjectHover = styled.div`
@@ -52,6 +56,13 @@ const ProjectHover = styled.div`
   text-align: center;
   ${GridItem}:hover & {
     opacity: 1;
+  }
+
+  @media (max-width: 768px) {
+    position: static;
+    opacity: 1;
+    background-color: var(--color-primary);
+    padding: 15px;
   }
 `;
 

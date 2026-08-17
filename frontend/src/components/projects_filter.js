@@ -5,6 +5,10 @@ const FilterContainer = styled.div`
     justify-content: center;
     gap: 10px;
     margin-bottom: 20px;
+
+    @media (max-width: 768px) {
+      flex-wrap: wrap;
+    }
 `;
 
 // const FilterButton = styled.button`

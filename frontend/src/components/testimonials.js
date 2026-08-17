@@ -36,6 +36,12 @@ const TestimonialCard = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
   position: relative;
   text-align: left;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 320px;
+    margin: 0 auto;
+  }
 `;
 
 const QuoteIcon = styled.span`
